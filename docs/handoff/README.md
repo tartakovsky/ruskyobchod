@@ -11,6 +11,7 @@ This folder exists because the live site was edited for weeks like a group proje
 3. `03-current-state-and-experiments.md`
 4. `04-architecture-review-and-rebuild-plan.md`
 5. `05-quick-fix-plan.md`
+6. `06-gls-regression-findings.md`
 
 ## What this pack is for
 
