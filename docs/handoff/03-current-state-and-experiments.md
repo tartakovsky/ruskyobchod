@@ -87,7 +87,7 @@ Result:
 - input fields stopped losing focus on the public site
 - language switching stopped working
 
-This is the cleanest proven frontend result from the whole incident.
+This was a diagnostic result, not a production-ready fix.
 
 ## what broke because of step 3
 
@@ -102,6 +102,8 @@ That means:
 - custom checkout DOM tweaks from that script are off
 
 So the site became more stable, but less translated.
+
+That means step 3 proved where the bug lives, but it is too destructive to be the intended end state. Inputs reportedly worked the day before, so the operational assumption for the next agent should be "recent regression inside the existing translation path", not "replace the translation system during the emergency."
 
 ## login and relogin notes
 
@@ -130,10 +132,11 @@ Right now the tradeoff is simple:
 - with `gls-script.js` disabled, inputs behave
 - with `gls-script.js` disabled, language switching is broken
 
-That gives the next agent a very clean fork:
+That gives the next agent the real short-term direction:
 
-1. rebuild language switching properly
-2. or re-enable only tiny safe parts of the old script, not the whole thing
+1. treat step 3 as proof that the bug sits inside `gls-script.js`
+2. restore translation behavior by isolating and removing only the focus-breaking regression inside the existing `gls` path
+3. keep bigger architecture changes out of the emergency fix
 
 ## what the next agent should assume
 

@@ -6,7 +6,7 @@ Do not confuse this with the proper rebuild. This plan is for getting the site b
 
 ## objective
 
-Keep the stability gain from disabling `gls-script.js`, then restore working site translation without bringing back the broken DOM-rewrite path.
+Preserve the existing translated site behavior, isolate the regression that broke input focus, and ship the smallest fix that restores both typing and translation.
 
 ## rule for the quick-fix phase
 
@@ -14,52 +14,57 @@ No new logic goes into legacy `gls-script.js` unless there is no other escape ro
 
 That file already proved what it does under stress.
 
-## quick fix 1, keep `gls-script.js` disabled
+## quick fix 1, treat the full `gls-script.js` disable as a diagnostic only
 
-Do not re-enable it wholesale.
+Do not leave the site in the "inputs work, translation broken" state.
 
-That is the known trigger for the site-wide input focus bug.
+That experiment proved the bug lives in the legacy frontend translation path. It did not prove the correct fix is to replace the whole path during the incident.
 
-## quick fix 2, restore the language switcher in the smallest possible way
+## quick fix 2, use the last known working translated behavior as the target
 
-Implement a simple server-led switcher:
+Inputs reportedly worked yesterday.
 
-- switcher buttons set `?lang=ru` or `?lang=sk`
-- PHP stores a cookie
-- PHP renders the switcher active state
-- page reload is allowed
+That changes the quick-fix strategy:
 
-Accept the reload. A one-second reload is cheaper than a broken form.
+- assume the site had a more recent working state with both translation and form usability
+- identify the regression inside the existing `gastronom-lang-switcher` stack
+- patch or roll back only the focus-breaking logic
 
-## quick fix 3, restore translation output on the server without gaps on visible site UI
+The quick fix is a regression fix, not a language-system rewrite.
 
-The quick fix must not "stabilize" the site by silently dropping translation coverage.
+## quick fix 3, narrow the live culprit inside `gls-script.js`
 
-Restore the visible translated interface through PHP-rendered output and narrow template hooks, not through legacy page-wide JS rewriting.
+The likely offenders are the parts that re-touch the page after load:
 
-Required surface:
+- MutationObserver passes
+- repeated delayed reruns
+- interval-based checkout refresh handling
+- broad selectors that rewrite labels or containers containing inputs
 
-- menu labels
-- account labels
-- storefront labels
-- product/archive labels
-- cart and checkout labels
-- payment and shipping labels
-- buttons, placeholders, notices, and other visible UI strings users interact with
+The right emergency move is:
 
-What can stay out of scope for the quick fix:
+- restore `gls-script.js`
+- disable or remove only the code paths that reprocess form-bearing DOM
+- keep the translation dictionary and switcher behavior intact
 
-- invisible internal strings
-- admin-only text
-- secondary cosmetic rewrites that are not user-facing
+## quick fix 4, patch the smallest safe surface
 
-## quick fix 4, do not hide shipping methods with browser hacks
+Preferred order:
+
+1. stop rewriting nodes that contain inputs or active form controls
+2. stop repeated full-page translation reruns
+3. scope checkout refresh logic to the smallest container possible
+4. if needed, roll back only the recent `gls-script.js` regression range while preserving the rest of translation behavior
+
+Do not jump straight to a PHP/server-side reimplementation during the emergency unless the narrower fix fails.
+
+## quick fix 5, do not hide shipping methods with browser hacks
 
 The old checkout UX trick that hides unselected shipping methods should stay off unless there is a narrow, safe rewrite.
 
 If checkout needs to be ugly for a week but clickable, choose ugly.
 
-## quick fix 5, keep logged-in path under suspicion
+## quick fix 6, keep logged-in path under suspicion
 
 The `wordpress_logged_in_*` cookie correlated with `503`.
 
@@ -72,7 +77,7 @@ Immediate practical checks:
 
 Do not assume the 503 is solved because the public site looks calmer.
 
-## quick fix 6, stop touching Dotypos unless the bug is clearly in Dotypos
+## quick fix 7, stop touching Dotypos unless the bug is clearly in Dotypos
 
 The current frontend emergency is not a reason to keep rewriting the stock integration.
 
@@ -84,27 +89,28 @@ For the quick-fix phase:
 
 ## exact short-term task list
 
-1. Implement a tiny PHP-based language toggle in `gastronom-lang-switcher.php`.
-2. Keep `gls-script.js` off.
-3. Restore full visible site translation coverage through PHP-rendered labels and narrow hooks.
-4. Test homepage search, account forms, cart quantity, checkout fields.
-5. Test RU and SK switching with full page reload.
-6. Test logged-in homepage for the cookie-linked `503`.
+1. Capture the current live `gastronom-lang-switcher.php`, `gls-script.js`, and `gls-style.css` as the broken baseline.
+2. Identify the last known working translated state from the previous day if it can be recovered.
+3. Re-enable `gls-script.js` in a controlled branch or local copy.
+4. Remove or guard only the focus-breaking DOM rewrite paths.
+5. Test homepage search, account forms, cart quantity, checkout fields.
+6. Test RU and SK switching without losing visible translation.
+7. Test logged-in homepage for the cookie-linked `503`.
 
 ## success criteria
 
 - users can type into forms
 - homepage does not randomly eat focus
-- language switch works again, even if it reloads the page
+- language switch still works through the existing site behavior
 - visible site translation is preserved
 - checkout remains usable
 - no new 503 spike is introduced by the fix itself
 
 ## failure modes to avoid
 
-- bringing back the whole legacy JS file “just to check”
+- replacing the translation system during the emergency without proving it is necessary
 - mixing translation restoration with Dotypos rewrites
 - adding more timeouts or MutationObserver passes
-- hiding broken translation by adding more client-side DOM magic
+- shipping a "stable" site with broken translation and calling it fixed
 
 The site does not need one more miracle patch. It needs fewer moving parts.
