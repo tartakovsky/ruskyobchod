@@ -6,7 +6,7 @@ Do not confuse this with the proper rebuild. This plan is for getting the site b
 
 ## objective
 
-Keep the stability gain from disabling `gls-script.js`, then bring back only the minimum language behavior needed for the store to function.
+Keep the stability gain from disabling `gls-script.js`, then restore working site translation without bringing back the broken DOM-rewrite path.
 
 ## rule for the quick-fix phase
 
@@ -31,16 +31,27 @@ Implement a simple server-led switcher:
 
 Accept the reload. A one-second reload is cheaper than a broken form.
 
-## quick fix 3, restore only essential translation output on the server
+## quick fix 3, restore translation output on the server without gaps on visible site UI
 
-Bring back only what users need first:
+The quick fix must not "stabilize" the site by silently dropping translation coverage.
+
+Restore the visible translated interface through PHP-rendered output and narrow template hooks, not through legacy page-wide JS rewriting.
+
+Required surface:
 
 - menu labels
 - account labels
-- key storefront text
-- checkout heading and obvious payment labels if safe
+- storefront labels
+- product/archive labels
+- cart and checkout labels
+- payment and shipping labels
+- buttons, placeholders, notices, and other visible UI strings users interact with
 
-Leave cosmetic translation gaps alone for now. The goal is functional clarity, not perfect bilingual elegance.
+What can stay out of scope for the quick fix:
+
+- invisible internal strings
+- admin-only text
+- secondary cosmetic rewrites that are not user-facing
 
 ## quick fix 4, do not hide shipping methods with browser hacks
 
@@ -75,7 +86,7 @@ For the quick-fix phase:
 
 1. Implement a tiny PHP-based language toggle in `gastronom-lang-switcher.php`.
 2. Keep `gls-script.js` off.
-3. Add only the smallest PHP filters needed for visible language labels.
+3. Restore full visible site translation coverage through PHP-rendered labels and narrow hooks.
 4. Test homepage search, account forms, cart quantity, checkout fields.
 5. Test RU and SK switching with full page reload.
 6. Test logged-in homepage for the cookie-linked `503`.
@@ -85,6 +96,7 @@ For the quick-fix phase:
 - users can type into forms
 - homepage does not randomly eat focus
 - language switch works again, even if it reloads the page
+- visible site translation is preserved
 - checkout remains usable
 - no new 503 spike is introduced by the fix itself
 

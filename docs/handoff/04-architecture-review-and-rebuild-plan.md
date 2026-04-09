@@ -134,7 +134,8 @@ If a page varies by language, the cache key must vary by language in a controlle
 ## what the rebuilt language system should do
 
 - use one language cookie or query param as the source
-- render known static labels on the server
+- render the visible site UI in the selected language on the server
+- cover storefront, account, cart, checkout, payment, shipping, notices, buttons, placeholders, and navigation without depending on page-wide DOM rewrites
 - keep content blocks bilingual only where unavoidable
 - switch pages by navigation or reload when needed
 - keep frontend JS small and local
