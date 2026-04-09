@@ -1,0 +1,20 @@
+{
+  "name": "jagu/dotypos",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "Filip Glazar",
+      "email": "filip.glazar@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "composer/installers": "^1.0.0",
+    "sentry/sdk": "^3.1",
+    "jean85/pretty-package-versions": "^1.5"
+  }
+}

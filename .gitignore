@@ -1,0 +1,35 @@
+.DS_Store
+
+# Runtime and generated WordPress data
+wordpress/wp-content/uploads/
+wordpress/wp-content/cache/
+wordpress/wp-content/upgrade/
+wordpress/wp-content/upgrade-temp-backup/
+wordpress/wp-content/backup/
+wordpress/wp-content/ai1wm-backups/
+wordpress/wp-content/fonts/
+wordpress/wp-content/languages/
+
+# Generated plugin storage
+wordpress/wp-content/plugins/all-in-one-wp-migration/storage/
+
+# Deliberately excluded from this public repo
+wordpress/wp-config.php
+wordpress/wp-config.php.pre-*
+wordpress/wp-content/plugins/elementor-pro/
+wordpress/wp-content/plugins/wordpress-seo-premium/
+wordpress/wp-content/plugins/jetpack.off/
+
+# Ad hoc operational files from live hosting should not be versioned here
+wordpress/create_autologin_*.php
+wordpress/custom-migrator-import.php
+wordpress/dotypos_fix_bilingual_names.php
+wordpress/dotypos_resync_titles.php
+wordpress/gastronom_*.php
+wordpress/ruskyobchod_*.php
+wordpress/*.sql
+wordpress/*.sql.gz
+wordpress/*.hstgr
+wordpress/*.json
+wordpress/error_log
+wordpress/hostinger-migrator-import-log.txt

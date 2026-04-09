@@ -1,0 +1,639 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Dotypos 0.2.25\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dotypos\n"
+"POT-Creation-Date: 2021-11-24T07:45:04+00:00\n"
+"PO-Revision-Date: 2021-11-24 08:46+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Domain: dotypos\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
+
+#. Plugin Name of the plugin
+#: dotypos.php:686 build/index.js:1
+msgid "Dotypos"
+msgstr "Dotykačka"
+
+#. Plugin URI of the plugin
+msgid "https://www.dotykacka.cz/woocommerce/"
+msgstr "https://www.dotykacka.cz/woocommerce/"
+
+#. Description of the plugin
+msgid ""
+"The plugin enables connection and synchronization: categories, products and "
+"stock status between the e-shop and the Dotypos cash register system."
+msgstr ""
+"Plugin umožňuje propojení a synchronizaci: kategorií, produktů a stavů "
+"skladů mezi e-shopem a pokladním systémem Dotykačka."
+
+#. Author of the plugin
+msgid "Jagu s.r.o."
+msgstr "Jagu s.r.o."
+
+#. Author URI of the plugin
+msgid "https://jagu.cz/"
+msgstr "https://jagu.cz/"
+
+#: dotypos.php:490
+msgctxt "taxonomy general name"
+msgid "Dotypos Category"
+msgstr "Kategorie Dotykačka"
+
+#: dotypos.php:491
+msgctxt "taxonomy singular name"
+msgid "Dotypos Category"
+msgstr "Kategorie Dotykačka"
+
+#: dotypos.php:492
+msgid "Search Dotypos Category"
+msgstr "Hledat kategorie Dotykačky"
+
+#: dotypos.php:493
+msgid "All Dotypos Categories"
+msgstr "Všechny kategorie Dotykačky"
+
+#: dotypos.php:494
+msgid "Edit Dotypos Category"
+msgstr "Upravit kategorii Dotykačky"
+
+#: dotypos.php:495
+msgid "Update Dotypos Category"
+msgstr "Upravit kategorii Dotykačky"
+
+#: dotypos.php:496
+msgid "Add New Dotypos Category"
+msgstr "Přidat novou kategorii Dotykačky"
+
+#: dotypos.php:497
+msgid "New Dotypos Category Name"
+msgstr "Název nové kategorie"
+
+#: dotypos.php:498
+msgid "Dotypos Category"
+msgstr "Kategorie Dotykačka"
+
+#: dotypos.php:738 build/index.js:1
+msgid "Connect to Dotypos"
+msgstr "Propojit s Dotykačkou"
+
+#: dotypos.php:769 dotypos.php:809 dotypos.php:855 dotypos.php:967
+#: dotypos.php:989 build/index.js:1
+msgid "Dotypos ID"
+msgstr "Dotykačka ID"
+
+#: dotypos.php:771 dotypos.php:813 dotypos.php:857
+msgid "None"
+msgstr "Žádný"
+
+#: dotypos.php:786 dotypos.php:829
+msgid "Category will be synchronized with selected Dotypos category."
+msgstr "Kategorie bude spárována s vybranou kategorií v Dotykačce."
+
+#: dotypos.php:1362
+msgid "Categories from Dotypos imported"
+msgstr "Kategorie z Dotykačky importovány"
+
+#: dotypos.php:1362
+msgid "Categories from Dotypos were successfully imported."
+msgstr "Kategorie z Dotykačky byly úspěšně importovány."
+
+#: dotypos.php:1365 dotypos.php:1411 dotypos.php:1444 build/index.js:1
+msgid "List categories"
+msgstr "Procházet kategorie"
+
+#: dotypos.php:1368 dotypos.php:1414 dotypos.php:1447 dotypos.php:1590
+#: dotypos.php:1758 dotypos.php:1887 dotypos.php:1931 dotypos.php:1971
+#: dotypos.php:2007 build/index.js:1
+msgid "Settings"
+msgstr "Nastavení"
+
+#: dotypos.php:1408
+msgid "Categories exported to Dotypos"
+msgstr "Kategorie exportovány do Dotykačky"
+
+#: dotypos.php:1408
+msgid "Categories were successfully exported to Dotypos."
+msgstr "Kategorie byly úspěšně exportovány do Dotykačky."
+
+#: dotypos.php:1441
+msgid "Fetched Dotypos categories"
+msgstr "Kategorie z Dotykačky načteny"
+
+#: dotypos.php:1441
+msgid ""
+"Categories from Dotypos were successfully fetched. Now you can pair your "
+"categories."
+msgstr "Kategorie z Dotykačky úspěšně načteny. Nyní je můžete propojit."
+
+#: dotypos.php:1584 dotypos.php:1752
+msgid "Products from Dotypos imported"
+msgstr "Produkty z Dotykačky importovány"
+
+#: dotypos.php:1584 dotypos.php:1752
+msgid "Products from Dotypos were successfully imported."
+msgstr "Produkty z Dotykačky byly úspěšně importovány."
+
+#: dotypos.php:1587 dotypos.php:1755 dotypos.php:1884 dotypos.php:1928
+#: dotypos.php:1968 dotypos.php:2004 build/index.js:1
+msgid "List products"
+msgstr "Procházet produkty"
+
+#: dotypos.php:1881
+msgid "Products exported to Dotypos"
+msgstr "Produkty exportovány do Dotykačky"
+
+#: dotypos.php:1881
+msgid "Products were successfully exported to Dotypos."
+msgstr "Produkty byly úspěšně exportovány do Dotykačky."
+
+#: dotypos.php:1925
+msgid "Products paired to Dotypos"
+msgstr "Produkty spárovány s Dotykačkou"
+
+#: dotypos.php:1925
+msgid "Products were successfully paired with Dotypos."
+msgstr "Produkty byly úspěšně spárovány s Dotykačkou."
+
+#: dotypos.php:1965
+msgid "Products stocks overwrite from Dotypos"
+msgstr "Přepsání skladových zásob z Dotykačky"
+
+#: dotypos.php:1965
+msgid "Products stocks were successfully overwrite from Dotypos."
+msgstr "Skladové zásoby byly úspěšně přepsány z Dotykačky."
+
+#: dotypos.php:2001
+msgid "Products stocks overwrite to Dotypos"
+msgstr "Propsání skladových zásob do Dotykačky"
+
+#: dotypos.php:2001
+msgid "Products stocks were successfully overwrite to Dotypos."
+msgstr "Skladové zásoby byly úspěšně propsány do Dotykačky."
+
+#: build/index.js:1
+msgid "SKU"
+msgstr "SKU"
+
+#: build/index.js:1
+msgid "Verify licence"
+msgstr "Ověřit licenci"
+
+#: build/index.js:1
+msgid "First you have to enter your licence key and verify its validity."
+msgstr "Nejdříve musíte vložit licenční klíč a ověřit jeho platnost."
+
+#: build/index.js:1
+msgid "This key doesn't exists. Check your key."
+msgstr "Klíč neexistuje. Prosím zkontrolujte jeho správnost."
+
+#: build/index.js:1
+msgid "This domain is already registered."
+msgstr "Tato doména je již zaregistrovaná."
+
+#: build/index.js:1
+msgid "Cannot connect to licence server. Please try again later."
+msgstr "Nelze se připojit k licenčnímu serveru. Zkuste to prosím znovu."
+
+#: build/index.js:1
+msgid "Verify"
+msgstr "Ověřit"
+
+#: build/index.js:1
+msgid "Plugin successfully installed"
+msgstr "Rozšíření bylo úspěšně nainstalováno"
+
+#: build/index.js:1
+msgid "Now is right time to connect your Dotypos with Woocommerce"
+msgstr "Nyní můžete propojit vaši Dotykačku s rozšířením"
+
+#: build/index.js:1
+msgid " Your licence key were successfully verified. Thank you."
+msgstr " Licence byla úspěšně ověřena. Děkujeme."
+
+#: build/index.js:1
+msgid "Connect with DTK"
+msgstr "Propojit s Dotykačkou"
+
+#: build/index.js:1
+msgid "Connect with Dotypos"
+msgstr "Propojit s Dotykačkou"
+
+#: build/index.js:1
+msgid ""
+" Successfully connected to Dotypos. Now you can configure your integration."
+msgstr " Propojení proběhlo úspěšně. Nyní můžete nastavit vaši integraci."
+
+#: build/index.js:1
+msgid "Select warehouse to pair"
+msgstr "Synchronizovat se skladem"
+
+#: build/index.js:1
+msgid ""
+"Now is right time to choose which Dotypos warehouse will be synced with "
+"Woocommerce"
+msgstr "Nyní můžete vybrat sklad pro synchronizaci skladových zásob"
+
+#: build/index.js:1
+msgid "Select warehouse"
+msgstr "Vyberte sklad"
+
+#: build/index.js:1
+msgid "Choose pairing attribute"
+msgstr "Zvolte párovací atributy"
+
+#: build/index.js:1
+msgid "You have to select both pairing attributes"
+msgstr "Musíte vybrat oba párovací atributy"
+
+#: build/index.js:1
+msgid "Woocommerce"
+msgstr "WooCommerce"
+
+#: build/index.js:1
+msgid "Start typing to filter options…"
+msgstr "Začněte psát pro filtrování…"
+
+#: build/index.js:1
+msgid "EAN"
+msgstr "EAN"
+
+#: build/index.js:1
+msgid "Set up pairing"
+msgstr "Nastavit párování"
+
+#: build/index.js:1
+msgid "Completed"
+msgstr "Dokončeno"
+
+#: build/index.js:1
+msgid "Warehouse synchronization successfully set up."
+msgstr "Skladová synchronizace úspěšně dokončena."
+
+#: build/index.js:1
+msgid "Choose warehouse"
+msgstr "Vyberte sklad"
+
+#: build/index.js:1
+msgid "You have to select any warehouse."
+msgstr "Musíte vybrat nějaký sklad."
+
+#: build/index.js:1
+msgid "Pair with warehouse"
+msgstr "Klikněte sem pro výběr"
+
+#: build/index.js:1
+msgid "Choose"
+msgstr "Vybrat"
+
+#: build/index.js:1
+msgid "Export categories to Dotypos?"
+msgstr "Exportovat kategorie do Dotykačky?"
+
+#: build/index.js:1
+msgid "This will create Woocommerce categories in your Dotypos."
+msgstr "Tato akce vytvoří kategorie z WooCommerce ve vaší Dotykaččce."
+
+#: build/index.js:1
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: build/index.js:1
+msgid "Export"
+msgstr "Exportovat"
+
+#: build/index.js:1
+msgid "Import categories to Woocommerce?"
+msgstr "Importovat kategorie do WooCommerce?"
+
+#: build/index.js:1
+msgid "This will create Dotypos categories in your Woocommerce."
+msgstr "Tato akce vytvoří kategorie z Dotykačky ve vašem WooCommerce."
+
+#: build/index.js:1
+msgid "Import"
+msgstr "Importovat"
+
+#: build/index.js:1
+msgid "Import products to Woocommerce?"
+msgstr "Importovat produkty do WooCommerce?"
+
+#: build/index.js:1
+msgid "This will create Dotypos products in your Woocommerce."
+msgstr "Tato akce vloží produkty z Dotykačky do vašeho WooCommerce."
+
+#: build/index.js:1
+msgid "Import products wizard"
+msgstr "Průvodce importem produktů"
+
+#: build/index.js:1
+msgid "Fetch products"
+msgstr "Načíst produkty"
+
+#: build/index.js:1
+msgid "No products to import."
+msgstr "Žádné produkty k importování."
+
+#: build/index.js:1
+msgid "Products"
+msgstr "Produkty"
+
+#: build/index.js:1
+msgid "Name"
+msgstr "Název"
+
+#: build/index.js:1
+msgid "Pairing attribute"
+msgstr "Párovací atribut"
+
+#: build/index.js:1
+msgid "Pair"
+msgstr "Párovat"
+
+#: build/index.js:1
+msgid "Import selected"
+msgstr "Importovat vybrané"
+
+#: build/index.js:1
+msgid "Import all"
+msgstr "Importovat všechny"
+
+#: build/index.js:1
+msgid "Export products to Dotypos?"
+msgstr "Exportovat produkty do Dotykačky?"
+
+#: build/index.js:1
+msgid "This will create Woocommerce products in your Dotypos."
+msgstr "Tato akce vytvoří produkty z WooCommerce ve vaší Dotykačce."
+
+#: build/index.js:1
+msgid "Overwrite stocks from Dotypos?"
+msgstr "Přepsat skladové zasoby z Dotyačky?"
+
+#: build/index.js:1
+msgid "This will overwrite stock from Dotypos in your Woocommerce."
+msgstr "Tato akce přepíše skladové zásoby ve WooCommerce těmi z Dotykačky."
+
+#: build/index.js:1
+msgid "Overwrite"
+msgstr "Přepsat"
+
+#: build/index.js:1
+msgid "Overwrite stocks from Woocommerce?"
+msgstr "Propsat skladové zásoby z WooCommerce?"
+
+#: build/index.js:1
+msgid "This will overwrite stock from Woocommerce in your Dotypos."
+msgstr "Tato akce přepíše skladové zásoby v Dotykačce z WooCommerce."
+
+#: build/index.js:1
+msgid "General"
+msgstr "Obecné"
+
+#: build/index.js:1
+msgid "Your licence expired please reconnect your Dotypos"
+msgstr "Licence expirovala. Prosíme proveďte znovu propojení s Dotykačkou"
+
+#: build/index.js:1
+msgid "Connected to Cloud"
+msgstr "Propojeno s Cloudem"
+
+#: build/index.js:1
+msgid "Licence verified with key"
+msgstr "Licence ověřena"
+
+#: build/index.js:1
+msgid "Disconnect from Dotypos?"
+msgstr "Odpojit od Dotykačky?"
+
+#: build/index.js:1
+msgid ""
+"This will cancel your Dotypos connection. You will have to reconnect for "
+"correct extension functionality."
+msgstr ""
+"Tato akce zruší propojení s Dotykačkou. Pro správnou funkčnost rozšíření "
+"budete muset provést propojení znovu."
+
+#: build/index.js:1
+msgid "Disconnect"
+msgstr "Odpojit"
+
+#: build/index.js:1
+msgid "Disconnect from Dotypos"
+msgstr "Odpojit od Dotykačky"
+
+#: build/index.js:1
+msgid "Categories"
+msgstr "Kategorie"
+
+#: build/index.js:1
+msgid "Enable synchronization"
+msgstr "Povolit synchronizaci"
+
+#: build/index.js:1
+msgid "Your categories are synced between Woocommerce and Dotypos"
+msgstr "Kategorie se synchronizují mezi WooCommerce a Dotykačkou"
+
+#: build/index.js:1
+msgid "Synchronize title"
+msgstr "Synchronizovat název"
+
+#: build/index.js:1
+msgid ""
+"Automatically synchronize title of category when changed in WooCommerce."
+msgstr ""
+"Automaticky synchronizovat název kategorie pokud se změní ve WooCommerce."
+
+#: build/index.js:1
+msgid "Actions"
+msgstr "Akce"
+
+#: build/index.js:1
+msgid "Import requested"
+msgstr "Import zahájen"
+
+#: build/index.js:1
+msgid "Import from Dotypos"
+msgstr "Importovat z Dotykačky"
+
+#: build/index.js:1
+msgid "Export requested"
+msgstr "Export zahájen"
+
+#: build/index.js:1
+msgid "Export to Dotypos"
+msgstr "Exportovat do Dotykačky"
+
+#: build/index.js:1
+msgid "Fetch requested"
+msgstr "Nahrání zahájeno"
+
+#: build/index.js:1
+msgid "Fetch from Dotypos"
+msgstr "Nahrát z Dotykačky"
+
+#: build/index.js:1
+msgid "Products & movements"
+msgstr "Produkty a skladové pohyby"
+
+#: build/index.js:1
+msgid "Your products are synced between Woocommerce and Dotypos"
+msgstr "Produkty se synchronizují mezi WooCommerce a Dotykačkou"
+
+#: build/index.js:1
+msgid "Connected to warehouse"
+msgstr "Propojeno se skladem"
+
+#: build/index.js:1
+msgid "Products paired by"
+msgstr "Produkty se párují podle"
+
+#: build/index.js:1
+msgid "Reset pairing"
+msgstr "Zrušit párování"
+
+#: build/index.js:1
+msgid "Settings products"
+msgstr "Nastavení produkty"
+
+#: build/index.js:1
+msgid "Automatically synchronize title of product when changed on both sides"
+msgstr "Automaticky synchronizovat název pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Synchronize price"
+msgstr "Synchronizovat cenu"
+
+#: build/index.js:1
+msgid "Automatically synchronize price of product when changed on both sides"
+msgstr "Automaticky synchronizovat cenu pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Synchronize VAT"
+msgstr "Synchronizovat DPH"
+
+#: build/index.js:1
+msgid "Automatically synchronize VAT of product when changed on both sides"
+msgstr "Automaticky synchronizovat DPH pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Synchronize category"
+msgstr "Synchronizovat kategorii"
+
+#: build/index.js:1
+msgid ""
+"Automatically synchronize category of product when changed on both sides"
+msgstr "Automaticky synchronizovat kategorii pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Synchronize EAN"
+msgstr "Synchronizovat EAN"
+
+#: build/index.js:1
+msgid "Automatically synchronize EAN of product when changed on both sides"
+msgstr "Automaticky synchronizovat EAN pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Synchronize note"
+msgstr "Synchronizovat poznámku"
+
+#: build/index.js:1
+msgid "Automatically synchronize note of product when changed on both sides"
+msgstr "Automaticky synchronizovat poznámku pokud dojde ke změně"
+
+#: build/index.js:1
+msgid "Actions products"
+msgstr "Akce produkty"
+
+#: build/index.js:1
+msgid "Pairing requested"
+msgstr "Párování zahájeno"
+
+#: build/index.js:1
+msgid "Pair products"
+msgstr "Párovat produkty"
+
+#: build/index.js:1
+msgid "Settings movements"
+msgstr "Nastavení skladové pohyby"
+
+#: build/index.js:1
+msgid "Synchronize Woocommerce to Dotypos"
+msgstr "Syncronizovat WooCommerce do Dotykačky"
+
+#: build/index.js:1
+msgid "Automatically synchronize stock status when something happen on WC side"
+msgstr ""
+"Automaticky synchronizovat skladové zásoby, pokud se změní ve WooCommerce"
+
+#: build/index.js:1
+msgid "Synchronize Dotypos to Woocommerce"
+msgstr "Synchronizovat Dotykačku do WooCommerce"
+
+#: build/index.js:1
+msgid ""
+"Automatically synchronize stock status when something happen on Dotypos side"
+msgstr "Automaticky synchronizovat skladové zásoby, pokud se změní v Dotykačce"
+
+#: build/index.js:1
+msgid "Actions movements"
+msgstr "Akce skladové pohyby"
+
+#: build/index.js:1
+msgid "Overwrite from Dotypos requested"
+msgstr "Přepsání z Dotykačky zahájeno"
+
+#: build/index.js:1
+msgid "Overwrite from Dotypos"
+msgstr "Přepsat z Dotykačky"
+
+#: build/index.js:1
+msgid "Overwrite form Woocommerce requested"
+msgstr "Přepsání z WooCommerce zahájeno"
+
+#: build/index.js:1
+msgid "Overwrite from Woocommerce"
+msgstr "Přepsat z WooCommerce"
+
+#: build/index.js:1
+msgid ""
+"Once overwrites the stock status for paired products from Dotypos to "
+"WooCommerce or from WooCommerce to Dotypos."
+msgstr ""
+"Jednorázově přepíše stav skladu u spárovaných produktů z Dotykačky do "
+"WooCommerce nebo z WooCommerce do Dotykačky."
+
+#: build/index.js:1
+msgid "Successfully connected to Dotypos Cloud with ID"
+msgstr "Úspěšně propojeno s Dotykačkou Cloud ID"
+
+#: build/index.js:1
+msgid "Now you can close this window."
+msgstr "Nyná můžete okno zavřít."
+
+#: build/index.js:1
+msgid "Close window"
+msgstr "Zavřít okno"
+
+#: build/index.js:1
+msgid "Something went wrong. Try again."
+msgstr "Něco se pokazilo. Zkuste to prosím znovu."
+
+#: build/index.js:1
+msgid "Dotypos Settings"
+msgstr "Nastavení Dotykačka"
+
+#~ msgid "No new products to import."
+#~ msgstr "Žádné nové produkty k importování."
+
+#~ msgid "General settings for Dotypos Integration"
+#~ msgstr "Obecné nastavení rozšíření"
+
+#, fuzzy
+#~| msgid "Dotypos"
+#~ msgid "dotypos"
+#~ msgstr "Dotykačka"

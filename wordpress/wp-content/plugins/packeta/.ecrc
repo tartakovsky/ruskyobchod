@@ -1,0 +1,27 @@
+{
+	"Exclude": [
+		"^vendor\/",
+		"^node_modules\/",
+		"^.git\/",
+		"^deps\/",
+		"^log\/",
+		"^tests-coverage\/",
+		"^public\/libs\/",
+		"^public\/block\/index.asset.php",
+		"^public\/block\/index.js",
+		"^public\/block\/block.json",
+		"^public\/js\/live-form-validation-extension.js",
+		"^languages\/",
+		"LICENSE$",
+		"^temp\/",
+		"^log\/",
+		"^\\.idea\/",
+		"\\.DS_Store$",
+		"\\.phar$",
+		"\\.phpunit.result.cache$",
+		"^soap-php-bugfix-dev.wsdl$"
+	],
+	"Disable": {
+		"MaxLineLength": true
+	}
+}

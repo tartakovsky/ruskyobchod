@@ -1,0 +1,349 @@
+{
+  "_ReAuthModal-Deg5HLL-.js": {
+    "file": "js/chunks/ReAuthModal-Deg5HLL-.js",
+    "name": "ReAuthModal",
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-Du5DxmSn.css"
+    ]
+  },
+  "_TheAppHeader-CnbU8fIT.js": {
+    "file": "js/chunks/TheAppHeader-CnbU8fIT.js",
+    "name": "TheAppHeader",
+    "dynamicImports": [
+      "src/stores/sample-data/custom-dashboard/sample-view.json",
+      "src/stores/sample-data/custom-dashboard/widgets-data.json"
+    ],
+    "css": [
+      "css/main-exactmetrics-C4z96CgN.css"
+    ],
+    "assets": [
+      "assets/logo-exactmetrics-g7cO_2BB.png",
+      "assets/logo-exactmetrics@2x-D852PtD5.png"
+    ]
+  },
+  "_html2pdf-DUUmuX6G.js": {
+    "file": "js/chunks/html2pdf-DUUmuX6G.js",
+    "name": "html2pdf",
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useFeatureGate-Dycj7kF_.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-D5i6pgxk.css"
+    ]
+  },
+  "_main-exactmetrics-C1F5oIAZ.css": {
+    "file": "css/main-exactmetrics-C1F5oIAZ.css",
+    "src": "_main-exactmetrics-C1F5oIAZ.css"
+  },
+  "_main-exactmetrics-C4z96CgN.css": {
+    "file": "css/main-exactmetrics-C4z96CgN.css",
+    "src": "_main-exactmetrics-C4z96CgN.css"
+  },
+  "_main-exactmetrics-D5i6pgxk.css": {
+    "file": "css/main-exactmetrics-D5i6pgxk.css",
+    "src": "_main-exactmetrics-D5i6pgxk.css"
+  },
+  "_main-exactmetrics-DdCOUrGJ.css": {
+    "file": "css/main-exactmetrics-DdCOUrGJ.css",
+    "src": "_main-exactmetrics-DdCOUrGJ.css"
+  },
+  "_main-exactmetrics-Du5DxmSn.css": {
+    "file": "css/main-exactmetrics-Du5DxmSn.css",
+    "src": "_main-exactmetrics-Du5DxmSn.css"
+  },
+  "_main-exactmetrics-tn0RQdqM.css": {
+    "file": "css/main-exactmetrics-tn0RQdqM.css",
+    "src": "_main-exactmetrics-tn0RQdqM.css"
+  },
+  "_useAuthGate-C9a7UCIP.js": {
+    "file": "js/chunks/useAuthGate-C9a7UCIP.js",
+    "name": "useAuthGate",
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useFeatureGate-Dycj7kF_.js",
+      "_ReAuthModal-Deg5HLL-.js",
+      "_html2pdf-DUUmuX6G.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-C1F5oIAZ.css"
+    ]
+  },
+  "_useFeatureGate-Dycj7kF_.js": {
+    "file": "js/chunks/useFeatureGate-Dycj7kF_.js",
+    "name": "useFeatureGate",
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-DdCOUrGJ.css"
+    ]
+  },
+  "_useSampleData-BTkWHSB3.js": {
+    "file": "js/chunks/useSampleData-BTkWHSB3.js",
+    "name": "useSampleData",
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useFeatureGate-Dycj7kF_.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-tn0RQdqM.css"
+    ]
+  },
+  "src/assets/icons/no-saved-filters.svg": {
+    "file": "assets/no-saved-filters-BDWM6O1q.svg",
+    "src": "src/assets/icons/no-saved-filters.svg"
+  },
+  "src/assets/icons/settings.svg": {
+    "file": "assets/settings-BqFaYr7J.svg",
+    "src": "src/assets/icons/settings.svg"
+  },
+  "src/assets/img/exactmetrics/em-arrows.jpg": {
+    "file": "assets/em-arrows-Dq2c4rA5.jpg",
+    "src": "src/assets/img/exactmetrics/em-arrows.jpg"
+  },
+  "src/assets/img/exactmetrics/em-background.jpg": {
+    "file": "assets/em-background-BPt0ZyG0.jpg",
+    "src": "src/assets/img/exactmetrics/em-background.jpg"
+  },
+  "src/assets/img/exactmetrics/em-screenshot.png": {
+    "file": "assets/em-screenshot-Dav_Tstv.png",
+    "src": "src/assets/img/exactmetrics/em-screenshot.png"
+  },
+  "src/assets/img/exactmetrics/loading-background.jpg": {
+    "file": "assets/loading-background-Dayz1jqc.jpg",
+    "src": "src/assets/img/exactmetrics/loading-background.jpg"
+  },
+  "src/assets/img/logo-exactmetrics-agency.svg": {
+    "file": "assets/logo-exactmetrics-agency-BDxiPOwg.svg",
+    "src": "src/assets/img/logo-exactmetrics-agency.svg"
+  },
+  "src/assets/img/logo-exactmetrics-plus.svg": {
+    "file": "assets/logo-exactmetrics-plus-D5AZCVIR.svg",
+    "src": "src/assets/img/logo-exactmetrics-plus.svg"
+  },
+  "src/assets/img/logo-exactmetrics-pro.svg": {
+    "file": "assets/logo-exactmetrics-pro-CGL-8xqK.svg",
+    "src": "src/assets/img/logo-exactmetrics-pro.svg"
+  },
+  "src/assets/img/logo-exactmetrics.png": {
+    "file": "assets/logo-exactmetrics-g7cO_2BB.png",
+    "src": "src/assets/img/logo-exactmetrics.png"
+  },
+  "src/assets/img/logo-exactmetrics@2x.png": {
+    "file": "assets/logo-exactmetrics@2x-D852PtD5.png",
+    "src": "src/assets/img/logo-exactmetrics@2x.png"
+  },
+  "src/assets/img/logo-exactmetrics-agency.svg": {
+    "file": "assets/logo-exactmetrics-agency-D_g3Ka4m.svg",
+    "src": "src/assets/img/logo-exactmetrics-agency.svg"
+  },
+  "src/assets/img/logo-exactmetrics-plus.svg": {
+    "file": "assets/logo-exactmetrics-plus-CQ8cmXAv.svg",
+    "src": "src/assets/img/logo-exactmetrics-plus.svg"
+  },
+  "src/assets/img/logo-exactmetrics-pro.svg": {
+    "file": "assets/logo-exactmetrics-pro-DFpEr1k8.svg",
+    "src": "src/assets/img/logo-exactmetrics-pro.svg"
+  },
+  "src/assets/img/logo-exactmetrics.png": {
+    "file": "assets/logo-exactmetrics-DHwCZrg_.png",
+    "src": "src/assets/img/logo-exactmetrics.png"
+  },
+  "src/assets/img/logo-exactmetrics@2x.png": {
+    "file": "assets/logo-exactmetrics@2x-Dzlx8UQP.png",
+    "src": "src/assets/img/logo-exactmetrics@2x.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/charitable.png": {
+    "file": "assets/charitable-jZ8z8e4W.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/charitable.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/easy.png": {
+    "file": "assets/easy-BvW_B_Ta.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/easy.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/givewp.png": {
+    "file": "assets/givewp-C405d0U0.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/givewp.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/lifterlms.png": {
+    "file": "assets/lifterlms-a1S06NYR.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/lifterlms.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/memberhouse.png": {
+    "file": "assets/memberhouse-BJdHvZB4.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/memberhouse.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/memberpress.png": {
+    "file": "assets/memberpress-D3zMNxUg.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/memberpress.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/restrict.png": {
+    "file": "assets/restrict-x0XNKniw.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/restrict.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/wishlistmember-logo 1.png": {
+    "file": "assets/wishlistmember-logo 1-Dtdt0jIO.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/wishlistmember-logo 1.png"
+  },
+  "src/assets/img/reports/overview/ecommerce-logo/woocom.png": {
+    "file": "assets/woocom-CGR3qW2E.png",
+    "src": "src/assets/img/reports/overview/ecommerce-logo/woocom.png"
+  },
+  "src/assets/img/reports/overview/overview-upsell-cta-chart-with-charlie.png": {
+    "file": "assets/overview-upsell-cta-chart-with-charlie-L7ZsqcRa.png",
+    "src": "src/assets/img/reports/overview/overview-upsell-cta-chart-with-charlie.png"
+  },
+  "src/assets/img/sample-image-exactmetrics.png": {
+    "file": "assets/sample-image-exactmetrics-BgF3d33A.png",
+    "src": "src/assets/img/sample-image-exactmetrics.png"
+  },
+  "src/assets/img/sample-image-exactmetrics.png": {
+    "file": "assets/sample-image-exactmetrics-BioGsEoh.png",
+    "src": "src/assets/img/sample-image-exactmetrics.png"
+  },
+  "src/modules/custom-dashboard/main.js": {
+    "file": "js/custom-dashboard-CGmb_wW3.js",
+    "name": "custom-dashboard",
+    "src": "src/modules/custom-dashboard/main.js",
+    "isEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js"
+    ],
+    "dynamicImports": [
+      "src/modules/custom-dashboard/views/DashboardList.lite.vue",
+      "src/modules/custom-dashboard/views/DashboardCreate.vue",
+      "src/modules/custom-dashboard/views/DashboardEdit.vue",
+      "src/modules/custom-dashboard/views/DashboardView.vue"
+    ]
+  },
+  "src/modules/custom-dashboard/styles/main-exactmetrics.scss": {
+    "file": "css/main-exactmetrics-Ey0IgSK7.css",
+    "src": "src/modules/custom-dashboard/styles/main-exactmetrics.scss"
+  },
+  "src/modules/custom-dashboard/views/DashboardCreate.vue": {
+    "file": "js/chunks/DashboardCreate-BC-JNWcR.js",
+    "name": "DashboardCreate",
+    "src": "src/modules/custom-dashboard/views/DashboardCreate.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useAuthGate-C9a7UCIP.js",
+      "_useFeatureGate-Dycj7kF_.js",
+      "_useSampleData-BTkWHSB3.js",
+      "_html2pdf-DUUmuX6G.js",
+      "_ReAuthModal-Deg5HLL-.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-Bs2heOd-.css"
+    ]
+  },
+  "src/modules/custom-dashboard/views/DashboardEdit.vue": {
+    "file": "js/chunks/DashboardEdit-M4vnTprW.js",
+    "name": "DashboardEdit",
+    "src": "src/modules/custom-dashboard/views/DashboardEdit.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "src/modules/custom-dashboard/views/DashboardCreate.vue",
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useAuthGate-C9a7UCIP.js",
+      "_useFeatureGate-Dycj7kF_.js",
+      "_ReAuthModal-Deg5HLL-.js",
+      "_html2pdf-DUUmuX6G.js",
+      "_useSampleData-BTkWHSB3.js"
+    ]
+  },
+  "src/modules/custom-dashboard/views/DashboardList.lite.vue": {
+    "file": "js/chunks/DashboardList.lite-CO5053mJ.js",
+    "name": "DashboardList.lite",
+    "src": "src/modules/custom-dashboard/views/DashboardList.lite.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useSampleData-BTkWHSB3.js",
+      "_useFeatureGate-Dycj7kF_.js"
+    ]
+  },
+  "src/modules/custom-dashboard/views/DashboardView.vue": {
+    "file": "js/chunks/DashboardView-CL2eHZmU.js",
+    "name": "DashboardView",
+    "src": "src/modules/custom-dashboard/views/DashboardView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useAuthGate-C9a7UCIP.js",
+      "_html2pdf-DUUmuX6G.js",
+      "_useSampleData-BTkWHSB3.js",
+      "_ReAuthModal-Deg5HLL-.js",
+      "_useFeatureGate-Dycj7kF_.js"
+    ]
+  },
+  "src/modules/reports/main.js": {
+    "file": "js/reports-CMQsyKDB.js",
+    "name": "reports",
+    "src": "src/modules/reports/main.js",
+    "isEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_useFeatureGate-Dycj7kF_.js",
+      "_html2pdf-DUUmuX6G.js"
+    ],
+    "dynamicImports": [
+      "src/modules/reports/views/OverviewReport.vue"
+    ],
+    "css": [
+      "css/main-exactmetrics-DDJOWUFk.css"
+    ],
+    "assets": [
+      "assets/em-arrows-Dq2c4rA5.jpg"
+    ]
+  },
+  "src/modules/reports/styles/main-exactmetrics.scss": {
+    "file": "css/main-exactmetrics-D7dUT--C.css",
+    "src": "src/modules/reports/styles/main-exactmetrics.scss"
+  },
+  "src/modules/reports/views/OverviewReport.vue": {
+    "file": "js/chunks/OverviewReport-Dly_W9I6.js",
+    "name": "OverviewReport",
+    "src": "src/modules/reports/views/OverviewReport.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_TheAppHeader-CnbU8fIT.js",
+      "_ReAuthModal-Deg5HLL-.js",
+      "_useFeatureGate-Dycj7kF_.js",
+      "src/modules/reports/main.js",
+      "_html2pdf-DUUmuX6G.js"
+    ],
+    "css": [
+      "css/main-exactmetrics-DN0v1tIW.css"
+    ],
+    "assets": [
+      "assets/woocom-CGR3qW2E.png",
+      "assets/easy-BvW_B_Ta.png",
+      "assets/memberpress-D3zMNxUg.png",
+      "assets/lifterlms-a1S06NYR.png",
+      "assets/givewp-C405d0U0.png",
+      "assets/restrict-x0XNKniw.png",
+      "assets/charitable-jZ8z8e4W.png",
+      "assets/wishlistmember-logo 1-Dtdt0jIO.png",
+      "assets/memberhouse-BJdHvZB4.png",
+      "assets/em-background-BPt0ZyG0.jpg",
+      "assets/em-screenshot-Dav_Tstv.png"
+    ]
+  },
+  "src/stores/sample-data/custom-dashboard/sample-view.json": {
+    "file": "js/chunks/sample-view-DCgpbF5N.js",
+    "name": "sample-view",
+    "src": "src/stores/sample-data/custom-dashboard/sample-view.json",
+    "isDynamicEntry": true
+  },
+  "src/stores/sample-data/custom-dashboard/widgets-data.json": {
+    "file": "js/chunks/widgets-data-TjimP1Ju.js",
+    "name": "widgets-data",
+    "src": "src/stores/sample-data/custom-dashboard/widgets-data.json",
+    "isDynamicEntry": true
+  }
+}

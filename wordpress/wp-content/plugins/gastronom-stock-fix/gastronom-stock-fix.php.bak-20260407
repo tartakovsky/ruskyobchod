@@ -1,0 +1,164 @@
+<?php
+/**
+ * Plugin Name: Gastronom Stock Fix
+ * Description: Decimal stock support + auto outofstock + COD fee (for Dotypos integration)
+ * Version: 3.2
+ * Author: Gastronom
+ */
+
+// ============================================================
+// 1. DECIMAL STOCK: allow fractional quantities (0.475 kg etc.)
+// ============================================================
+// Must run after WC loads (WC adds intval during plugins_loaded)
+add_action('plugins_loaded', function() {
+    remove_filter('woocommerce_stock_amount', 'intval');
+    add_filter('woocommerce_stock_amount', 'floatval');
+}, 99);
+
+// ============================================================
+// 2. REST API: change stock_quantity schema from integer to number
+//    so API accepts decimal values like 0.475
+// ============================================================
+add_filter('rest_endpoints', function($endpoints) {
+    // Change stock_quantity type from integer to number in all product endpoints
+    foreach ($endpoints as $route => $handlers) {
+        if (strpos($route, 'wc/v3/products') === false) continue;
+        foreach ($handlers as $key => $handler) {
+            if (!is_array($handler) || !isset($handler['args']['stock_quantity'])) continue;
+            $endpoints[$route][$key]['args']['stock_quantity']['type'] = 'number';
+        }
+    }
+    return $endpoints;
+});
+
+// ============================================================
+// 3. AUTO OUTOFSTOCK: when stock changes, update status + visibility
+//    Uses raw DB meta to avoid integer truncation
+//    Uses wc_update_product_stock_status() to fix BOTH meta AND taxonomy
+// ============================================================
+add_action('woocommerce_product_set_stock', function($product) {
+    $product_id = $product->get_id();
+
+    // Read raw _stock from DB â bypasses any intval rounding
+    $raw_stock = get_post_meta($product_id, '_stock', true);
+    $qty = floatval($raw_stock);
+
+    $current_status = get_post_meta($product_id, '_stock_status', true);
+
+    if ($qty <= 0 && $current_status !== 'outofstock') {
+        // Out of stock â update status + taxonomy + disable backorders
+        wc_update_product_stock_status($product_id, 'outofstock');
+        update_post_meta($product_id, '_backorders', 'no');
+    } elseif ($qty > 0 && $current_status === 'outofstock') {
+        // Back in stock â update status + taxonomy
+        wc_update_product_stock_status($product_id, 'instock');
+    }
+}, 10, 1);
+
+// ============================================================
+// 4. REST API INSERT: same logic for products updated via REST API
+// ============================================================
+add_action('woocommerce_rest_insert_product_object', function($product) {
+    if (!$product->managing_stock()) return;
+
+    $product_id = $product->get_id();
+    $raw_stock = get_post_meta($product_id, '_stock', true);
+    $qty = floatval($raw_stock);
+    $current_status = get_post_meta($product_id, '_stock_status', true);
+
+    if ($qty <= 0 && $current_status !== 'outofstock') {
+        wc_update_product_stock_status($product_id, 'outofstock');
+        update_post_meta($product_id, '_backorders', 'no');
+    } elseif ($qty > 0 && $current_status === 'outofstock') {
+        wc_update_product_stock_status($product_id, 'instock');
+    }
+}, 99, 1);
+
+// ============================================================
+// 5. ONE-TIME FIX: on first load after update, fix all products
+//    that have stock > 0 but are marked outofstock
+//    Runs once, then sets a flag so it doesn't repeat
+// ============================================================
+add_action('admin_init', function() {
+    $fix_version = '3.2';
+    if (get_option('gastronom_stock_fix_version') === $fix_version) return;
+
+    global $wpdb;
+
+    // Find products where _stock > 0 but _stock_status = 'outofstock'
+    $broken = $wpdb->get_results("
+        SELECT p.ID, sm.meta_value as stock_qty
+        FROM {$wpdb->posts} p
+        JOIN {$wpdb->postmeta} sm ON p.ID = sm.post_id AND sm.meta_key = '_stock'
+        JOIN {$wpdb->postmeta} ss ON p.ID = ss.post_id AND ss.meta_key = '_stock_status'
+        WHERE p.post_type = 'product'
+        AND p.post_status = 'publish'
+        AND CAST(sm.meta_value AS DECIMAL(10,3)) > 0
+        AND ss.meta_value = 'outofstock'
+    ");
+
+    $fixed = 0;
+    foreach ($broken as $row) {
+        wc_update_product_stock_status($row->ID, 'instock');
+        $fixed++;
+    }
+
+    // Also fix reverse: stock <= 0 but status = 'instock'
+    $broken_reverse = $wpdb->get_results("
+        SELECT p.ID
+        FROM {$wpdb->posts} p
+        JOIN {$wpdb->postmeta} sm ON p.ID = sm.post_id AND sm.meta_key = '_stock'
+        JOIN {$wpdb->postmeta} ss ON p.ID = ss.post_id AND ss.meta_key = '_stock_status'
+        WHERE p.post_type = 'product'
+        AND p.post_status = 'publish'
+        AND p.ID IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_manage_stock' AND meta_value = 'yes')
+        AND (sm.meta_value IS NULL OR CAST(sm.meta_value AS DECIMAL(10,3)) <= 0)
+        AND ss.meta_value = 'instock'
+    ");
+
+    foreach ($broken_reverse as $row) {
+        wc_update_product_stock_status($row->ID, 'outofstock');
+        update_post_meta($row->ID, '_backorders', 'no');
+        $fixed++;
+    }
+
+    update_option('gastronom_stock_fix_version', $fix_version);
+
+    if ($fixed > 0) {
+        // Clear WC transients after fixing
+        wc_delete_product_transients();
+
+        // Log for debugging
+        error_log("Gastronom Stock Fix v{$fix_version}: fixed {$fixed} products stock status + visibility");
+    }
+});
+
+// ============================================================
+// 6. COD FEE: +2 EUR at checkout when "Platba pri doruceni" selected
+// ============================================================
+add_action('woocommerce_cart_calculate_fees', function() {
+    if (is_admin() && !defined('DOING_AJAX')) return;
+    if (!is_checkout()) return;
+    $chosen_payment = WC()->session->get('chosen_payment_method');
+    if ($chosen_payment === 'cod') {
+        WC()->cart->add_fee('Poplatok za dobierku', 2.00, false);
+    }
+});
+
+add_filter('woocommerce_gateway_description', function($description, $id) {
+    if ($id === 'cod') {
+        $description = 'K objednÃ¡vke bude pripoÄÃ­tanÃ½ poplatok za dobierku vo vÃ½Å¡ke 2,00 â¬.';
+    }
+    return $description;
+}, 10, 2);
+
+add_action('wp_footer', function() {
+    if (!is_checkout()) return;
+    ?>
+    <script>
+    jQuery(document.body).on('payment_method_selected', function() {
+        jQuery('body').trigger('update_checkout');
+    });
+    </script>
+    <?php
+});

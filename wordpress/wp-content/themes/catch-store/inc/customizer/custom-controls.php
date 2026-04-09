@@ -1,0 +1,140 @@
+<?php
+/**
+ * Custom Controls
+ *
+ * @package Catch_Store
+ */
+
+/**
+ * Add Custom Controls
+ *
+ * @param WP_Customize_Manager $wp_customize Theme Customizer object.
+ */
+function catch_store_custom_controls( $wp_customize ) {
+	// Custom control for Important Links.
+	class catch_store_Important_Links_Control extends WP_Customize_Control {
+		public $type = 'important-links';
+
+		public function render_content() {
+			// Add Theme instruction, Support Forum, Changelog, Donate link, Review, Facebook, Twitter, Google+, Pinterest links.
+			$important_links = array(
+				'theme_instructions' => array(
+					'link'  => esc_url( 'https://catchthemes.com/themes/catch-store-pro/#theme-instructions' ),
+					'text'  => esc_html__( 'Theme Instructions', 'catch-store' ),
+					),
+				'support' => array(
+					'link'  => esc_url( 'https://catchthemes.com/support/' ),
+					'text'  => esc_html__( 'Support', 'catch-store' ),
+					),
+				'changelog' => array(
+					'link'  => esc_url( 'https://catchthemes.com/themes/catch-store-pro/#changelog' ),
+					'text'  => esc_html__( 'Changelog', 'catch-store' ),
+					),
+				'facebook' => array(
+					'link'  => esc_url( 'https://www.facebook.com/catchthemes/' ),
+					'text'  => esc_html__( 'Facebook', 'catch-store' ),
+					),
+				'twitter' => array(
+					'link'  => esc_url( 'https://twitter.com/catchthemes/' ),
+					'text'  => esc_html__( 'Twitter', 'catch-store' ),
+					),
+				'gplus' => array(
+					'link'  => esc_url( 'https://plus.google.com/+Catchthemes/' ),
+					'text'  => esc_html__( 'Google+', 'catch-store' ),
+					),
+				'pinterest' => array(
+					'link'  => esc_url( 'http://www.pinterest.com/catchthemes/' ),
+					'text'  => esc_html__( 'Pinterest', 'catch-store' ),
+					),
+			);
+
+			foreach ( $important_links as $important_link ) {
+				echo '<p><a target="_blank" href="' . $important_link['link'] . '" >' . $important_link['text'] . ' </a></p>'; // WPCS: XSS OK.
+			}
+		}
+	}
+
+	// Custom control for dropdown category multiple select.
+	class catch_store_Multi_Categories_Control extends WP_Customize_Control {
+		public $type = 'dropdown-categories';
+
+		public function render_content() {
+			$dropdown = wp_dropdown_categories(
+				array(
+					'name'             => $this->id,
+					'echo'             => 0,
+					'hide_empty'       => false,
+					'show_option_none' => false,
+					'hide_if_empty'    => false,
+					'show_option_all'  => esc_html__( 'All Categories', 'catch-store' ),
+				)
+			);
+
+			$dropdown = str_replace( '<select', '<select multiple = "multiple" style = "height:150px;" ' . $this->get_link(), $dropdown );
+
+			printf( '<label class="customize-control-select"><span class="customize-control-title">%s</span> %s</label>',esc_html( $this->label ), $dropdown ); // WPCS: XSS OK.
+			echo '<p class="description">' . esc_html__( 'Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.', 'catch-store' ) . '</p>';
+		}
+	}
+
+	// Custom control for any note, use label as output description.
+	class catch_store_Note_Control extends WP_Customize_Control {
+		public $type = 'description';
+
+		public function render_content() {
+			echo '<h2 class="description">' . $this->label . '</h2>'; // WPCS: XSS OK.
+		}
+	}
+
+	class catch_store_Sortable_Custom_Control extends WP_Customize_Control {
+		public $type = 'sortable';
+
+		public $sortable_sections =array();
+
+		/**
+		 * Constructor.
+		 *
+		 * @since 1.0.0
+		 * @uses WP_Customize_Control::__construct()
+		 *
+		 * @param WP_Customize_Manager $manager Customizer bootstrap instance.
+		 * @param string               $id      Control ID.
+		 * @param array                $args    Optional. Arguments to override class property defaults.
+		 */
+		public function __construct( $manager, $id, $args = array() ) {
+
+			// Calls the parent __construct
+			parent::__construct( $manager, $id, $args );
+
+			// Set Sortable Sections
+			$sortable_sections = catch_store_get_sortable_sections();
+			$this->sortable_sections = apply_filters( 'customizer_sortable_sections', $sortable_sections, $id );
+
+		}
+
+		/**
+		* Render the control's content.
+		*/
+		public function render_content() {
+			$sortable_sections = $this->sortable_sections;
+			$sortable_sections = array_merge( array_flip( explode( ',', $this->value() ) ), $sortable_sections );
+		?>
+			<ul class="custom-sortable">
+				<?php
+				foreach ( $sortable_sections as $key => $value ) {
+					echo '<li id="' . esc_attr( $key ) . '" >';
+					echo '<span class="label">' . esc_html( $value['label'] ) . '</span>';
+					if ( isset( $value['section'] ) ) {
+						echo '<a href="javascript:wp.customize.section( \'' . esc_attr( $value['section'] ) . '\' ).focus();">' . esc_html__( 'Edit', 'catch-store' ) . '</a>';
+					}
+					echo '</li>';
+				}
+			    ?>
+			</ul>
+
+			<input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( $this->value() ); ?>" />
+		<?php
+		}
+	}
+}
+add_action( 'customize_register', 'catch_store_custom_controls', 1 );

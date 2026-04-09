@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    container_name: "wp_mariadb"
+    hostname: "mariadb"
+    networks:
+      - internal
+    environment:
+      - MARIADB_ROOT_PASSWORD=wp_root
+      - MARIADB_USER=wordpress
+      - MARIADB_PASSWORD=wordpress
+      - MARIADB_DATABASE=wordpress_db
+
+  wp:
+    build:
+      context: .docker/wordpress
+      dockerfile: Dockerfile
+    container_name: "wp_app"
+    networks:
+      - internal
+    ports:
+      - 8080:9000
+    volumes:
+      - .:/var/www/public/wp-content/plugins/woocomerence-extension
+
+networks:
+  internal:

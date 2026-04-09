@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #89c144;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: #006093;
+      }
+    </style>
+  </defs>
+  <g id="Themess">
+    <g>
+      <rect class="cls-3" width="16" height="32"/>
+      <rect class="cls-1" x="16" width="16" height="32"/>
+      <path class="cls-2" d="M28.75,4.56l-9.8,22.88h-6.37L2.81,4.56h6.99l6.21,14.9,6.34-14.9h6.41Z"/>
+    </g>
+  </g>
+</svg>

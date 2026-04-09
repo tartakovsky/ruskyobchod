@@ -1,0 +1,632 @@
+# Copyright (C) 2021 Jagu s.r.o.
+# This file is distributed under the GNU General Public License v3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: Dotypos 0.2.25\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dotypos\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-11-24T07:45:04+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: dotypos\n"
+
+#. Plugin Name of the plugin
+#: dotypos.php:686
+#: build/index.js:1
+msgid "Dotypos"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://www.dotykacka.cz/woocommerce/"
+msgstr ""
+
+#. Description of the plugin
+msgid "The plugin enables connection and synchronization: categories, products and stock status between the e-shop and the Dotypos cash register system."
+msgstr ""
+
+#. Author of the plugin
+msgid "Jagu s.r.o."
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://jagu.cz/"
+msgstr ""
+
+#: dotypos.php:490
+msgctxt "taxonomy general name"
+msgid "Dotypos Category"
+msgstr ""
+
+#: dotypos.php:491
+msgctxt "taxonomy singular name"
+msgid "Dotypos Category"
+msgstr ""
+
+#: dotypos.php:492
+msgid "Search Dotypos Category"
+msgstr ""
+
+#: dotypos.php:493
+msgid "All Dotypos Categories"
+msgstr ""
+
+#: dotypos.php:494
+msgid "Edit Dotypos Category"
+msgstr ""
+
+#: dotypos.php:495
+msgid "Update Dotypos Category"
+msgstr ""
+
+#: dotypos.php:496
+msgid "Add New Dotypos Category"
+msgstr ""
+
+#: dotypos.php:497
+msgid "New Dotypos Category Name"
+msgstr ""
+
+#: dotypos.php:498
+msgid "Dotypos Category"
+msgstr ""
+
+#: dotypos.php:738
+#: build/index.js:1
+msgid "Connect to Dotypos"
+msgstr ""
+
+#: dotypos.php:769
+#: dotypos.php:809
+#: dotypos.php:855
+#: dotypos.php:967
+#: dotypos.php:989
+#: build/index.js:1
+msgid "Dotypos ID"
+msgstr ""
+
+#: dotypos.php:771
+#: dotypos.php:813
+#: dotypos.php:857
+msgid "None"
+msgstr ""
+
+#: dotypos.php:786
+#: dotypos.php:829
+msgid "Category will be synchronized with selected Dotypos category."
+msgstr ""
+
+#: dotypos.php:1362
+msgid "Categories from Dotypos imported"
+msgstr ""
+
+#: dotypos.php:1362
+msgid "Categories from Dotypos were successfully imported."
+msgstr ""
+
+#: dotypos.php:1365
+#: dotypos.php:1411
+#: dotypos.php:1444
+#: build/index.js:1
+msgid "List categories"
+msgstr ""
+
+#: dotypos.php:1368
+#: dotypos.php:1414
+#: dotypos.php:1447
+#: dotypos.php:1590
+#: dotypos.php:1758
+#: dotypos.php:1887
+#: dotypos.php:1931
+#: dotypos.php:1971
+#: dotypos.php:2007
+#: build/index.js:1
+msgid "Settings"
+msgstr ""
+
+#: dotypos.php:1408
+msgid "Categories exported to Dotypos"
+msgstr ""
+
+#: dotypos.php:1408
+msgid "Categories were successfully exported to Dotypos."
+msgstr ""
+
+#: dotypos.php:1441
+msgid "Fetched Dotypos categories"
+msgstr ""
+
+#: dotypos.php:1441
+msgid "Categories from Dotypos were successfully fetched. Now you can pair your categories."
+msgstr ""
+
+#: dotypos.php:1584
+#: dotypos.php:1752
+msgid "Products from Dotypos imported"
+msgstr ""
+
+#: dotypos.php:1584
+#: dotypos.php:1752
+msgid "Products from Dotypos were successfully imported."
+msgstr ""
+
+#: dotypos.php:1587
+#: dotypos.php:1755
+#: dotypos.php:1884
+#: dotypos.php:1928
+#: dotypos.php:1968
+#: dotypos.php:2004
+#: build/index.js:1
+msgid "List products"
+msgstr ""
+
+#: dotypos.php:1881
+msgid "Products exported to Dotypos"
+msgstr ""
+
+#: dotypos.php:1881
+msgid "Products were successfully exported to Dotypos."
+msgstr ""
+
+#: dotypos.php:1925
+msgid "Products paired to Dotypos"
+msgstr ""
+
+#: dotypos.php:1925
+msgid "Products were successfully paired with Dotypos."
+msgstr ""
+
+#: dotypos.php:1965
+msgid "Products stocks overwrite from Dotypos"
+msgstr ""
+
+#: dotypos.php:1965
+msgid "Products stocks were successfully overwrite from Dotypos."
+msgstr ""
+
+#: dotypos.php:2001
+msgid "Products stocks overwrite to Dotypos"
+msgstr ""
+
+#: dotypos.php:2001
+msgid "Products stocks were successfully overwrite to Dotypos."
+msgstr ""
+
+#: build/index.js:1
+msgid "SKU"
+msgstr ""
+
+#: build/index.js:1
+msgid "Verify licence"
+msgstr ""
+
+#: build/index.js:1
+msgid "First you have to enter your licence key and verify its validity."
+msgstr ""
+
+#: build/index.js:1
+msgid "This key doesn't exists. Check your key."
+msgstr ""
+
+#: build/index.js:1
+msgid "This domain is already registered."
+msgstr ""
+
+#: build/index.js:1
+msgid "Cannot connect to licence server. Please try again later."
+msgstr ""
+
+#: build/index.js:1
+msgid "Verify"
+msgstr ""
+
+#: build/index.js:1
+msgid "Plugin successfully installed"
+msgstr ""
+
+#: build/index.js:1
+msgid "Now is right time to connect your Dotypos with Woocommerce"
+msgstr ""
+
+#: build/index.js:1
+msgid " Your licence key were successfully verified. Thank you."
+msgstr ""
+
+#: build/index.js:1
+msgid "Connect with DTK"
+msgstr ""
+
+#: build/index.js:1
+msgid "Connect with Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid " Successfully connected to Dotypos. Now you can configure your integration."
+msgstr ""
+
+#: build/index.js:1
+msgid "Select warehouse to pair"
+msgstr ""
+
+#: build/index.js:1
+msgid "Now is right time to choose which Dotypos warehouse will be synced with Woocommerce"
+msgstr ""
+
+#: build/index.js:1
+msgid "Select warehouse"
+msgstr ""
+
+#: build/index.js:1
+msgid "Choose pairing attribute"
+msgstr ""
+
+#: build/index.js:1
+msgid "You have to select both pairing attributes"
+msgstr ""
+
+#: build/index.js:1
+msgid "Woocommerce"
+msgstr ""
+
+#: build/index.js:1
+msgid "Start typing to filter options…"
+msgstr ""
+
+#: build/index.js:1
+msgid "EAN"
+msgstr ""
+
+#: build/index.js:1
+msgid "Set up pairing"
+msgstr ""
+
+#: build/index.js:1
+msgid "Completed"
+msgstr ""
+
+#: build/index.js:1
+msgid "Warehouse synchronization successfully set up."
+msgstr ""
+
+#: build/index.js:1
+msgid "Choose warehouse"
+msgstr ""
+
+#: build/index.js:1
+msgid "You have to select any warehouse."
+msgstr ""
+
+#: build/index.js:1
+msgid "Pair with warehouse"
+msgstr ""
+
+#: build/index.js:1
+msgid "Choose"
+msgstr ""
+
+#: build/index.js:1
+msgid "Export categories to Dotypos?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will create Woocommerce categories in your Dotypos."
+msgstr ""
+
+#: build/index.js:1
+msgid "Cancel"
+msgstr ""
+
+#: build/index.js:1
+msgid "Export"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import categories to Woocommerce?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will create Dotypos categories in your Woocommerce."
+msgstr ""
+
+#: build/index.js:1
+msgid "Import"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import products to Woocommerce?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will create Dotypos products in your Woocommerce."
+msgstr ""
+
+#: build/index.js:1
+msgid "Import products wizard"
+msgstr ""
+
+#: build/index.js:1
+msgid "Fetch products"
+msgstr ""
+
+#: build/index.js:1
+msgid "No products to import."
+msgstr ""
+
+#: build/index.js:1
+msgid "Products"
+msgstr ""
+
+#: build/index.js:1
+msgid "Name"
+msgstr ""
+
+#: build/index.js:1
+msgid "Pairing attribute"
+msgstr ""
+
+#: build/index.js:1
+msgid "Pair"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import selected"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import all"
+msgstr ""
+
+#: build/index.js:1
+msgid "Export products to Dotypos?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will create Woocommerce products in your Dotypos."
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite stocks from Dotypos?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will overwrite stock from Dotypos in your Woocommerce."
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite"
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite stocks from Woocommerce?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will overwrite stock from Woocommerce in your Dotypos."
+msgstr ""
+
+#: build/index.js:1
+msgid "General"
+msgstr ""
+
+#: build/index.js:1
+msgid "Your licence expired please reconnect your Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Connected to Cloud"
+msgstr ""
+
+#: build/index.js:1
+msgid "Licence verified with key"
+msgstr ""
+
+#: build/index.js:1
+msgid "Disconnect from Dotypos?"
+msgstr ""
+
+#: build/index.js:1
+msgid "This will cancel your Dotypos connection. You will have to reconnect for correct extension functionality."
+msgstr ""
+
+#: build/index.js:1
+msgid "Disconnect"
+msgstr ""
+
+#: build/index.js:1
+msgid "Disconnect from Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Categories"
+msgstr ""
+
+#: build/index.js:1
+msgid "Enable synchronization"
+msgstr ""
+
+#: build/index.js:1
+msgid "Your categories are synced between Woocommerce and Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize title"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize title of category when changed in WooCommerce."
+msgstr ""
+
+#: build/index.js:1
+msgid "Actions"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Import from Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Export requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Export to Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Fetch requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Fetch from Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Products & movements"
+msgstr ""
+
+#: build/index.js:1
+msgid "Your products are synced between Woocommerce and Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Connected to warehouse"
+msgstr ""
+
+#: build/index.js:1
+msgid "Products paired by"
+msgstr ""
+
+#: build/index.js:1
+msgid "Reset pairing"
+msgstr ""
+
+#: build/index.js:1
+msgid "Settings products"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize title of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize price"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize price of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize VAT"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize VAT of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize category"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize category of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize EAN"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize EAN of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize note"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize note of product when changed on both sides"
+msgstr ""
+
+#: build/index.js:1
+msgid "Actions products"
+msgstr ""
+
+#: build/index.js:1
+msgid "Pairing requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Pair products"
+msgstr ""
+
+#: build/index.js:1
+msgid "Settings movements"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize Woocommerce to Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize stock status when something happen on WC side"
+msgstr ""
+
+#: build/index.js:1
+msgid "Synchronize Dotypos to Woocommerce"
+msgstr ""
+
+#: build/index.js:1
+msgid "Automatically synchronize stock status when something happen on Dotypos side"
+msgstr ""
+
+#: build/index.js:1
+msgid "Actions movements"
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite from Dotypos requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite from Dotypos"
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite form Woocommerce requested"
+msgstr ""
+
+#: build/index.js:1
+msgid "Overwrite from Woocommerce"
+msgstr ""
+
+#: build/index.js:1
+msgid "Once overwrites the stock status for paired products from Dotypos to WooCommerce or from WooCommerce to Dotypos."
+msgstr ""
+
+#: build/index.js:1
+msgid "Successfully connected to Dotypos Cloud with ID"
+msgstr ""
+
+#: build/index.js:1
+msgid "Now you can close this window."
+msgstr ""
+
+#: build/index.js:1
+msgid "Close window"
+msgstr ""
+
+#: build/index.js:1
+msgid "Something went wrong. Try again."
+msgstr ""
+
+#: build/index.js:1
+msgid "Dotypos Settings"
+msgstr ""

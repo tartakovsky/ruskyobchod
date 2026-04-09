@@ -1,0 +1,71 @@
+.warehouses-modal {
+  min-width: 400px;
+  min-height: 300px;
+}
+
+.import-wizard-modal {
+  min-width: 80%;
+  min-height: 80%;
+  animation: unset;
+}
+
+.import-wizard-fetch-btn {
+  margin-bottom: 20px;
+}
+
+.import-wizard-wrapper {
+  height: 100%;
+}
+
+.import-wizard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.import-wizard-table td {
+  padding: 3px;
+  text-align: left;
+}
+
+.import-wizard-table th {
+  padding: 3px;
+  text-align: left;
+}
+
+.import-wizard-table tr:nth-child(even) {
+  background: #eeeeee
+}
+
+.import-wizard-table tr:hover {
+  background: #dddddd;
+}
+
+.pair-attribute {
+  text-align: center;
+}
+
+.pair-attribute-select {
+  max-width: 250px;
+  margin: 10px auto;
+}
+
+.cardSectionHeader {
+  padding: 0px!important;
+}
+
+.settingsCard {
+  margin: 15px 0px;
+}
+
+.settingsCard .components-card__header {
+  padding-top: 5px!important;
+  padding-bottom: 5px!important;
+}
+
+/*
+.woocommerce-section-header {
+  padding-left: 0px!important;
+  padding-right: 0px!important;
+}
+*/

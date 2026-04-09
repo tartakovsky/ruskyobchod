@@ -1,0 +1,626 @@
+/**
+ * AMP-compatible styles for ExactMetrics Site Insights blocks
+ * These styles provide a clean, static representation of analytics data
+ */
+
+.exactmetrics-amp-sessions-block,
+.exactmetrics-amp-pageviews-block,
+.exactmetrics-amp-countries-block {
+	background: #ffffff;
+	border: 1px solid #e1e5e9;
+	border-radius: 8px;
+	padding: 20px;
+	margin: 20px 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.exactmetrics-amp-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.exactmetrics-amp-header h3 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+}
+
+.exactmetrics-amp-metric {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.exactmetrics-amp-metric-value {
+	font-size: 24px;
+	font-weight: 700;
+	color: #4CABFF;
+}
+
+.exactmetrics-amp-metric-change {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 14px;
+}
+
+.exactmetrics-amp-metric-change.positive {
+	color: #10B981;
+}
+
+.exactmetrics-amp-metric-change.negative {
+	color: #EF4444;
+}
+
+.exactmetrics-amp-metric-change.neutral {
+	color: #6B7280;
+}
+
+/* Additional AMP styles used by templates */
+.exactmetrics-amp-value {
+	font-size: 24px;
+	font-weight: 700;
+	color: #4CABFF;
+}
+
+.exactmetrics-amp-change {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.exactmetrics-amp-change.positive {
+	background: #e8f5e8;
+	color: #2d5a2d;
+}
+
+.exactmetrics-amp-change.negative {
+	background: #ffe8e8;
+	color: #5a2d2d;
+}
+
+.exactmetrics-amp-icon {
+	font-size: 12px;
+}
+
+.exactmetrics-amp-percentage {
+	font-weight: 600;
+}
+
+/* New vs Returning Visitors AMP Styles */
+.exactmetrics-amp-donut-chart {
+	background: #ffffff;
+	border-radius: 12px;
+	padding: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+
+.exactmetrics-amp-chart-title {
+	font-size: 20px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.exactmetrics-amp-donut-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.exactmetrics-amp-donut-section {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px;
+	border-radius: 8px;
+	background: #f8f9fa;
+}
+
+.exactmetrics-amp-donut-section.new-visitors {
+	border-left: 4px solid #4CABFF;
+}
+
+.exactmetrics-amp-donut-section.returning-visitors {
+	border-left: 4px solid #FF6B6B;
+}
+
+.exactmetrics-amp-donut-label {
+	font-size: 16px;
+	font-weight: 500;
+	color: #333;
+	flex: 1;
+}
+
+.exactmetrics-amp-donut-value {
+	font-size: 24px;
+	font-weight: 700;
+	color: #333;
+	margin: 0 20px;
+	min-width: 60px;
+	text-align: center;
+}
+
+.exactmetrics-amp-donut-bar {
+	width: 120px;
+	height: 12px;
+	background: #e9ecef;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.exactmetrics-amp-donut-fill {
+	height: 100%;
+	border-radius: 6px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-chart-placeholder {
+	height: 200px;
+	background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #64748b;
+	font-size: 16px;
+	text-align: center;
+	padding: 20px;
+}
+
+/* Data points styles for sessions and pageviews */
+.exactmetrics-amp-data-points h4 {
+	margin: 0 0 15px 0;
+	font-size: 16px;
+	font-weight: 600;
+	color: #555;
+}
+
+.exactmetrics-amp-data-points ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.exactmetrics-amp-data-points li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 0;
+	border-bottom: 1px solid #f8f8f8;
+}
+
+.exactmetrics-amp-data-points li:last-child {
+	border-bottom: none;
+}
+
+.exactmetrics-amp-date {
+	font-size: 14px;
+	color: #666;
+}
+
+.exactmetrics-amp-sessions,
+.exactmetrics-amp-pageviews {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+}
+
+/* Countries specific styles */
+.exactmetrics-amp-countries-list {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.exactmetrics-amp-country-item {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	padding: 10px 0;
+	border-bottom: 1px solid #f1f5f9;
+}
+
+.exactmetrics-amp-country-item:last-child {
+	border-bottom: none;
+}
+
+.exactmetrics-amp-country-name {
+	flex: 1;
+	font-weight: 500;
+	color: #374151;
+	min-width: 120px;
+}
+
+.exactmetrics-amp-country-bar {
+	flex: 2;
+	height: 8px;
+	background-color: #e5e7eb;
+	border-radius: 4px;
+	overflow: hidden;
+	position: relative;
+}
+
+.exactmetrics-amp-country-bar-fill {
+	height: 100%;
+	border-radius: 4px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-country-sessions {
+	font-weight: 600;
+	color: #111827;
+	min-width: 80px;
+	text-align: right;
+}
+
+.exactmetrics-amp-no-data {
+	text-align: center;
+	color: #6B7280;
+	font-style: italic;
+	padding: 40px 20px;
+}
+
+.exactmetrics-amp-placeholder {
+	background: #f8f9fa;
+	border: 1px solid #e9ecef;
+	border-radius: 8px;
+	padding: 40px 20px;
+	text-align: center;
+	color: #6c757d;
+	font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+	.exactmetrics-amp-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	
+	.exactmetrics-amp-metric {
+		align-self: flex-end;
+	}
+	
+	.exactmetrics-amp-metric-value {
+		font-size: 20px;
+	}
+	
+	.exactmetrics-amp-country-item {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	
+	.exactmetrics-amp-country-bar {
+		width: 100%;
+	}
+	
+	.exactmetrics-amp-country-sessions {
+		text-align: left;
+	}
+
+	/* Responsive styles for donut chart */
+	.exactmetrics-amp-donut-chart {
+		padding: 16px;
+	}
+	
+	.exactmetrics-amp-donut-section {
+		flex-direction: column;
+		text-align: center;
+		gap: 12px;
+	}
+	
+	.exactmetrics-amp-donut-value {
+		margin: 0;
+	}
+	
+	.exactmetrics-amp-donut-bar {
+		width: 100%;
+		max-width: 200px;
+	}
+}
+
+/* Additional AMP Chart Styles for All Templates */
+.exactmetrics-amp-interests-chart,
+.exactmetrics-amp-age-chart,
+.exactmetrics-amp-device-chart,
+.exactmetrics-amp-gender-chart,
+.exactmetrics-amp-scroll-chart {
+	background: #ffffff;
+	border-radius: 12px;
+	padding: 24px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
+}
+
+/* Interests Chart AMP Styles */
+.exactmetrics-amp-interests-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.exactmetrics-amp-interest-item {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.exactmetrics-amp-interest-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #333;
+	flex: 1;
+	min-width: 120px;
+}
+
+.exactmetrics-amp-interest-bar {
+	flex: 1;
+	height: 12px;
+	background: #e9ecef;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.exactmetrics-amp-interest-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #4CABFF, #6BC6FF);
+	border-radius: 6px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-interest-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	min-width: 80px;
+	text-align: right;
+}
+
+/* Age Chart AMP Styles */
+.exactmetrics-amp-age-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.exactmetrics-amp-age-item {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.exactmetrics-amp-age-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #333;
+	flex: 1;
+	min-width: 80px;
+}
+
+.exactmetrics-amp-age-bar {
+	flex: 1;
+	height: 12px;
+	background: #e9ecef;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.exactmetrics-amp-age-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #FF6B6B, #FF8E8E);
+	border-radius: 6px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-age-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	min-width: 80px;
+	text-align: right;
+}
+
+/* Device Chart AMP Styles */
+.exactmetrics-amp-device-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.exactmetrics-amp-device-item {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.exactmetrics-amp-device-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #333;
+	flex: 1;
+	min-width: 100px;
+}
+
+.exactmetrics-amp-device-bar {
+	flex: 1;
+	height: 12px;
+	background: #e9ecef;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.exactmetrics-amp-device-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #28A745, #5CB85C);
+	border-radius: 6px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-device-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	min-width: 60px;
+	text-align: right;
+}
+
+/* Gender Chart AMP Styles */
+.exactmetrics-amp-gender-container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.exactmetrics-amp-gender-item {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 12px;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.exactmetrics-amp-gender-label {
+	font-size: 14px;
+	font-weight: 500;
+	color: #333;
+	flex: 1;
+	min-width: 80px;
+}
+
+.exactmetrics-amp-gender-bar {
+	flex: 1;
+	height: 12px;
+	background: #e9ecef;
+	border-radius: 6px;
+	overflow: hidden;
+}
+
+.exactmetrics-amp-gender-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #9C27B0, #BA68C8);
+	border-radius: 6px;
+	transition: width 0.3s ease;
+}
+
+.exactmetrics-amp-gender-value {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	min-width: 60px;
+	text-align: right;
+}
+
+/* Scroll Depth Chart AMP Styles */
+.exactmetrics-amp-scroll-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+	padding: 20px;
+}
+
+.exactmetrics-amp-scroll-circle {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	background: conic-gradient(#4CABFF 0deg, #4CABFF calc(var(--scroll-percentage, 0) * 3.6deg), #e9ecef calc(var(--scroll-percentage, 0) * 3.6deg), #e9ecef 360deg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+}
+
+.exactmetrics-amp-scroll-circle::before {
+	content: '';
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background: white;
+}
+
+.exactmetrics-amp-scroll-value {
+	font-size: 18px;
+	font-weight: 700;
+	color: #333;
+	z-index: 1;
+}
+
+.exactmetrics-amp-scroll-label {
+	font-size: 16px;
+	font-weight: 500;
+	color: #666;
+	text-align: center;
+}
+
+/* Responsive styles for all new charts */
+@media (max-width: 768px) {
+	.exactmetrics-amp-interests-chart,
+	.exactmetrics-amp-age-chart,
+	.exactmetrics-amp-device-chart,
+	.exactmetrics-amp-gender-chart,
+	.exactmetrics-amp-scroll-chart {
+		padding: 16px;
+	}
+	
+	.exactmetrics-amp-interest-item,
+	.exactmetrics-amp-age-item,
+	.exactmetrics-amp-device-item,
+	.exactmetrics-amp-gender-item {
+		flex-direction: column;
+		text-align: center;
+		gap: 12px;
+	}
+	
+	.exactmetrics-amp-interest-label,
+	.exactmetrics-amp-age-label,
+	.exactmetrics-amp-device-label,
+	.exactmetrics-amp-gender-label {
+		min-width: auto;
+	}
+	
+	.exactmetrics-amp-interest-value,
+	.exactmetrics-amp-age-value,
+	.exactmetrics-amp-device-value,
+	.exactmetrics-amp-gender-value {
+		min-width: auto;
+	}
+	
+	.exactmetrics-amp-scroll-circle {
+		width: 100px;
+		height: 100px;
+	}
+	
+	.exactmetrics-amp-scroll-circle::before {
+		width: 70px;
+		height: 70px;
+	}
+	
+	.exactmetrics-amp-scroll-value {
+		font-size: 16px;
+	}
+}

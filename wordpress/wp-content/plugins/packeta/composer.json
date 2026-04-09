@@ -1,0 +1,85 @@
+{
+    "require": {
+        "php": "~8.1.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.6",
+        "editorconfig-checker/editorconfig-checker": "^10.6",
+        "ergebnis/composer-normalize": "^2.47",
+        "php-stubs/woocommerce-stubs": "^9.5",
+        "php-stubs/wordpress-stubs": "^6.7",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-nette": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^10.5",
+        "slevomat/coding-standard": "^8.15",
+        "squizlabs/php_codesniffer": "^3.11",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "woocommerce/woocommerce-sniffs": "^1.0",
+        "wp-cli/wp-cli-bundle": "^2.11",
+        "wpify/scoper": "3.2.13"
+    },
+    "autoload": {
+        "psr-4": {
+            "Packetery\\": "src/Packetery"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "wpify/scoper": true
+        },
+        "platform": {
+            "php": "8.1"
+        }
+    },
+    "extra": {
+        "wpify-scoper": {
+            "autorun": false,
+            "composerjson": "deps-composer/composer.json",
+            "composerlock": "deps-composer/composer.lock",
+            "folder": "deps",
+            "prefix": "Packetery",
+            "temp": "temp/scoper-works"
+        }
+    },
+    "scripts": {
+        "build:carriers": [
+            "rm -rf temp/cache",
+            "php cli/build-carrier-classes.php"
+        ],
+        "build:deps": "bash build-deps.sh",
+        "build:pot": "vendor/bin/wp i18n make-pot . languages/packeta.pot --allow-root",
+        "check:all": [
+            "@check:ec",
+            "@check:phpcs",
+            "@composer:normalize:check",
+            "@phpstan:all",
+            "@tests:unit"
+        ],
+        "check:ec": "vendor/bin/ec .",
+        "check:phpcs": "vendor/bin/phpcs",
+        "composer:normalize": "composer normalize",
+        "composer:normalize:check": "composer normalize --dry-run",
+        "fix:phpcbf": "vendor/bin/phpcbf",
+        "phpstan-generate-baseline:module": "phpstan analyse -c phpstan/module.neon --memory-limit 2G --generate-baseline phpstan/phpstan-baseline-module.neon",
+        "phpstan:all": [
+            "@phpstan:core",
+            "@phpstan:module"
+        ],
+        "phpstan:core": "phpstan analyse -c phpstan/core.neon",
+        "phpstan:module": "phpstan analyse -c phpstan/module.neon --memory-limit 2G",
+        "tests:coverage": "export XDEBUG_MODE=coverage && php -d memory_limit=200M ./vendor/bin/phpunit -c phpunit.xml.dist --log-junit ./tests-coverage/log/junit.xml --testsuite unit --coverage-clover tests-coverage/clover.xml --coverage-html ./tests-coverage --coverage-cobertura tests-coverage/cobertura.xml --coverage-text=./tests-coverage/coverage.txt",
+        "tests:integration": "vendor/bin/phpunit --testsuite integration",
+        "tests:integration-coverage": "export XDEBUG_MODE=coverage && php -d memory_limit=200M ./vendor/bin/phpunit -c phpunit.xml.dist --log-junit ./tests-coverage/integration/log/junit.xml --testsuite integration --coverage-clover tests-coverage/integration/clover.xml --coverage-html ./tests-coverage/integration --coverage-cobertura tests-coverage/integration/cobertura.xml --coverage-text=./tests-coverage/integration/coverage.txt",
+        "tests:unit": "vendor/bin/phpunit --testsuite unit"
+    }
+}

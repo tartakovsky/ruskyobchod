@@ -1,0 +1,9 @@
+{
+	"name": "Dotypos",
+	"version": "0.2.25",
+	"download_url": "https://plugins.dotykacka.cz/?action=get_metadata&slug=dotypos",
+
+	"sections": {
+		"description": "The plugin enables connection and synchronization: categories, products and stock status between the e-shop and the Dotypos cash register system."
+	}
+}

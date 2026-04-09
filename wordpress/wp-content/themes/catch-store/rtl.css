@@ -1,0 +1,656 @@
+/*
+Theme Name: Catch Store Pro
+Description: Adds support for languages written in a Right To Left (RTL) direction.
+It's easy, just a matter of overwriting all the horizontal positioning attributes
+of your CSS stylesheet in a separate stylesheet file named rtl.css.
+
+See: https://codex.wordpress.org/Right_to_Left_Language_Support
+*/
+
+/**
+ * Table of Contents:
+ *
+ * 1.0 - Normalize
+ * 2.0 - Typography
+ * 3.0 - Elements
+ * 4.0 - Padding/Margin
+ * 5.0 - Forms
+ * 6.0 - Navigations
+ * 7.0 - Accessibility
+ * 8.0 - Widgets
+ * 9.0 - Content
+ *   9.1 - Header
+ *   9.2 - Posts and pages
+ *   9.3 - Comments
+ *   9.4 - Woocommerce
+ * 10.0 - Media Queries
+ *    10.1 - >= 640px
+ *    10.2 - >= 768px
+ *    10.3 - >= 1024px
+ *    10.4 - >= 1200px
+ *    10.5 - >= 1366px
+ *    10.6 - >= 1600px
+ */
+
+
+/**
+ * 1.0 - Normalize
+ */
+
+body {
+	direction: rtl;
+	unicode-bidi: embed;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+	margin-right: auto;
+	margin-left: 0.4375em;
+}
+
+
+/**
+ * 2.0 - Typography
+ */
+
+blockquote {
+	border-left: 0;
+	border-right: 4px solid;
+	padding: 1.944444444444444em;
+}
+
+
+/**
+ * 3.0 - Elements
+ */
+
+ul,
+ol {
+	margin: 0 1.647em 2.059em 0;
+}
+
+caption,
+th,
+td {
+	text-align: right;
+}
+
+
+/**
+ * 4.0 - Padding/Margin
+ */
+
+.menu-toggle .icon,
+.contact-details .icon,
+.entry-meta .icon,
+.site-cart-contents .icon {
+    margin-right: 0;
+    margin-left: 7px;
+}
+
+.singular-content-wrap .entry-footer .cat-links a,
+.singular-content-wrap .entry-footer .tags-links a {
+	margin: 0 0 10px 10px;
+}
+
+#search-toggle.menu-toggle .icon,
+#search-toggle-top .icon {
+	margin-left: 0;
+}
+
+.widget_categories ul, 
+.widget_archive ul {
+	margin-left: auto;
+	margin-right: 0;
+	text-align: left;
+}
+
+.widget_categories ul a, 
+.widget_archive ul a {
+    float: right;
+}
+
+
+/**
+ * 5.0 - Forms
+ */
+
+input[type="search"].search-field {
+	padding-left: 41px;
+	padding-right: 18px;
+}
+
+.search-submit:before {
+	left: 1px;
+}
+
+.search-submit {
+	left: 0;
+	right: auto;
+}
+
+
+/**
+ * 6.0 - Navigation
+ */
+
+.menu-top-toggle {
+	float: left;
+}
+
+.menu-search-top-toggle {
+	float: left;
+}
+
+.main-navigation ul ul {
+	margin-right: 0.875em;
+	margin-left: auto;
+}
+
+.site-navigation .menu-item-has-children > a,
+.main-navigation .menu-item-has-children > a {
+	margin-right: auto;
+	margin-left: 56px;
+}
+
+.dropdown-toggle {
+	left: 0;
+	right: auto;
+}
+
+.dropdown-toggle:after {
+	left: auto;
+	right: 1px;
+}
+
+.header-top-left.top-without-menu {
+    float: right;
+}
+
+
+/**
+ * 7.0 - Accessibility
+ */
+
+.site .skip-link {
+	left: auto;
+	right: -9999em;
+}
+
+.site .skip-link:focus {
+	left: auto;
+	right: 6px;
+}
+
+
+/**
+ * 8.0 - Widgets
+ */
+
+.tagcloud a {
+	margin-right: 0;
+	margin-left: 0.1875em;
+}
+
+
+/**
+ * 9.0 - Content
+ */
+
+/**
+ * 9.1 - Header
+ */
+
+.site-branding {
+	margin-left: auto;
+}
+
+
+/**
+ * 9.2 - Posts and pages
+ */
+
+.page-links a,
+.page-links > span {
+	margin-right: auto;
+	margin-left: 0.3076923077em;
+}
+
+.page-links > .page-links-title {
+	padding-right: 0;
+	padding-left: 0.6153846154em;
+}
+
+
+/**
+ * 9.3 - Comments
+ */
+
+.comment-list .children > li {
+	padding-right: 0.875em;
+	padding-left: 0;
+}
+
+.comment-author {
+	float: right;
+	margin-right: auto;
+	margin-left: 35px;
+}
+
+.bypostauthor > article .fn:after {
+	left: auto;
+	right: 3px;
+}
+
+.no-comments {
+	border-left: 0;
+	border-right: 5px solid;
+}
+
+
+.comment-content ul,
+.comment-content ol {
+	margin: 0 1.25em 1.5em 0;
+}
+
+.comment-reply-title small a {
+	float: left;
+}
+
+.comment-reply-link {
+	margin-left: auto;
+	margin-right: 1.909090909090909em;
+}
+
+
+/**
+ * 9.4 - Woocommerce
+ */
+
+/**
+ * Shop tables
+ */
+
+table.shop_table_responsive tr td {
+	text-align: left;
+}  
+
+table.shop_table_responsive tr td:before {
+	float: right;
+}
+
+/**
+ * Products
+ */
+
+.product_list_widget li img {
+	margin-left: 0;
+	margin-right: 14px;
+	float: left;
+}  
+
+/**
+ * Buttons
+ */
+
+.woocommerce-form-login button[type="submit"] {
+	margin-right: 0;
+	margin-left: 14px;
+}
+
+/**
+ * General WooCommerce components
+ */
+ 
+/**
+ * Header cart
+ */
+
+.site-header-cart .product_list_widget .mini_cart_item .remove_from_cart_button {
+	margin-right: 0;
+	margin-left: 7px;
+} 
+
+/**
+ * Pagination
+ */
+
+.woocommerce-pagination ul li {
+	margin: 0 0 3px 3px;
+} 
+
+/**
+ * Notices
+ */
+
+.woocommerce-message a.button,
+.woocommerce-Message a.button {
+	margin-right: 0;
+	margin-left: 14px;
+}
+
+.woocommerce-error {
+	border-left: 0;
+	border-right: 5px solid #e2401c;
+}
+
+.woocommerce-info,
+.woocommerce-message {
+	border-left: 0;
+	border-right: 5px solid;
+}
+
+/**
+ * Site header cart
+ */
+
+.woocommerce .widget_shopping_cart .cart_list li, 
+.woocommerce.widget_shopping_cart .cart_list li {
+	padding-left: 0;
+	padding-right: 28px;
+}
+
+
+.woocommerce .widget_shopping_cart .cart_list li a.remove, 
+.woocommerce.widget_shopping_cart .cart_list li a.remove {
+	left: auto;
+	right: 0;
+}
+
+.site-header-cart .woocommerce .widget_shopping_cart .cart_list li a.remove, 
+.site-header-cart .woocommerce.widget_shopping_cart .cart_list li a.remove {
+    float: right;
+}
+
+.site-header-cart .woocommerce .widget_shopping_cart .cart_list li span.quantity, 
+.site-header-cart .woocommerce.widget_shopping_cart .cart_list li span.quantity {
+	margin-left: 0;
+	margin-right: 26px;
+}
+
+.widget.woocommerce ul,
+.widget.woocommerce ol {
+	margin-right: 0;
+	margin-left: auto;
+}
+
+
+
+/**
+ * 10.0 - Media Queries
+ */
+
+/**
+ * 10.1 - >= 640px
+ */
+
+@media screen and (min-width: 40em) {
+	.entry-header .entry-meta .byline,
+	.entry-header .entry-meta .posted-on,
+	.entry-header .entry-meta .cat-links {
+	    margin-left: 21px;
+	    margin-right: auto;
+	}
+
+	.entry-content li > ul,
+	.entry-summary li > ul,
+	.comment-content li > ul,
+	.entry-content blockquote > ul,
+	.entry-summary blockquote > ul,
+	.comment-content blockquote > ul {
+		margin-right: 1.3125;
+		margin-left: auto;
+	}
+
+	.entry-content li > ol,
+	.entry-summary li > ol,
+	.comment-content li > ol,
+	.entry-content blockquote > ol,
+	.entry-summary blockquote > ol,
+	.comment-content blockquote > ol {
+		margin-right: 1.3125;
+		margin-left: auto;
+	}
+
+	.comment-list .children > li {
+		padding-right: 1.75em;
+		padding-left: 0;
+	}
+
+	.author-avatar {
+		float: right;
+		margin-right: 0;
+		margin-left: 35px;
+	}
+
+	.author-info {
+	    text-align: right;
+	}
+
+	.post-navigation .nav-previous {
+	    text-align: right;
+	}
+
+	.post-navigation .nav-next {
+	    text-align: left;
+	}
+
+	.testimonial-content-section .entry-container:after {
+		left: auto;
+		right: 28px;
+	}
+
+	.testimonial-content-section .has-post-thumbnail .hentry-inner-header {
+		text-align: right;
+	}
+
+	.testimonial-content-section.section .has-post-thumbnail .post-thumbnail {
+	    margin: 0 0 0 21px;
+	}
+}
+
+
+/**
+ * 10.2 - >= 768px
+ */
+
+@media screen and (min-width: 48em) {
+	table.shop_table_responsive tr th,
+	table.shop_table_responsive tr td {
+		text-align: right;
+	}
+
+	#site-product-search,
+	#site-cart-contents-items {
+		left: 0;
+		right: auto;
+	}  
+}
+
+
+/**
+ * 10.3 - >= 1024px
+ */
+
+@media screen and (min-width: 64em) {
+	.site-navigation ul ul {
+		left: auto;
+		margin: 0;
+		right: -999em;
+	}
+
+	.site-navigation li:hover > ul,
+	.site-navigation li.focus > ul {
+		left: 0;
+		right: auto;
+	}
+
+	.site-navigation ul ul li:hover > ul,
+	.site-navigation ul ul li.focus > ul {
+		left: 100%;
+		right: auto;
+	}
+
+	.site-navigation .menu-item-has-children > a,
+	.site-navigation .menu-item-has-children > a {
+		margin: 0;
+	}
+
+	.site-navigation ul ul .menu-item-has-children > a:after {
+		left: 0.5625em;
+		right: auto;
+		top: 0.8125em;
+		-webkit-transform: rotate(-90deg);
+		-moz-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}
+
+	.content-area {
+		float: right;
+		margin-right: auto;
+		margin-left: -100%;
+	}
+
+	.sidebar {
+		float: right;
+		margin-right: 70%;
+		margin-left: auto;
+		padding: 0;
+	}
+
+	.site-navigation .menu-item-has-children > a > .icon,
+	.site-navigation .page_item_has_children > a > .icon {
+	    right: 9px;
+	    left: auto;
+	}
+
+	.site-navigation ul ul .menu-item-has-children > a > .icon,
+	.site-navigation ul ul .page_item_has_children > a > .icon {
+		left: 9px;
+		right: auto;
+	}
+
+	.site-navigation .secondary-menu ul .menu-item-has-children > a > .icon {
+		left: 9px;
+		right: auto;
+		-webkit-transform: rotate(-90deg);
+		-ms-transform: rotate(-90deg);
+		transform: rotate(-90deg);
+	}
+
+	.site-navigation .top-menu li:hover > ul, 
+	.site-navigation .top-menu li.focus > ul,
+	.site-navigation .secondary-menu li:hover > ul, 
+	.site-navigation .secondary-menu li.focus > ul {
+		left: 0;
+		right: auto;
+	}
+
+	.site-navigation .top-menu ul li:hover > ul, 
+	.site-navigation .top-menu ul li.focus > ul,
+	.site-navigation .secondary-menu ul li:hover > ul, 
+	.site-navigation .secondary-menu ul li.focus > ul {
+	    left: 100%;
+	    right: auto;
+	}
+
+	.site-navigation .top-menu ul,
+	.site-navigation .primary-menu ul,
+	.site-navigation .secondary-menu ul,
+	.site-navigation .footer-menu ul {
+		text-align: right;
+	}
+
+	.header-top-left {
+		float: right;
+	}
+
+	.header-top-right, 
+	#site-top-navigation, 
+	.menu-search-top-toggle {
+		float: left;
+	}
+
+	#search-toggle-top .icon,
+	#search-toggle-right .icon {
+		margin-left: 0;
+	}
+
+	#search-toggle {
+	    right: auto;
+	    left: 0;
+	}
+
+	.search-social-container {
+		right: auto;
+		left: 20px;
+	}
+
+	#search-top-container {
+	    right: auto;
+	    left: 50px;
+	}
+
+	.site-secondary-menu ul ul:before {
+		right: auto;
+		left: 12px;
+	}
+
+	.site-secondary-menu ul ul:after {
+		right: auto;
+		left: 14px
+	}
+
+	.site-primary-menu .site-header-cart-wrapper {
+		float: left;
+	}
+
+	.site-header-cart .menu-inline > a {
+		padding: 17px 0 17px 20px;
+	}
+}
+
+
+/**
+ * 10.4 - >= 1120px
+ */
+
+@media screen and (min-width: 70em) {
+	.site-branding {
+		margin-right: 21px;
+	}
+
+	.site-branding {
+	    text-align: right;
+	}
+
+	.site-info,
+	.site-footer .footer-navigation,
+	.site-info.two .copyright {
+		margin-left: auto;
+		margin-right: 0;
+	}
+
+	.wp-custom-logo .custom-logo-link {
+		margin-right: auto;
+		margin-left: 21px;
+	}
+}
+
+/**
+ * 10.5 - >= 1366px
+ */
+
+@media screen and (min-width: 85.375em) {
+	
+}
+
+
+/**
+ * 10.6 - >= 1600px
+ */
+
+@media screen and (min-width: 100em) {
+	
+}

@@ -1,0 +1,21 @@
+
+.no-admin-bars #adminmenumain {
+  display: none;
+}
+
+.no-admin-bars #wpadminbar {
+  display: none;
+}
+
+.no-admin-bars #wpcontent, #wpfooter {
+  margin-left: 0px;
+}
+
+html.no-admin-bars.wp-toolbar {
+  padding-top: 0px;
+}
+
+.no-admin-bars .woocommerce-layout__header {
+  width: calc(100%)!important;
+  top: 0px!important;
+}

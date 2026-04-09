@@ -1,0 +1,44 @@
+export const PacketaWidget = ( {
+	children,
+	buttonLabel,
+	showLogo,
+	logoSrc,
+	logoAlt,
+	info,
+	place,
+	onClick,
+	loading,
+	placeholderText,
+} ) => {
+	return (
+		<div className="packetery-widget-button-wrapper">
+			{ loading && (
+				<div className="packeta-widget-loading">
+					{ placeholderText }
+				</div>
+			) }
+			{ ! loading && (
+				<div className="form-row packeta-widget blocks">
+					<div className="packetery-widget-button-row packeta-widget-button">
+						{ showLogo && (
+							<img
+								className="packetery-widget-button-logo"
+								src={ logoSrc }
+								alt={ logoAlt }
+							/>
+						)}
+						<a
+							onClick={ onClick }
+							className="button alt components-button wc-block-components-button wp-element-button contained"
+						>
+							{ buttonLabel }
+						</a>
+					</div>
+					{ children }
+					{ place && <p className="packeta-widget-place">{ place }</p> }
+					{ info && <p className="packeta-widget-info">{ info }</p> }
+				</div>
+			) }
+		</div>
+	);
+};

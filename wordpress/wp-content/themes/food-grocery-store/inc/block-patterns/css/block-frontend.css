@@ -1,0 +1,80 @@
+.banner-section, .products-outer-box{
+  width: auto;
+  min-height: 600px;
+}
+/*Banner section*/
+.banner-section p{
+  font-weight: 600;
+}
+.banner-section{
+  background-size: cover !important;
+}
+.banner-section .wp-block-buttons.aligncenter {
+  border: none;
+  display: block;
+}
+.banner-section a.wp-block-button__link:hover {
+  background: #2c2b2b !important;
+}
+/*Trending Product section*/
+.products-outer-box, .products-container {
+  margin: 0 auto !important;
+}
+.products-outer-box h2.has-text-align-left{
+  margin: 0 0 40px !important;
+}
+.products-outer-box h2.has-text-align-left:after {
+  content: "";
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  left: 10px;
+  width: 100%;
+  padding: 25px 0;
+}
+.products-outer-box .wc-block-grid__product-onsale {
+  display: none;
+}
+.products-outer-box .wc-block-grid__product-title{
+  font-size: 18px !important;
+  color: #2c2b2b;
+}
+.products-outer-box a.wc-block-grid__product-link {
+  text-decoration: none !important;
+}
+.products-outer-box span.woocommerce-Price-amount.amount {
+  color: #d51c22;
+  font-size: 15px;
+  font-weight: 700;
+}
+.products-outer-box .wc-block-grid__product-rating .star-rating span:before, .products-outer-box .wc-block-grid__product-rating .wc-block-grid__product-rating__stars span:before{
+  color: #feaf18;
+}
+@media screen and (max-width: 768px) and (min-width: 576px){
+  .banner-section .wp-block-column.is-vertically-aligned-center:nth-child(2) {
+    flex-basis: 100% !important;
+  }
+}
+@media screen and (max-width: 720px) {
+  .banner-section .alignwide{
+     margin-left: 0px; 
+    margin-right: 0px;
+  }
+}
+@media screen and (max-width: 781px) and (min-width: 721px) {
+  .banner-section .alignwide{
+    margin-left: auto; 
+    margin-right: auto;
+  }
+}
+@media screen and (max-width:781px) {
+  .products-outer-box .wp-block-column.is-vertically-aligned-center{
+    flex-basis: 100%!important;
+    margin: 0;
+  }
+  .products-outer-box .wp-block-columns.alignwide{
+    margin: 0;
+  }
+  .banner-section h1.has-text-align-center {
+    font-size: 30px;
+  }
+}
