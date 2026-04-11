@@ -732,16 +732,20 @@ add_filter('rank_math/frontend/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/facebook/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/twitter/title', 'gls_normalize_public_title', 20);
 
+function gls_normalize_skip_link_html(string $html, string $lang): string {
+    return (string) preg_replace(
+        '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
+        $lang === 'ru'
+            ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
+            : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
+        $html,
+        1
+    );
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
-        $value = preg_replace(
-            '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
-            $lang === 'ru'
-                ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
-                : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
-            $value,
-            1
-        );
+        $value = gls_normalize_skip_link_html($value, $lang);
 
         $value = preg_replace(
             '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
@@ -879,14 +883,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
 }
 
 function gls_normalize_front_page_html(string $html, string $lang): string {
-    $html = preg_replace(
-        '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
-        $lang === 'ru'
-            ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
-            : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
-        $html,
-        1
-    );
+    $html = gls_normalize_skip_link_html($html, $lang);
 
     $html = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $html, 1);
     $html = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $html, 1);
