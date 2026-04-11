@@ -326,12 +326,16 @@ function gls_translate_woocommerce_storefront_phrase(string $value, string $lang
             'Súvisiace produkty' => 'Похожие товары',
             'Na sklade' => 'В наличии',
             'SKU:' => 'Артикул:',
+            'Kategória:' => 'Категория:',
+            'Množstvo produktu' => 'Количество товара',
         ],
         'sk' => [
             'В корзину' => 'Do košíka',
             'Похожие товары' => 'Súvisiace produkty',
             'В наличии' => 'Na sklade',
             'Артикул:' => 'SKU:',
+            'Категория:' => 'Kategória:',
+            'Количество товара' => 'Množstvo produktu',
         ],
     ];
 
@@ -614,7 +618,10 @@ add_filter('woocommerce_get_breadcrumb', function($crumbs) {
         if (!isset($crumb[0])) {
             continue;
         }
-        $crumbs[$index][0] = gls_localize_bilingual_text((string) $crumb[0], $lang);
+        $text = (string) $crumb[0];
+        $text = gls_translate_menu_label($text, $lang);
+        $text = gls_translate_woocommerce_storefront_phrase($text, $lang);
+        $crumbs[$index][0] = gls_localize_bilingual_text($text, $lang);
     }
 
     return $crumbs;
