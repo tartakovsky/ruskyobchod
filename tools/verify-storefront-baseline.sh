@@ -53,6 +53,10 @@ check_status "$category_ru" "200"
 check_status "$product_ru" "200"
 
 check_contains "$home_ru" 'screen-reader-text skip-link' 'home skip-link marker present'
+check_contains "$home_ru" 'href="https://ruskyobchod.sk/">Главная<' 'home RU main menu home present'
+check_contains "$home_ru" 'href="https://ruskyobchod.sk/dostavka/">Доставка<' 'home RU main menu delivery present'
+check_contains "$home_ru" 'href="https://ruskyobchod.sk/kontakty/">Контакты<' 'home RU main menu contacts present'
+check_contains "$home_ru" 'href="https://ruskyobchod.sk/my-account/">Мой аккаунт<' 'home RU main menu account present'
 check_contains "$category_ru" 'По алфавиту' 'category RU sorting label present'
 check_contains "$category_ru" 'Добавить в корзину' 'category RU add-to-cart present'
 check_contains "$product_ru" 'В наличии' 'product RU stock label present'
