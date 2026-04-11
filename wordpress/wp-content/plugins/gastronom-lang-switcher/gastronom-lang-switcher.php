@@ -319,6 +319,25 @@ function gls_translate_theme_chrome_phrase(string $value, string $lang): string 
     return $map[$lang][$value] ?? $value;
 }
 
+function gls_translate_woocommerce_storefront_phrase(string $value, string $lang): string {
+    $map = [
+        'ru' => [
+            'Do košíka' => 'В корзину',
+            'Súvisiace produkty' => 'Похожие товары',
+            'Na sklade' => 'В наличии',
+            'SKU:' => 'Артикул:',
+        ],
+        'sk' => [
+            'В корзину' => 'Do košíka',
+            'Похожие товары' => 'Súvisiace produkty',
+            'В наличии' => 'Na sklade',
+            'Артикул:' => 'SKU:',
+        ],
+    ];
+
+    return $map[$lang][$value] ?? $value;
+}
+
 add_filter('option_blogname', function($value) {
     if (is_admin() && !wp_doing_ajax()) {
         return $value;
@@ -551,6 +570,13 @@ add_filter('gettext', function($translated, $text, $domain) {
         $translated = gls_translate_theme_chrome_phrase($text, $lang) === $text
             ? $translated
             : gls_translate_theme_chrome_phrase($text, $lang);
+    }
+
+    if ($domain === 'woocommerce') {
+        $translated = gls_translate_woocommerce_storefront_phrase($translated, $lang);
+        $translated = gls_translate_woocommerce_storefront_phrase($text, $lang) === $text
+            ? $translated
+            : gls_translate_woocommerce_storefront_phrase($text, $lang);
     }
 
     return $translated;
@@ -899,13 +925,9 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html = str_replace('>Ok</button>', '>Ок</button>', $html);
         $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
         $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
-        $html = str_replace('>Do košíka<', '>В корзину<', $html);
-        $html = str_replace('>Súvisiace produkty<', '>Похожие товары<', $html);
-        $html = str_replace('>Na sklade<', '>В наличии<', $html);
         $html = str_replace('>Domov<', '>Главная<', $html);
         $html = str_replace('>Kategória:', '>Категория:', $html);
         $html = str_replace('>Množstvo produktu', '>Количество товара', $html);
-        $html = str_replace('>SKU:', '>Артикул:', $html);
         $html = str_replace('aria-label="Množstvo produktu"', 'aria-label="Количество товара"', $html);
         $html = str_replace('aria-label="Pridať do košíka', 'aria-label="Добавить в корзину', $html);
         $html = str_replace('» pridaný do košíka', '» добавлен в вашу корзину', $html);
@@ -917,13 +939,9 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html = str_replace('>Ок</button>', '>Ok</button>', $html);
         $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
         $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
-        $html = str_replace('>В корзину<', '>Do košíka<', $html);
-        $html = str_replace('>Похожие товары<', '>Súvisiace produkty<', $html);
-        $html = str_replace('>В наличии<', '>Na sklade<', $html);
         $html = str_replace('>Главная<', '>Domov<', $html);
         $html = str_replace('>Категория:', '>Kategória:', $html);
         $html = str_replace('>Количество товара', '>Množstvo produktu', $html);
-        $html = str_replace('>Артикул:', '>SKU:', $html);
         $html = str_replace('aria-label="Количество товара"', 'aria-label="Množstvo produktu"', $html);
         $html = str_replace('aria-label="Добавить в корзину', 'aria-label="Pridať do košíka', $html);
         $html = str_replace('» добавлен в вашу корзину', '» bol pridaný do košíka', $html);
