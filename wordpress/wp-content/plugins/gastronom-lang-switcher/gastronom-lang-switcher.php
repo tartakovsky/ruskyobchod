@@ -892,20 +892,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
     );
 
     if ($lang === 'ru') {
-        $html = str_replace('aria-label="Cookie Notice"', 'aria-label="Уведомление о cookie"', $html);
-        $html = str_replace('aria-label="Footer"', 'aria-label="Подвал"', $html);
-        $html = str_replace('aria-label="Top Menu"', 'aria-label="Верхнее меню"', $html);
         $html = str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
-        $html = str_replace('>All Categories<', '>Все рубрики<', $html);
-        $html = str_replace('>Login / Register<', '>Вход / Регистрация<', $html);
-        $html = str_replace('>shopping cart<', '>корзина<', $html);
-        $html = str_replace('>Open Button<', '>Кнопка Открыть<', $html);
-        $html = str_replace('>Close Button<', '>Кнопка Закрыть<', $html);
-        $html = str_replace('>Top Menu<', '>Верхнее меню<', $html);
-        $html = str_replace('>Scroll Up<', '>Прокрутить вверх<', $html);
-        $html = str_replace('>Skip to content<', '>Перейти к содержимому<', $html);
-        $html = str_replace('title="Login / Register"', 'title="Вход / Регистрация"', $html);
-        $html = str_replace('title="shopping cart"', 'title="корзина"', $html);
         $html = str_replace('Slovenská republika', 'Словацкая Республика', $html);
         $html = str_replace('Zapísaná v OR OS Bratislava I,', 'Зарегистрирована в торговом реестре окружного суда Братислава I,', $html);
         $html = str_replace('Oddiel: Sro, Vložka č. 182562/B', 'Раздел s.r.o., № записи 182562/B', $html);
@@ -923,20 +910,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html = str_replace('aria-label="Pridať do košíka', 'aria-label="Добавить в корзину', $html);
         $html = str_replace('» pridaný do košíka', '» добавлен в вашу корзину', $html);
     } else {
-        $html = str_replace('aria-label="Cookie Notice"', 'aria-label="Oznámenie o cookies"', $html);
-        $html = str_replace('aria-label="Footer"', 'aria-label="Pätička"', $html);
-        $html = str_replace('aria-label="Top Menu"', 'aria-label="Horné menu"', $html);
         $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
-        $html = str_replace('>All Categories<', '>Všetky kategórie<', $html);
-        $html = str_replace('>Login / Register<', '>Prihlásenie / Registrácia<', $html);
-        $html = str_replace('>shopping cart<', '>košík<', $html);
-        $html = str_replace('>Open Button<', '>Tlačidlo Otvoriť<', $html);
-        $html = str_replace('>Close Button<', '>Tlačidlo Zavrieť<', $html);
-        $html = str_replace('>Top Menu<', '>Horné menu<', $html);
-        $html = str_replace('>Scroll Up<', '>Rolovať nahor<', $html);
-        $html = str_replace('>Skip to content<', '>Preskočiť na obsah<', $html);
-        $html = str_replace('title="Login / Register"', 'title="Prihlásenie / Registrácia"', $html);
-        $html = str_replace('title="shopping cart"', 'title="košík"', $html);
         $html = str_replace('Словацкая Республика', 'Slovenská republika', $html);
         $html = str_replace('Зарегистрирована в торговом реестре окружного суда Братислава I,', 'Zapísaná v OR OS Bratislava I,', $html);
         $html = str_replace('Раздел s.r.o., № записи 182562/B', 'Oddiel: Sro, Vložka č. 182562/B', $html);
