@@ -1107,6 +1107,12 @@ function gls_replace_encoded_locale_markers(string $value, string $source_locale
     );
 }
 
+function gls_wcpay_locale_pair(): array {
+    $target_locale = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+
+    return [$target_locale, $target_locale === 'ru' ? 'sk' : 'ru'];
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1149,8 +1155,7 @@ add_filter('script_loader_tag', function($tag, $handle) {
     }
 
     if (strpos($handle, 'wcpay') !== false || strpos($handle, 'WCPAY') !== false) {
-        $target_locale = gls_server_lang() === 'ru' ? 'ru' : 'sk';
-        $source_locale = $target_locale === 'ru' ? 'sk' : 'ru';
+        [$target_locale, $source_locale] = gls_wcpay_locale_pair();
         $tag = gls_replace_encoded_locale_markers($tag, $source_locale, $target_locale);
     }
     return $tag;
@@ -1165,8 +1170,7 @@ add_action('wp_enqueue_scripts', function() {
 
         if (!is_checkout()) return;
         global $wp_scripts;
-        $target_locale = gls_server_lang() === 'ru' ? 'ru' : 'sk';
-        $source_locale = $target_locale === 'ru' ? 'sk' : 'ru';
+        [$target_locale, $source_locale] = gls_wcpay_locale_pair();
         // Replace locale in ALL registered scripts containing wcpay
         foreach ($wp_scripts->registered as $handle => $script) {
             if (strpos($handle, 'wcpay') === false) continue;
