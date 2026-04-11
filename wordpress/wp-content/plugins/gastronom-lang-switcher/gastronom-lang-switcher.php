@@ -1149,11 +1149,9 @@ add_filter('script_loader_tag', function($tag, $handle) {
     }
 
     if (strpos($handle, 'wcpay') !== false || strpos($handle, 'WCPAY') !== false) {
-        if (gls_server_lang() === 'ru') {
-            $tag = str_replace('"locale":"sk"', '"locale":"ru"', $tag);
-        } else {
-            $tag = str_replace('"locale":"ru"', '"locale":"sk"', $tag);
-        }
+        $target_locale = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+        $source_locale = $target_locale === 'ru' ? 'sk' : 'ru';
+        $tag = gls_replace_encoded_locale_markers($tag, $source_locale, $target_locale);
     }
     return $tag;
 }, 10, 2);
