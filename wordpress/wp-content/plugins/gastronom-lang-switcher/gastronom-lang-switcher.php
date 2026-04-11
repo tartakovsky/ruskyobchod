@@ -796,6 +796,42 @@ function gls_localize_html_text_segment(array $matches, string $lang, bool $stri
     return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
 }
 
+function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        $html = str_replace(
+            '>Гастроном</a> <span> Objednávka',
+            '>Гастроном</a> <span> Оформление заказа',
+            $html
+        );
+        $html = preg_replace(
+            '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su',
+            '$1Оформление заказа$2',
+            $html,
+            1
+        );
+        return (string) preg_replace(
+            '~<h1 class="vw-page-title">\s*Objednávka\s*</h1>~u',
+            '<h1 class="vw-page-title">Оформление заказа</h1>',
+            $html,
+            1
+        );
+    }
+
+    $html = preg_replace(
+        '~(<div class="bradcrumbs">.*?<span>\s*)(Оформление заказа|Заказ)(\s*</span>)~su',
+        '$1Objednávka$3',
+        $html,
+        1
+    );
+
+    return (string) preg_replace(
+        '~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u',
+        '<h1 class="vw-page-title">Objednávka</h1>',
+        $html,
+        1
+    );
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -817,28 +853,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         );
         $value = gls_normalize_cookie_notice_button_html($value, $lang);
 
-        if ($lang === 'ru') {
-            $value = str_replace(
-                '>Гастроном</a> <span> Objednávka',
-                '>Гастроном</a> <span> Оформление заказа',
-                $value
-            );
-            $value = preg_replace(
-                '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su',
-                '$1Оформление заказа$2',
-                $value,
-                1
-            );
-            $value = preg_replace('~<h1 class="vw-page-title">\s*Objednávka\s*</h1>~u', '<h1 class="vw-page-title">Оформление заказа</h1>', $value, 1);
-        } else {
-            $value = preg_replace(
-                '~(<div class="bradcrumbs">.*?<span>\s*)(Оформление заказа|Заказ)(\s*</span>)~su',
-                '$1Objednávka$3',
-                $value,
-                1
-            );
-            $value = preg_replace('~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u', '<h1 class="vw-page-title">Objednávka</h1>', $value, 1);
-        }
+        $value = gls_normalize_checkout_order_title_shell_html($value, $lang);
 
         if (strpos($value, 'wc-empty-cart-message') === false) {
             return $value;
