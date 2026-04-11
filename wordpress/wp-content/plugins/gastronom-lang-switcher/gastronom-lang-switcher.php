@@ -1163,6 +1163,19 @@ function gls_filter_wcpay_locale() {
     return gls_wcpay_wp_locale();
 }
 
+function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $handle): string {
+    if (gls_is_sensitive_runtime_context()) {
+        return $tag;
+    }
+
+    if (gls_is_wcpay_handle($handle)) {
+        [$target_locale, $source_locale] = gls_wcpay_locale_pair();
+        $tag = gls_replace_encoded_locale_markers($tag, $source_locale, $target_locale);
+    }
+
+    return $tag;
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1193,17 +1206,7 @@ add_action('template_redirect', function() {
 add_filter('wcpay_locale', 'gls_filter_wcpay_locale');
 
 // Override locale in ALL WooPayments script tags (before Stripe init)
-add_filter('script_loader_tag', function($tag, $handle) {
-    if (gls_is_sensitive_runtime_context()) {
-        return $tag;
-    }
-
-    if (gls_is_wcpay_handle($handle)) {
-        [$target_locale, $source_locale] = gls_wcpay_locale_pair();
-        $tag = gls_replace_encoded_locale_markers($tag, $source_locale, $target_locale);
-    }
-    return $tag;
-}, 10, 2);
+add_filter('script_loader_tag', 'gls_filter_script_loader_tag_for_wcpay_locale', 10, 2);
 
 // Override locale in wp_localize_script data before it's printed
 add_action('wp_enqueue_scripts', function() {
