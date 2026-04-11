@@ -664,18 +664,7 @@ add_filter('the_title', function($title, $post_id = 0) {
     }
 
     if (function_exists('is_account_page') && is_account_page()) {
-        if ($lang === 'ru') {
-            if ($title === 'Môj účet' || $title === 'Môj Účet' || $title === 'Моя учётная запись' || $title === 'Мой Аккаунт') {
-                return 'Мой аккаунт';
-            }
-        } else {
-            if ($title === 'Мой аккаунт' || $title === 'Мой Аккаунт' || $title === 'Моя учётная запись') {
-                return 'Môj účet';
-            }
-            if ($title === 'Môj Účet') {
-                return 'Môj účet';
-            }
-        }
+        return gls_normalize_account_title_text($title, $lang);
     }
 
     return gls_localize_bilingual_text($title, $lang);
@@ -696,16 +685,29 @@ add_filter('pre_get_document_title', function($title) {
 function gls_normalize_common_public_title_text(string $title, string $lang): string {
     if ($lang === 'ru') {
         $title = str_replace('Gastronom', 'Гастроном', $title);
-        $title = str_replace('Môj účet', 'Мой аккаунт', $title);
-        $title = str_replace('Môj Účet', 'Мой аккаунт', $title);
-        $title = str_replace('Моя учётная запись', 'Мой аккаунт', $title);
+        $title = gls_normalize_account_title_text($title, $lang);
         return $title;
     }
 
     $title = str_replace('Гастроном', 'Gastronom', $title);
+    $title = gls_normalize_account_title_text($title, $lang);
+
+    return $title;
+}
+
+function gls_normalize_account_title_text(string $title, string $lang): string {
+    if ($lang === 'ru') {
+        $title = str_replace('Môj účet', 'Мой аккаунт', $title);
+        $title = str_replace('Môj Účet', 'Мой аккаунт', $title);
+        $title = str_replace('Моя учётная запись', 'Мой аккаунт', $title);
+        $title = str_replace('Мой Аккаунт', 'Мой аккаунт', $title);
+        return $title;
+    }
+
     $title = str_replace('Мой аккаунт', 'Môj účet', $title);
     $title = str_replace('Мой Аккаунт', 'Môj účet', $title);
     $title = str_replace('Моя учётная запись', 'Môj účet', $title);
+    $title = str_replace('Môj Účet', 'Môj účet', $title);
 
     return $title;
 }
