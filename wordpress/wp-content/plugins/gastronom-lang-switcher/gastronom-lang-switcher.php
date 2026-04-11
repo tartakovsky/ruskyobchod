@@ -1099,6 +1099,14 @@ function gls_strip_inactive_language_blocks(string $html, string $lang): string 
     return (string) $result;
 }
 
+function gls_replace_encoded_locale_markers(string $value, string $source_locale, string $target_locale): string {
+    return str_replace(
+        ['"locale":"' . $source_locale . '"', '%22locale%22%3A%22' . $source_locale . '%22'],
+        ['"locale":"' . $target_locale . '"', '%22locale%22%3A%22' . $target_locale . '%22'],
+        $value
+    );
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1166,28 +1174,28 @@ add_action('wp_enqueue_scripts', function() {
             if (strpos($handle, 'wcpay') === false) continue;
             // Replace in localized data (wp_localize_script)
             if (!empty($script->extra['data'])) {
-                $wp_scripts->registered[$handle]->extra['data'] = str_replace(
-                    ['"locale":"' . $source_locale . '"', '%22locale%22%3A%22' . $source_locale . '%22'],
-                    ['"locale":"' . $target_locale . '"', '%22locale%22%3A%22' . $target_locale . '%22'],
-                    $script->extra['data']
+                $wp_scripts->registered[$handle]->extra['data'] = gls_replace_encoded_locale_markers(
+                    $script->extra['data'],
+                    $source_locale,
+                    $target_locale
                 );
             }
             // Replace in inline scripts (wp_add_inline_script)
             if (!empty($script->extra['before'])) {
                 foreach ($script->extra['before'] as $i => $code) {
-                    $wp_scripts->registered[$handle]->extra['before'][$i] = str_replace(
-                        ['"locale":"' . $source_locale . '"', '%22locale%22%3A%22' . $source_locale . '%22'],
-                        ['"locale":"' . $target_locale . '"', '%22locale%22%3A%22' . $target_locale . '%22'],
-                        $code
+                    $wp_scripts->registered[$handle]->extra['before'][$i] = gls_replace_encoded_locale_markers(
+                        $code,
+                        $source_locale,
+                        $target_locale
                     );
                 }
             }
             if (!empty($script->extra['after'])) {
                 foreach ($script->extra['after'] as $i => $code) {
-                    $wp_scripts->registered[$handle]->extra['after'][$i] = str_replace(
-                        ['"locale":"' . $source_locale . '"', '%22locale%22%3A%22' . $source_locale . '%22'],
-                        ['"locale":"' . $target_locale . '"', '%22locale%22%3A%22' . $target_locale . '%22'],
-                        $code
+                    $wp_scripts->registered[$handle]->extra['after'][$i] = gls_replace_encoded_locale_markers(
+                        $code,
+                        $source_locale,
+                        $target_locale
                     );
                 }
             }
