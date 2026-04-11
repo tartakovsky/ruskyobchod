@@ -687,37 +687,38 @@ add_filter('pre_get_document_title', function($title) {
     }
 
     $lang = gls_server_lang();
-
-    if ($lang === 'ru') {
-        $title = str_replace('Gastronom', 'Гастроном', $title);
-        $title = str_replace('Môj účet', 'Мой аккаунт', $title);
-        $title = str_replace('Môj Účet', 'Мой аккаунт', $title);
-        $title = str_replace('Моя учётная запись', 'Мой аккаунт', $title);
-    } else {
-        $title = str_replace('Гастроном', 'Gastronom', $title);
-        $title = str_replace('Мой аккаунт', 'Môj účet', $title);
-        $title = str_replace('Мой Аккаунт', 'Môj účet', $title);
-        $title = str_replace('Моя учётная запись', 'Môj účet', $title);
+    $title = gls_normalize_common_public_title_text($title, $lang);
+    if ($lang !== 'ru') {
         $title = str_replace('Оплатить заказ', 'Zaplatiť objednávku', $title);
     }
 
     return $title;
 }, 20);
 
-function gls_normalize_public_title(string $title): string {
-    $lang = gls_server_lang();
-
+function gls_normalize_common_public_title_text(string $title, string $lang): string {
     if ($lang === 'ru') {
         $title = str_replace('Gastronom', 'Гастроном', $title);
         $title = str_replace('Môj účet', 'Мой аккаунт', $title);
         $title = str_replace('Môj Účet', 'Мой аккаунт', $title);
         $title = str_replace('Моя учётная запись', 'Мой аккаунт', $title);
+        return $title;
+    }
+
+    $title = str_replace('Гастроном', 'Gastronom', $title);
+    $title = str_replace('Мой аккаунт', 'Môj účet', $title);
+    $title = str_replace('Мой Аккаунт', 'Môj účet', $title);
+    $title = str_replace('Моя учётная запись', 'Môj účet', $title);
+
+    return $title;
+}
+
+function gls_normalize_public_title(string $title): string {
+    $lang = gls_server_lang();
+    $title = gls_normalize_common_public_title_text($title, $lang);
+
+    if ($lang === 'ru') {
         $title = str_replace('Objednávka', 'Оплатить заказ', $title);
     } else {
-        $title = str_replace('Гастроном', 'Gastronom', $title);
-        $title = str_replace('Мой аккаунт', 'Môj účet', $title);
-        $title = str_replace('Мой Аккаунт', 'Môj účet', $title);
-        $title = str_replace('Моя учётная запись', 'Môj účet', $title);
         $title = str_replace('Оплатить заказ', 'Zaplatiť objednávku', $title);
         $title = str_replace('Заказ', 'Objednávka', $title);
     }
