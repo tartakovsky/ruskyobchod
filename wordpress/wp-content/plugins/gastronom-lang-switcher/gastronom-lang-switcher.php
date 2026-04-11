@@ -781,6 +781,16 @@ function gls_normalize_footer_brand_heading_html(string $html, string $lang): st
     return str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
 }
 
+function gls_normalize_footer_brand_heading_tag_html(string $html, string $lang): string {
+    return (string) preg_replace(
+        '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
+        $lang === 'ru'
+            ? '<h3$1>Гастроном</h3>'
+            : '<h3$1>Gastronom</h3>',
+        $html
+    );
+}
+
 function gls_strip_storefront_title_shell_html(string $html): string {
     $html = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $html, 1);
     $html = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $html, 1);
@@ -835,14 +845,7 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
-
-        $value = preg_replace(
-            '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
-            $lang === 'ru'
-                ? '<h3$1>Гастроном</h3>'
-                : '<h3$1>Gastronom</h3>',
-            $value
-        );
+        $value = gls_normalize_footer_brand_heading_tag_html($value, $lang);
 
         $value = preg_replace(
             '~<button([^>]*)>\s*(Ок|Ok)\s*</button>~su',
