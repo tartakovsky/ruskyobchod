@@ -27,7 +27,7 @@
 	?>
 
 	<header role="banner">
-		<a class="screen-reader-text skip-link" href="#maincontent" ><?php esc_html_e( 'Skip to content', 'food-grocery-store' ); ?><span class="screen-reader-text"><?php esc_html_e( 'Skip to content', 'food-grocery-store' ); ?></span></a>
+		<a class="screen-reader-text skip-link" href="#maincontent"><?php esc_html_e( 'Skip to content', 'food-grocery-store' ); ?></a>
 		<div class="home-page-header">
 			<?php get_template_part('template-parts/header/top-header'); ?>
 			<?php get_template_part('template-parts/header/middle-header'); ?>
