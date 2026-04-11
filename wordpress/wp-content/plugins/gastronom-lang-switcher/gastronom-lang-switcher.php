@@ -301,6 +301,8 @@ function gls_translate_theme_chrome_phrase(string $value, string $lang): string 
             'Scroll Up' => 'Прокрутить вверх',
             'Skip to content' => 'Перейти к содержимому',
             'Cookie Notice' => 'Уведомление о cookie',
+            'Ok' => 'Ок',
+            'No' => 'Нет',
         ],
         'sk' => [
             'Подвал' => 'Footer',
@@ -313,6 +315,8 @@ function gls_translate_theme_chrome_phrase(string $value, string $lang): string 
             'Прокрутить вверх' => 'Scroll Up',
             'Перейти к содержимому' => 'Skip to content',
             'Уведомление о cookie' => 'Cookie Notice',
+            'Ок' => 'Ok',
+            'Нет' => 'No',
         ],
     ];
 
