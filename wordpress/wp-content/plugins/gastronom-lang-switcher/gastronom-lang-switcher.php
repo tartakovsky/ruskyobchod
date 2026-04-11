@@ -1163,6 +1163,10 @@ function gls_filter_wcpay_locale() {
     return gls_wcpay_wp_locale();
 }
 
+function gls_filter_woocommerce_currency_symbol(string $symbol, string $currency): string {
+    return gls_currency_symbol_override($symbol, $currency);
+}
+
 function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $handle): string {
     if (gls_is_sensitive_runtime_context()) {
         return $tag;
@@ -1231,9 +1235,7 @@ add_action('wp_enqueue_scripts', function() {
 }, 999);
 
 // Force EUR symbol to always be € regardless of WP locale (ru_RU shows ₽ by default)
-add_filter('woocommerce_currency_symbol', function($symbol, $currency) {
-    return gls_currency_symbol_override($symbol, $currency);
-}, 999, 2);
+add_filter('woocommerce_currency_symbol', 'gls_filter_woocommerce_currency_symbol', 999, 2);
 
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', plugin_dir_url(__FILE__) . 'gls-style.css', [], '6.24');
