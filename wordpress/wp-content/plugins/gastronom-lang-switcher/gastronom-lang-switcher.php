@@ -1113,6 +1113,10 @@ function gls_wcpay_locale_pair(): array {
     return [$target_locale, $target_locale === 'ru' ? 'sk' : 'ru'];
 }
 
+function gls_wcpay_wp_locale(): string {
+    return gls_server_lang() === 'ru' ? 'ru_RU' : 'sk_SK';
+}
+
 function gls_is_wcpay_handle(string $handle): bool {
     return strpos($handle, 'wcpay') !== false || strpos($handle, 'WCPAY') !== false;
 }
@@ -1175,7 +1179,7 @@ add_filter('wcpay_locale', function() {
         return get_locale();
     }
 
-    return gls_server_lang() === 'ru' ? 'ru_RU' : 'sk_SK';
+    return gls_wcpay_wp_locale();
 });
 
 // Override locale in ALL WooPayments script tags (before Stripe init)
