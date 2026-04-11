@@ -932,8 +932,6 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html = str_replace('>Ok</button>', '>Ок</button>', $html);
         $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
         $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
-        $html = str_replace('aria-label="Pridať do košíka', 'aria-label="Добавить в корзину', $html);
-        $html = str_replace('» pridaný do košíka', '» добавлен в вашу корзину', $html);
     } else {
         $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
         $html = str_replace('Словацкая Республика', 'Slovenská republika', $html);
@@ -942,8 +940,6 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html = str_replace('>Ок</button>', '>Ok</button>', $html);
         $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
         $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
-        $html = str_replace('aria-label="Добавить в корзину', 'aria-label="Pridať do košíka', $html);
-        $html = str_replace('» добавлен в вашу корзину', '» bol pridaný do košíka', $html);
     }
 
     return $html;
