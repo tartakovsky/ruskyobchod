@@ -9,6 +9,10 @@
 if (!defined('ABSPATH')) exit;
 
 function gls_current_lang_code() {
+    if (function_exists('rslc_current_lang')) {
+        return rslc_current_lang();
+    }
+
     if (is_admin() && !wp_doing_ajax()) {
         return 'sk';
     }
@@ -93,6 +97,10 @@ function gls_is_server_rendered_storefront_page(): bool {
 }
 
 function gls_switcher_url(string $lang): string {
+    if (function_exists('rslc_switcher_url')) {
+        return rslc_switcher_url($lang);
+    }
+
     $current_url = '';
 
     if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URI'])) {
@@ -402,6 +410,10 @@ add_filter('wc_stripe_elements_options', function($options) {
 });
 
 function gls_server_lang(): string {
+    if (function_exists('rslc_current_lang')) {
+        return rslc_current_lang();
+    }
+
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if ($query_lang === 'ru' || $query_lang === 'sk') {
         return $query_lang;
@@ -1111,6 +1123,11 @@ function gls_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
 function gls_add_switcher() {
+    if (function_exists('rslc_render_switcher')) {
+        echo rslc_render_switcher(gls_current_lang_code());
+        return;
+    }
+
     $current_lang = gls_current_lang_code();
     $ru_url = esc_url(gls_switcher_url('ru'));
     $sk_url = esc_url(gls_switcher_url('sk'));

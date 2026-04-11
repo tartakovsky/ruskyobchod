@@ -9,6 +9,10 @@ if (!defined('ABSPATH')) {
 }
 
 function rsll_current_lang(): string {
+    if (function_exists('rslc_current_lang')) {
+        return rslc_current_lang();
+    }
+
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if ($query_lang === 'ru' || $query_lang === 'sk') {
         return $query_lang;
@@ -19,6 +23,10 @@ function rsll_current_lang(): string {
 }
 
 function rsll_switcher_url(string $lang): string {
+    if (function_exists('rslc_switcher_url')) {
+        return rslc_switcher_url($lang);
+    }
+
     $current_url = home_url('/');
 
     if (!empty($_SERVER['HTTP_HOST']) && !empty($_SERVER['REQUEST_URI'])) {
@@ -191,6 +199,10 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
 }
 
 add_action('init', function() {
+    if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
+        return;
+    }
+
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if ($query_lang !== 'ru' && $query_lang !== 'sk') {
         return;
@@ -201,6 +213,10 @@ add_action('init', function() {
 }, 1);
 
 add_action('wp_enqueue_scripts', function() {
+    if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
+        return;
+    }
+
     $style_url = content_url('plugins/gastronom-lang-switcher/gls-style.css');
     wp_enqueue_style('rsll-gls-style', $style_url, [], '6.24-lite');
 
@@ -225,6 +241,15 @@ add_action('wp_enqueue_scripts', function() {
 }, 20);
 
 add_action('wp_body_open', function() {
+    if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
+        return;
+    }
+
+    if (function_exists('rslc_render_switcher')) {
+        echo rslc_render_switcher(rsll_current_lang());
+        return;
+    }
+
     $lang = rsll_current_lang();
     $ru_class = $lang === 'ru' ? ' active' : '';
     $sk_class = $lang === 'sk' ? ' active' : '';
@@ -236,6 +261,10 @@ add_action('wp_body_open', function() {
 }, 20);
 
 add_action('template_redirect', function() {
+    if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
+        return;
+    }
+
     if (is_admin() || wp_doing_ajax() || !is_front_page()) {
         return;
     }
