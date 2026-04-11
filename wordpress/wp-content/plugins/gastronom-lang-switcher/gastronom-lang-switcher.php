@@ -926,17 +926,11 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
 
     if ($lang === 'ru') {
         $html = str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
-        $html = str_replace('Slovenská republika', 'Словацкая Республика', $html);
-        $html = str_replace('Zapísaná v OR OS Bratislava I,', 'Зарегистрирована в торговом реестре окружного суда Братислава I,', $html);
-        $html = str_replace('Oddiel: Sro, Vložka č. 182562/B', 'Раздел s.r.o., № записи 182562/B', $html);
         $html = str_replace('>Ok</button>', '>Ок</button>', $html);
         $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
         $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
     } else {
         $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
-        $html = str_replace('Словацкая Республика', 'Slovenská republika', $html);
-        $html = str_replace('Зарегистрирована в торговом реестре окружного суда Братислава I,', 'Zapísaná v OR OS Bratislava I,', $html);
-        $html = str_replace('Раздел s.r.o., № записи 182562/B', 'Oddiel: Sro, Vložka č. 182562/B', $html);
         $html = str_replace('>Ок</button>', '>Ok</button>', $html);
         $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
         $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
