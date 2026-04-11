@@ -1155,6 +1155,14 @@ function gls_currency_symbol_override(string $symbol, string $currency): string 
     return $symbol;
 }
 
+function gls_filter_wcpay_locale() {
+    if (gls_is_sensitive_runtime_context()) {
+        return get_locale();
+    }
+
+    return gls_wcpay_wp_locale();
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1182,13 +1190,7 @@ add_action('template_redirect', function() {
 }, 5);
 
 // Override locale for WooPayments scripts according to the current page language.
-add_filter('wcpay_locale', function() {
-    if (gls_is_sensitive_runtime_context()) {
-        return get_locale();
-    }
-
-    return gls_wcpay_wp_locale();
-});
+add_filter('wcpay_locale', 'gls_filter_wcpay_locale');
 
 // Override locale in ALL WooPayments script tags (before Stripe init)
 add_filter('script_loader_tag', function($tag, $handle) {
