@@ -828,6 +828,16 @@ function gls_localize_html_text_segment(array $matches, string $lang, bool $stri
     return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
 }
 
+function gls_localize_html_text_pattern(string $html, string $pattern, string $lang, bool $strip_tags = false): string {
+    return (string) preg_replace_callback(
+        $pattern,
+        static function($matches) use ($lang, $strip_tags) {
+            return gls_localize_html_text_segment($matches, $lang, $strip_tags);
+        },
+        $html
+    );
+}
+
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         $html = str_replace(
@@ -964,12 +974,11 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
     $html = gls_normalize_skip_link_html($html, $lang);
     $html = gls_strip_storefront_title_shell_html($html);
 
-    $html = preg_replace_callback(
+    $html = gls_localize_html_text_pattern(
+        $html,
         '~(<div class="gc-card-name">)(.*?)(</div>)~su',
-        static function($matches) use ($lang) {
-            return gls_localize_html_text_segment($matches, $lang, true);
-        },
-        $html
+        $lang,
+        true
     );
 
     $html = preg_replace(
@@ -982,20 +991,16 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
 }
 
 function gls_normalize_storefront_chrome_html(string $html, string $lang): string {
-    $html = preg_replace_callback(
+    $html = gls_localize_html_text_pattern(
+        $html,
         '~(<li class="drp_dwn_menu[^"]*"[^>]*>\s*<a [^>]*>\s*)([^<]+)(\s*</a>)~su',
-        static function($matches) use ($lang) {
-            return gls_localize_html_text_segment($matches, $lang);
-        },
-        $html
+        $lang
     );
 
-    $html = preg_replace_callback(
+    $html = gls_localize_html_text_pattern(
+        $html,
         '~(<span class="posted_in">.*?<a [^>]*rel="tag"[^>]*>)([^<]+)(</a>)~su',
-        static function($matches) use ($lang) {
-            return gls_localize_html_text_segment($matches, $lang);
-        },
-        $html
+        $lang
     );
 
     return gls_normalize_storefront_footer_shell_html($html, $lang);
