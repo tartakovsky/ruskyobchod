@@ -288,6 +288,37 @@ function gls_translate_account_checkout_phrase(string $value, string $lang): str
     return $map[$lang][$value] ?? $value;
 }
 
+function gls_translate_theme_chrome_phrase(string $value, string $lang): string {
+    $map = [
+        'ru' => [
+            'Footer' => 'Подвал',
+            'Top Menu' => 'Верхнее меню',
+            'All Categories' => 'Все рубрики',
+            'Login / Register' => 'Вход / Регистрация',
+            'shopping cart' => 'корзина',
+            'Open Button' => 'Кнопка Открыть',
+            'Close Button' => 'Кнопка Закрыть',
+            'Scroll Up' => 'Прокрутить вверх',
+            'Skip to content' => 'Перейти к содержимому',
+            'Cookie Notice' => 'Уведомление о cookie',
+        ],
+        'sk' => [
+            'Подвал' => 'Footer',
+            'Верхнее меню' => 'Top Menu',
+            'Все рубрики' => 'All Categories',
+            'Вход / Регистрация' => 'Login / Register',
+            'корзина' => 'shopping cart',
+            'Кнопка Открыть' => 'Open Button',
+            'Кнопка Закрыть' => 'Close Button',
+            'Прокрутить вверх' => 'Scroll Up',
+            'Перейти к содержимому' => 'Skip to content',
+            'Уведомление о cookie' => 'Cookie Notice',
+        ],
+    ];
+
+    return $map[$lang][$value] ?? $value;
+}
+
 add_filter('option_blogname', function($value) {
     if (is_admin() && !wp_doing_ajax()) {
         return $value;
@@ -513,6 +544,13 @@ add_filter('gettext', function($translated, $text, $domain) {
         if ($translated === 'Môj Účet') {
             return 'Môj účet';
         }
+    }
+
+    if ($domain === 'food-grocery-store' || $domain === 'cookie-notice') {
+        $translated = gls_translate_theme_chrome_phrase($translated, $lang);
+        $translated = gls_translate_theme_chrome_phrase($text, $lang) === $text
+            ? $translated
+            : gls_translate_theme_chrome_phrase($text, $lang);
     }
 
     return $translated;
