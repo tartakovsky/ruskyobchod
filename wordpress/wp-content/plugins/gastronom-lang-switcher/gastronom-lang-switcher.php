@@ -759,6 +759,20 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
     ]);
 }
 
+function gls_normalize_cookie_notice_button_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        $html = str_replace('>Ok</button>', '>Ок</button>', $html);
+        $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
+        $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
+        return $html;
+    }
+
+    $html = str_replace('>Ок</button>', '>Ok</button>', $html);
+    $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
+    $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
+    return $html;
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -778,6 +792,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
                 : '<button$1>Ok</button>',
             $value
         );
+        $value = gls_normalize_cookie_notice_button_html($value, $lang);
 
         if ($lang === 'ru') {
             $value = str_replace(
@@ -938,15 +953,11 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
     if ($lang === 'ru') {
         $html = str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
         $html = gls_normalize_legal_company_text_html($html, $lang);
-        $html = str_replace('>Ok</button>', '>Ок</button>', $html);
-        $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
-        $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
+        $html = gls_normalize_cookie_notice_button_html($html, $lang);
     } else {
         $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
         $html = gls_normalize_legal_company_text_html($html, $lang);
-        $html = str_replace('>Ок</button>', '>Ok</button>', $html);
-        $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
-        $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
+        $html = gls_normalize_cookie_notice_button_html($html, $lang);
     }
 
     return $html;
