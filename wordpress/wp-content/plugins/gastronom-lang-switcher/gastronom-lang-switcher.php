@@ -786,6 +786,13 @@ function gls_normalize_footer_brand_heading_html(string $html, string $lang): st
     return str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
 }
 
+function gls_normalize_storefront_footer_shell_html(string $html, string $lang): string {
+    $html = gls_normalize_footer_brand_heading_html($html, $lang);
+    $html = gls_normalize_legal_company_text_html($html, $lang);
+
+    return gls_normalize_cookie_notice_button_html($html, $lang);
+}
+
 function gls_normalize_footer_brand_heading_tag_html(string $html, string $lang): string {
     return (string) preg_replace(
         '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
@@ -991,17 +998,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $html
     );
 
-    if ($lang === 'ru') {
-        $html = gls_normalize_footer_brand_heading_html($html, $lang);
-        $html = gls_normalize_legal_company_text_html($html, $lang);
-        $html = gls_normalize_cookie_notice_button_html($html, $lang);
-    } else {
-        $html = gls_normalize_footer_brand_heading_html($html, $lang);
-        $html = gls_normalize_legal_company_text_html($html, $lang);
-        $html = gls_normalize_cookie_notice_button_html($html, $lang);
-    }
-
-    return $html;
+    return gls_normalize_storefront_footer_shell_html($html, $lang);
 }
 
 function gls_localize_feed_link_titles(string $html, string $lang): string {
