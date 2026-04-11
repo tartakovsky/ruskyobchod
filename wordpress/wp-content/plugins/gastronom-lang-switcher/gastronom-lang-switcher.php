@@ -1125,6 +1125,24 @@ function gls_replace_encoded_locale_markers_in_list(array $items, string $source
     return $items;
 }
 
+function gls_apply_wcpay_locale_to_script_extra($script, string $source_locale, string $target_locale): array {
+    $extra = is_object($script) && isset($script->extra) && is_array($script->extra) ? $script->extra : [];
+
+    if (!empty($extra['data'])) {
+        $extra['data'] = gls_replace_encoded_locale_markers((string) $extra['data'], $source_locale, $target_locale);
+    }
+
+    if (!empty($extra['before'])) {
+        $extra['before'] = gls_replace_encoded_locale_markers_in_list((array) $extra['before'], $source_locale, $target_locale);
+    }
+
+    if (!empty($extra['after'])) {
+        $extra['after'] = gls_replace_encoded_locale_markers_in_list((array) $extra['after'], $source_locale, $target_locale);
+    }
+
+    return $extra;
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1186,29 +1204,11 @@ add_action('wp_enqueue_scripts', function() {
         // Replace locale in ALL registered scripts containing wcpay
         foreach ($wp_scripts->registered as $handle => $script) {
             if (!gls_is_wcpay_handle($handle)) continue;
-            // Replace in localized data (wp_localize_script)
-            if (!empty($script->extra['data'])) {
-                $wp_scripts->registered[$handle]->extra['data'] = gls_replace_encoded_locale_markers(
-                    (string) $script->extra['data'],
-                    $source_locale,
-                    $target_locale
-                );
-            }
-            // Replace in inline scripts (wp_add_inline_script)
-            if (!empty($script->extra['before'])) {
-                $wp_scripts->registered[$handle]->extra['before'] = gls_replace_encoded_locale_markers_in_list(
-                    (array) $script->extra['before'],
-                    $source_locale,
-                    $target_locale
-                );
-            }
-            if (!empty($script->extra['after'])) {
-                $wp_scripts->registered[$handle]->extra['after'] = gls_replace_encoded_locale_markers_in_list(
-                    (array) $script->extra['after'],
-                    $source_locale,
-                    $target_locale
-                );
-            }
+            $wp_scripts->registered[$handle]->extra = gls_apply_wcpay_locale_to_script_extra(
+                $script,
+                $source_locale,
+                $target_locale
+            );
         }
     }, 1);
 }, 999);
