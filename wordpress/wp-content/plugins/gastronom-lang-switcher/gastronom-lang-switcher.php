@@ -788,6 +788,14 @@ function gls_strip_storefront_title_shell_html(string $html): string {
     return (string) $html;
 }
 
+function gls_localize_html_text_segment(array $matches, string $lang, bool $strip_tags = false): string {
+    $raw = (string) ($matches[2] ?? '');
+    $text = $strip_tags ? wp_strip_all_tags($raw) : trim($raw);
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+    return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -926,8 +934,7 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
     $html = preg_replace_callback(
         '~(<div class="gc-card-name">)(.*?)(</div>)~su',
         static function($matches) use ($lang) {
-            $text = html_entity_decode(wp_strip_all_tags((string) ($matches[2] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
+            return gls_localize_html_text_segment($matches, $lang, true);
         },
         $html
     );
@@ -945,8 +952,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
     $html = preg_replace_callback(
         '~(<li class="drp_dwn_menu[^"]*"[^>]*>\s*<a [^>]*>\s*)([^<]+)(\s*</a>)~su',
         static function($matches) use ($lang) {
-            $text = html_entity_decode(trim((string) ($matches[2] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
+            return gls_localize_html_text_segment($matches, $lang);
         },
         $html
     );
@@ -954,8 +960,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
     $html = preg_replace_callback(
         '~(<span class="posted_in">.*?<a [^>]*rel="tag"[^>]*>)([^<]+)(</a>)~su',
         static function($matches) use ($lang) {
-            $text = html_entity_decode(trim((string) ($matches[2] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-            return (string) ($matches[1] ?? '') . esc_html(gls_localize_bilingual_text($text, $lang)) . (string) ($matches[3] ?? '');
+            return gls_localize_html_text_segment($matches, $lang);
         },
         $html
     );
