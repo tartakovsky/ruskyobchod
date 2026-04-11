@@ -773,6 +773,14 @@ function gls_normalize_cookie_notice_button_html(string $html, string $lang): st
     return $html;
 }
 
+function gls_normalize_footer_brand_heading_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        return str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
+    }
+
+    return str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -951,11 +959,11 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
     );
 
     if ($lang === 'ru') {
-        $html = str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
+        $html = gls_normalize_footer_brand_heading_html($html, $lang);
         $html = gls_normalize_legal_company_text_html($html, $lang);
         $html = gls_normalize_cookie_notice_button_html($html, $lang);
     } else {
-        $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
+        $html = gls_normalize_footer_brand_heading_html($html, $lang);
         $html = gls_normalize_legal_company_text_html($html, $lang);
         $html = gls_normalize_cookie_notice_button_html($html, $lang);
     }
