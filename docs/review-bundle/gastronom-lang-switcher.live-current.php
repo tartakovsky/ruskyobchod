@@ -411,39 +411,26 @@ function gls_server_lang(): string {
     return $cookie_lang === 'ru' ? 'ru' : 'sk';
 }
 
-add_action('init', function() {
-    if (is_admin() && !wp_doing_ajax()) {
-        return;
+function gls_has_wp_login_cookie(): bool {
+    if (!defined('COOKIEHASH') || COOKIEHASH === '') {
+        return false;
     }
 
-    $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
-    if ($query_lang !== 'ru' && $query_lang !== 'sk') {
-        return;
+    $prefixes = [
+        'wordpress_logged_in_' . COOKIEHASH,
+        'wordpress_sec_' . COOKIEHASH,
+        'wordpressuser_' . COOKIEHASH,
+        'wordpresspass_' . COOKIEHASH,
+    ];
+
+    foreach ($prefixes as $name) {
+        if (isset($_COOKIE[$name]) && $_COOKIE[$name] !== '') {
+            return true;
+        }
     }
 
-    setcookie('gastronom_lang', $query_lang, time() + YEAR_IN_SECONDS, COOKIEPATH ?: '/', COOKIE_DOMAIN, is_ssl(), false);
-    $_COOKIE['gastronom_lang'] = $query_lang;
-}, 1);
-
-add_filter('wp_redirect', function($location, $status) {
-    if (!is_string($location) || $location === '') {
-        return $location;
-    }
-
-    $lang = gls_server_lang();
-    if ($lang !== 'ru' && $lang !== 'sk') {
-        return $location;
-    }
-
-    $home_host = wp_parse_url(home_url('/'), PHP_URL_HOST);
-    $target_host = wp_parse_url($location, PHP_URL_HOST);
-
-    if (!empty($target_host) && !empty($home_host) && strtolower((string) $target_host) !== strtolower((string) $home_host)) {
-        return $location;
-    }
-
-    return add_query_arg('lang', $lang, $location);
-}, 20, 2);
+    return false;
+}
 
 function gls_is_sensitive_runtime_context(): bool {
     if (is_admin() && !wp_doing_ajax()) {
@@ -461,8 +448,8 @@ function gls_is_sensitive_runtime_context(): bool {
     if (isset($_GET['elementor-preview']) || isset($_GET['action']) && $_GET['action'] === 'elementor') {
         return true;
     }
-    
-    return false;
+
+    return gls_has_wp_login_cookie();
 }
 
 function gls_frontend_locale(string $locale): string {
@@ -646,67 +633,8 @@ add_filter('rank_math/opengraph/facebook/title', 'gls_normalize_public_title', 2
 add_filter('rank_math/opengraph/twitter/title', 'gls_normalize_public_title', 20);
 
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
-    $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
-        $value = preg_replace(
-            '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
-            $lang === 'ru'
-                ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
-                : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
-            $value,
-            1
-        );
-
-        $value = preg_replace(
-            '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
-            $lang === 'ru'
-                ? '<h3$1>Гастроном</h3>'
-                : '<h3$1>Gastronom</h3>',
-            $value
-        );
-
-        $value = preg_replace(
-            '~<button([^>]*)>\s*(Ок|Ok)\s*</button>~su',
-            $lang === 'ru'
-                ? '<button$1>Ок</button>'
-                : '<button$1>Ok</button>',
-            $value
-        );
-
-        if ($lang === 'ru') {
-            $value = str_replace(
-                '>Гастроном</a> <span> Objednávka',
-                '>Гастроном</a> <span> Оформление заказа',
-                $value
-            );
-            $value = preg_replace(
-                '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su',
-                '$1Оформление заказа$2',
-                $value,
-                1
-            );
-            $value = preg_replace('~<h1 class="vw-page-title">\s*Objednávka\s*</h1>~u', '<h1 class="vw-page-title">Оформление заказа</h1>', $value, 1);
-        } else {
-            $value = preg_replace(
-                '~(<div class="bradcrumbs">.*?<span>\s*)(Оформление заказа|Заказ)(\s*</span>)~su',
-                '$1Objednávka$3',
-                $value,
-                1
-            );
-            $value = preg_replace('~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u', '<h1 class="vw-page-title">Objednávka</h1>', $value, 1);
-        }
-
-        if (strpos($value, 'wc-empty-cart-message') === false) {
-            return $value;
-        }
-
-        $value = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $value, 1);
-        $value = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $value, 1);
-
-        return (string) $value;
-    };
-
     if ($lang === 'ru') {
-        return $normalize_empty_cart_shell(strtr($html, [
+        return strtr($html, [
             'Môj účet' => 'Мой аккаунт',
             'Môj Účet' => 'Мой аккаунт',
             'My account' => 'Мой аккаунт',
@@ -733,10 +661,10 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
             'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.' => 'К заказу будет добавлена комиссия за наложенный платеж в размере 2,00 €.',
             'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.' => 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.',
             'Card <img' => 'Оплата картой <img',
-        ]));
+        ]);
     }
 
-    return $normalize_empty_cart_shell(strtr($html, [
+    return strtr($html, [
         'Контакты' => 'Kontakt',
         'Мой аккаунт' => 'Môj účet',
         'Мой Аккаунт' => 'Môj účet',
@@ -788,22 +716,10 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         '"i18n_optional_text":"\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e"' => '"i18n_optional_text":"voliteľné"',
         '</a> сайта</span>' => '</a></span>',
         'Card <img' => 'Platba kartou <img',
-    ]));
+    ]);
 }
 
 function gls_normalize_front_page_html(string $html, string $lang): string {
-    $html = preg_replace(
-        '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
-        $lang === 'ru'
-            ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
-            : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
-        $html,
-        1
-    );
-
-    $html = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $html, 1);
-    $html = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $html, 1);
-
     $html = preg_replace_callback(
         '~(<div class="gc-card-name">)(.*?)(</div>)~su',
         static function($matches) use ($lang) {
@@ -1111,15 +1027,12 @@ function gls_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
 function gls_add_switcher() {
-    $current_lang = gls_current_lang_code();
     $ru_url = esc_url(gls_switcher_url('ru'));
     $sk_url = esc_url(gls_switcher_url('sk'));
-    $ru_class = 'gls-btn gls-btn-ru' . ($current_lang === 'ru' ? ' active' : '');
-    $sk_class = 'gls-btn gls-btn-sk' . ($current_lang === 'sk' ? ' active' : '');
 
     echo '<div id="gls-switcher" class="gls-switcher">'
-        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="Русский">RU</a>'
-        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="Slovenčina">SK</a>'
+        . '<a class="gls-btn gls-btn-ru" data-lang="ru" href="' . $ru_url . '" title="Русский">RU</a>'
+        . '<a class="gls-btn gls-btn-sk" data-lang="sk" href="' . $sk_url . '" title="Slovenčina">SK</a>'
         . '</div>';
 }
 add_action('wp_body_open', 'gls_add_switcher');

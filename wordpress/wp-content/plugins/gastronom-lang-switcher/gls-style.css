@@ -302,7 +302,6 @@ body.home li.product:hover,
 body.page-id-27 .wc-block-grid__product:hover,
 body.page-id-27 .product-category:hover,
 body.page-id-27 li.product:hover {
-    transform: translateY(-2px) !important;
     box-shadow: 0 12px 28px rgba(12, 24, 38, 0.1) !important;
 }
 
@@ -687,7 +686,6 @@ section.related.products h2 {
 .woocommerce ul.products li.product:hover,
 .wc-block-grid__product:hover {
     box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
-    transform: translateY(-3px) !important;
 }
 
 .woocommerce ul.products li.product .price,
@@ -987,11 +985,6 @@ body.woocommerce-cart #wcpay-express-checkout-wrapper,
 body.woocommerce-cart [id*="payment-request"] {
     display: none !important;
 }
-
-/* === Bilingual page content: show/hide by language === */
-/* Default: show RU, hide SK (JS will toggle based on cookie/localStorage) */
-.gls-content-sk { display: none !important; }
-.gls-content-ru { display: block !important; }
 
 /* --- Catalog quality pass: cleaner grid, equal cards, calmer controls --- */
 .woocommerce .woocommerce-ordering,

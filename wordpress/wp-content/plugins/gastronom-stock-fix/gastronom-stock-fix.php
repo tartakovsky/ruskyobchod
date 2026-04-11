@@ -10,17 +10,22 @@
 // 1. DECIMAL STOCK: allow fractional quantities (0.475 kg etc.)
 // ============================================================
 // Must run after WC loads (WC adds intval during plugins_loaded)
-add_action('plugins_loaded', function() {
+if (!function_exists('gastronom_setup_decimal_stock_amount')) {
+function gastronom_setup_decimal_stock_amount(): void {
     remove_filter('woocommerce_stock_amount', 'intval');
     add_filter('woocommerce_stock_amount', 'floatval');
-}, 99);
+}
+}
+}
+add_action('plugins_loaded', 'gastronom_setup_decimal_stock_amount', 99);
 
 // Too noisy for this store: do not email admins about low stock thresholds.
 add_filter('woocommerce_email_enabled_low_stock', '__return_false');
 add_filter('woocommerce_email_enabled_no_stock', '__return_false');
 add_filter('woocommerce_email_enabled_backorder', '__return_false');
 
-add_action('init', function() {
+if (!function_exists('gastronom_disable_stock_notifications')) {
+function gastronom_disable_stock_notifications(): void {
     // Keep Woo settings aligned with store policy: no stock alert emails.
     if (get_option('woocommerce_notify_low_stock', 'yes') !== 'no') {
         update_option('woocommerce_notify_low_stock', 'no');
@@ -28,9 +33,13 @@ add_action('init', function() {
     if (get_option('woocommerce_notify_no_stock', 'yes') !== 'no') {
         update_option('woocommerce_notify_no_stock', 'no');
     }
-}, 5);
+}
+}
+}
+add_action('init', 'gastronom_disable_stock_notifications', 5);
 
-add_action('woocommerce_email', function($mailer) {
+if (!function_exists('gastronom_disable_stock_email_actions')) {
+function gastronom_disable_stock_email_actions($mailer): void {
     if (!$mailer || !is_object($mailer)) {
         return;
     }
@@ -39,21 +48,29 @@ add_action('woocommerce_email', function($mailer) {
     remove_action('woocommerce_low_stock_notification', [$mailer, 'low_stock']);
     remove_action('woocommerce_no_stock_notification', [$mailer, 'no_stock']);
     remove_action('woocommerce_product_on_backorder_notification', [$mailer, 'backorder']);
-}, 1);
+}
+}
+}
+add_action('woocommerce_email', 'gastronom_disable_stock_email_actions', 1);
 
-add_action('plugins_loaded', function() {
+if (!function_exists('gastronom_detach_dotypos_product_updated_hook')) {
+function gastronom_detach_dotypos_product_updated_hook(): void {
     global $dotypos;
 
     if ($dotypos && is_object($dotypos) && method_exists($dotypos, 'handle_product_updated')) {
         remove_action('woocommerce_update_product', [$dotypos, 'handle_product_updated'], 10);
     }
-}, 100);
+}
+}
+}
+add_action('plugins_loaded', 'gastronom_detach_dotypos_product_updated_hook', 100);
 
 // ============================================================
 // 2. REST API: change stock_quantity schema from integer to number
 //    so API accepts decimal values like 0.475
 // ============================================================
-add_filter('rest_endpoints', function($endpoints) {
+if (!function_exists('gastronom_adjust_rest_endpoints_for_decimal_stock')) {
+function gastronom_adjust_rest_endpoints_for_decimal_stock($endpoints) {
     // Change stock_quantity type from integer to number in all product endpoints
     foreach ($endpoints as $route => $handlers) {
         if (strpos($route, 'wc/v3/products') === false) continue;
@@ -63,9 +80,17 @@ add_filter('rest_endpoints', function($endpoints) {
         }
     }
     return $endpoints;
-});
+}
+}
+}
+add_filter('rest_endpoints', 'gastronom_adjust_rest_endpoints_for_decimal_stock');
 
+if (!function_exists('gastronom_normalize_product_name')) {
 function gastronom_normalize_product_name($name) {
+    if (function_exists('rsn_normalize_product_name')) {
+        return rsn_normalize_product_name($name);
+    }
+
     $name = html_entity_decode(wp_strip_all_tags((string) $name), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     if (function_exists('mb_strtolower')) {
         $name = mb_strtolower($name, 'UTF-8');
@@ -75,8 +100,14 @@ function gastronom_normalize_product_name($name) {
 
     return trim(preg_replace('/\s+/', ' ', $name));
 }
+}
 
+if (!function_exists('gastronom_catalog_policy')) {
 function gastronom_catalog_policy($name) {
+    if (function_exists('rsn_catalog_policy')) {
+        return rsn_catalog_policy($name);
+    }
+
     $normalized = gastronom_normalize_product_name($name);
 
     foreach ([
@@ -107,8 +138,15 @@ function gastronom_catalog_policy($name) {
 
     return 'normal';
 }
+}
 
+if (!function_exists('gastronom_reconcile_decimal_stock')) {
 function gastronom_reconcile_decimal_stock($product_id) {
+    if (function_exists('rsn_reconcile_decimal_stock')) {
+        rsn_reconcile_decimal_stock($product_id);
+        return;
+    }
+
     $product_id = (int) $product_id;
     if ($product_id <= 0 || get_post_type($product_id) !== 'product') {
         return;
@@ -125,8 +163,15 @@ function gastronom_reconcile_decimal_stock($product_id) {
         wc_update_product_stock_status($product_id, 'instock');
     }
 }
+}
 
+if (!function_exists('gastronom_apply_catalog_policy')) {
 function gastronom_apply_catalog_policy($product_id) {
+    if (function_exists('rsn_apply_catalog_policy')) {
+        rsn_apply_catalog_policy($product_id);
+        return;
+    }
+
     $product_id = (int) $product_id;
     if ($product_id <= 0 || get_post_type($product_id) !== 'product') {
         return;
@@ -154,8 +199,15 @@ function gastronom_apply_catalog_policy($product_id) {
         update_post_meta($product_id, '_catalog_visibility', 'visible');
     }
 }
+}
 
+if (!function_exists('gastronom_enforce_product_rules')) {
 function gastronom_enforce_product_rules($post_id, $post = null, $update = true) {
+    if (function_exists('rsn_enforce_product_rules')) {
+        rsn_enforce_product_rules($post_id, $post, $update);
+        return;
+    }
+
     if (wp_is_post_revision($post_id) || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) {
         return;
     }
@@ -163,37 +215,54 @@ function gastronom_enforce_product_rules($post_id, $post = null, $update = true)
     gastronom_apply_catalog_policy($post_id);
     gastronom_reconcile_decimal_stock($post_id);
 }
+}
 
 // ============================================================
 // 3. AUTO OUTOFSTOCK: when stock changes, update status + visibility
 //    Uses raw DB meta to avoid integer truncation
 //    Uses wc_update_product_stock_status() to fix BOTH meta AND taxonomy
 // ============================================================
-add_action('woocommerce_product_set_stock', function($product) {
+if (!function_exists('gastronom_sync_stock_status_after_set_stock')) {
+function gastronom_sync_stock_status_after_set_stock($product): void {
     $product_id = $product->get_id();
     gastronom_reconcile_decimal_stock($product_id);
-}, 10, 1);
+}
+}
+}
+add_action('woocommerce_product_set_stock', 'gastronom_sync_stock_status_after_set_stock', 10, 1);
 
 // ============================================================
 // 4. REST API INSERT: same logic for products updated via REST API
 // ============================================================
-add_action('woocommerce_rest_insert_product_object', function($product) {
+if (!function_exists('gastronom_sync_stock_status_after_rest_insert')) {
+function gastronom_sync_stock_status_after_rest_insert($product): void {
     if (!$product->managing_stock()) return;
 
     gastronom_reconcile_decimal_stock($product->get_id());
-}, 99, 1);
+}
+}
+}
+add_action('woocommerce_rest_insert_product_object', 'gastronom_sync_stock_status_after_rest_insert', 99, 1);
 
-add_action('updated_post_meta', function($meta_id, $object_id, $meta_key) {
+if (!function_exists('gastronom_reconcile_on_updated_post_meta')) {
+function gastronom_reconcile_on_updated_post_meta($meta_id, $object_id, $meta_key): void {
     if ($meta_key === '_stock') {
         gastronom_reconcile_decimal_stock($object_id);
     }
-}, 20, 3);
+}
+}
+}
+add_action('updated_post_meta', 'gastronom_reconcile_on_updated_post_meta', 20, 3);
 
-add_action('added_post_meta', function($meta_id, $object_id, $meta_key) {
+if (!function_exists('gastronom_reconcile_on_added_post_meta')) {
+function gastronom_reconcile_on_added_post_meta($meta_id, $object_id, $meta_key): void {
     if ($meta_key === '_stock') {
         gastronom_reconcile_decimal_stock($object_id);
     }
-}, 20, 3);
+}
+}
+}
+add_action('added_post_meta', 'gastronom_reconcile_on_added_post_meta', 20, 3);
 
 add_action('save_post_product', 'gastronom_enforce_product_rules', 20, 3);
 
@@ -202,7 +271,8 @@ add_action('save_post_product', 'gastronom_enforce_product_rules', 20, 3);
 //    that have stock > 0 but are marked outofstock
 //    Runs once, then sets a flag so it doesn't repeat
 // ============================================================
-add_action('admin_init', function() {
+if (!function_exists('gastronom_run_stock_fix_repair_once')) {
+function gastronom_run_stock_fix_repair_once(): void {
     $fix_version = '3.3';
     if (get_option('gastronom_stock_fix_version') === $fix_version) return;
 
@@ -266,21 +336,49 @@ add_action('admin_init', function() {
         // Log for debugging
         error_log("Gastronom Stock Fix v{$fix_version}: fixed {$fixed} products stock status + visibility");
     }
-});
+}
+}
+}
+add_action('admin_init', 'gastronom_run_stock_fix_repair_once');
 
 // ============================================================
 // 6. COD FEE: +2 EUR at checkout when "Platba pri doruceni" selected
 // ============================================================
-add_action('woocommerce_cart_calculate_fees', function() {
+if (!function_exists('gastronom_add_cod_fee')) {
+function gastronom_add_cod_fee(): void {
+    if (function_exists('rca_add_cod_fee')) {
+        rca_add_cod_fee();
+        return;
+    }
+
     if (is_admin() && !defined('DOING_AJAX')) return;
     if (!is_checkout()) return;
     $chosen_payment = WC()->session->get('chosen_payment_method');
     if ($chosen_payment === 'cod') {
         WC()->cart->add_fee('Poplatok za dobierku', 2.00, false);
     }
-});
+}
+}
+add_action('woocommerce_cart_calculate_fees', 'gastronom_add_cod_fee');
 
-add_filter('woocommerce_gateway_description', function($description, $id) {
+if (!function_exists('gastronom_gateway_description')) {
+function gastronom_gateway_description($description, $id) {
+    if (function_exists('rca_current_lang')) {
+        if ($id === 'cod') {
+            return rca_current_lang() === 'ru'
+                ? 'К заказу будет добавлена доплата за наложенный платёж 2,00 €.'
+                : 'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.';
+        }
+
+        if ($id === 'bacs') {
+            return rca_current_lang() === 'ru'
+                ? 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.'
+                : 'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.';
+        }
+
+        return $description;
+    }
+
     if ($id === 'cod') {
         $description = gastronom_t(
             'К заказу будет добавлена доплата за наложенный платёж 2,00 €.',
@@ -288,9 +386,17 @@ add_filter('woocommerce_gateway_description', function($description, $id) {
         );
     }
     return $description;
-}, 10, 2);
+}
+}
+add_filter('woocommerce_gateway_description', 'gastronom_gateway_description', 10, 2);
 
-add_action('wp_footer', function() {
+if (!function_exists('gastronom_render_checkout_payment_refresh_script')) {
+function gastronom_render_checkout_payment_refresh_script(): void {
+    if (function_exists('rca_render_checkout_payment_refresh_script')) {
+        rca_render_checkout_payment_refresh_script();
+        return;
+    }
+
     if (!is_checkout()) return;
     ?>
     <script>
@@ -299,7 +405,9 @@ add_action('wp_footer', function() {
     });
     </script>
     <?php
-});
+}
+}
+add_action('wp_footer', 'gastronom_render_checkout_payment_refresh_script');
 
 // ============================================================
 // 7. VARIABLE-WEIGHT PREORDER
@@ -307,16 +415,29 @@ add_action('wp_footer', function() {
 //    Cash register is updated only after manager confirms actual weight.
 // ============================================================
 
+if (!function_exists('gastronom_weight_preorder_enabled')) {
 function gastronom_weight_preorder_enabled($product_id): bool {
     return get_post_meta((int) $product_id, '_gastronom_weight_preorder', true) === 'yes';
 }
+}
 
+if (!function_exists('gastronom_current_lang')) {
 function gastronom_current_lang(): string {
+    if (function_exists('rslh_current_lang')) {
+        return rslh_current_lang();
+    }
+
     $lang = isset($_COOKIE['gastronom_lang']) ? sanitize_key(wp_unslash($_COOKIE['gastronom_lang'])) : 'sk';
     return $lang === 'ru' ? 'ru' : 'sk';
 }
+}
 
+if (!function_exists('gastronom_order_lang')) {
 function gastronom_order_lang($order = null): string {
+    if (function_exists('rslh_order_lang')) {
+        return rslh_order_lang($order);
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -330,16 +451,65 @@ function gastronom_order_lang($order = null): string {
 
     return gastronom_current_lang();
 }
+}
 
+if (!function_exists('gastronom_tt')) {
 function gastronom_tt($order, string $ru, string $sk): string {
+    if (function_exists('rslh_tt')) {
+        return rslh_tt($order, $ru, $sk);
+    }
+
     return gastronom_order_lang($order) === 'ru' ? $ru : $sk;
 }
-
-function gastronom_t(string $ru, string $sk): string {
-    return gastronom_current_lang() === 'ru' ? $ru : $sk;
 }
 
+if (!function_exists('gastronom_t')) {
+function gastronom_t(string $ru, string $sk): string {
+    if (function_exists('rslh_t')) {
+        return rslh_t($ru, $sk);
+    }
+
+    return gastronom_current_lang() === 'ru' ? $ru : $sk;
+}
+}
+
+if (!function_exists('gastronom_locale_for_order')) {
+function gastronom_locale_for_order($order = null): string {
+    if (function_exists('rslh_locale_for_order')) {
+        return rslh_locale_for_order($order);
+    }
+
+    return gastronom_order_lang($order) === 'ru' ? 'ru_RU' : 'sk_SK';
+}
+}
+
+if (!function_exists('gastronom_with_order_locale')) {
+function gastronom_with_order_locale($order, callable $callback) {
+    if (function_exists('rslh_with_order_locale')) {
+        return rslh_with_order_locale($order, $callback);
+    }
+
+    $switched = false;
+    if (function_exists('switch_to_locale')) {
+        $switched = switch_to_locale(gastronom_locale_for_order($order));
+    }
+
+    try {
+        return $callback();
+    } finally {
+        if ($switched && function_exists('restore_previous_locale')) {
+            restore_previous_locale();
+        }
+    }
+}
+}
+
+if (!function_exists('gastronom_split_bilingual_title')) {
 function gastronom_split_bilingual_title(string $title): array {
+    if (function_exists('rslh_split_bilingual_title')) {
+        return rslh_split_bilingual_title($title);
+    }
+
     foreach ([' / ', '/ ', ' /'] as $separator) {
         if (strpos($title, $separator) !== false) {
             $parts = explode($separator, $title, 2);
@@ -361,13 +531,25 @@ function gastronom_split_bilingual_title(string $title): array {
 
     return ['sk' => trim($title), 'ru' => trim($title)];
 }
+}
 
+if (!function_exists('gastronom_localize_title')) {
 function gastronom_localize_title(string $title, string $lang): string {
+    if (function_exists('rslh_localize_title')) {
+        return rslh_localize_title($title, $lang);
+    }
+
     $parts = gastronom_split_bilingual_title($title);
     return $parts[$lang === 'ru' ? 'ru' : 'sk'] ?? trim($title);
 }
+}
 
+if (!function_exists('gastronom_localize_order_label')) {
 function gastronom_localize_order_label(string $value, string $lang): string {
+    if (function_exists('rslh_localize_order_label')) {
+        return rslh_localize_order_label($value, $lang);
+    }
+
     $value = trim(html_entity_decode(wp_strip_all_tags($value), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     if ($value === '') {
         return '';
@@ -396,18 +578,36 @@ function gastronom_localize_order_label(string $value, string $lang): string {
 
     return gastronom_localize_title($value, $lang);
 }
-
-function gastronom_weight_preorder_min_kg($product_id): float {
-    return max(0.0, (float) get_post_meta((int) $product_id, '_gastronom_weight_preorder_min_kg', true));
 }
 
+if (!function_exists('gastronom_weight_preorder_min_kg')) {
+function gastronom_weight_preorder_min_kg($product_id): float {
+    if (function_exists('rwp_min_kg')) {
+        return rwp_min_kg($product_id);
+    }
+
+    return max(0.0, (float) get_post_meta((int) $product_id, '_gastronom_weight_preorder_min_kg', true));
+}
+}
+
+if (!function_exists('gastronom_weight_preorder_max_kg')) {
 function gastronom_weight_preorder_max_kg($product_id): float {
+    if (function_exists('rwp_max_kg')) {
+        return rwp_max_kg($product_id);
+    }
+
     $max = max(0.0, (float) get_post_meta((int) $product_id, '_gastronom_weight_preorder_max_kg', true));
     $min = gastronom_weight_preorder_min_kg($product_id);
     return $max > 0 ? $max : $min;
 }
+}
 
+if (!function_exists('gastronom_weight_preorder_avg_kg')) {
 function gastronom_weight_preorder_avg_kg($product_id): float {
+    if (function_exists('rwp_avg_kg')) {
+        return rwp_avg_kg($product_id);
+    }
+
     $min = gastronom_weight_preorder_min_kg($product_id);
     $max = gastronom_weight_preorder_max_kg($product_id);
     if ($min > 0 && $max > 0) {
@@ -415,16 +615,28 @@ function gastronom_weight_preorder_avg_kg($product_id): float {
     }
     return max($min, $max, 0.0);
 }
+}
 
+if (!function_exists('gastronom_weight_preorder_price_per_kg')) {
 function gastronom_weight_preorder_price_per_kg($product_id): float {
+    if (function_exists('rwp_price_per_kg')) {
+        return rwp_price_per_kg($product_id);
+    }
+
     $product = wc_get_product($product_id);
     if (!$product) {
         return 0.0;
     }
     return (float) wc_get_price_to_display($product, ['qty' => 1]);
 }
+}
 
+if (!function_exists('gastronom_weight_preorder_reserved_qty')) {
 function gastronom_weight_preorder_reserved_qty($product_id, $exclude_order_id = 0): int {
+    if (function_exists('rwp_reserved_qty')) {
+        return rwp_reserved_qty($product_id, $exclude_order_id);
+    }
+
     $product_id = (int) $product_id;
     $exclude_order_id = (int) $exclude_order_id;
 
@@ -461,8 +673,14 @@ function gastronom_weight_preorder_reserved_qty($product_id, $exclude_order_id =
 
     return $reserved;
 }
+}
 
+if (!function_exists('gastronom_weight_preorder_piece_capacity')) {
 function gastronom_weight_preorder_piece_capacity($product_id, ?float $raw_kg = null, $exclude_order_id = 0): int {
+    if (function_exists('rwp_piece_capacity')) {
+        return rwp_piece_capacity($product_id, $raw_kg, $exclude_order_id);
+    }
+
     $product_id = (int) $product_id;
     if (!gastronom_weight_preorder_enabled($product_id)) {
         return 0;
@@ -485,8 +703,15 @@ function gastronom_weight_preorder_piece_capacity($product_id, ?float $raw_kg = 
 
     return max(0, (int) floor(($safe_kg + 0.000001) / $max_kg));
 }
+}
 
+if (!function_exists('gastronom_apply_preorder_piece_stock')) {
 function gastronom_apply_preorder_piece_stock($product_id, float $raw_kg): void {
+    if (function_exists('rwp_apply_piece_stock')) {
+        rwp_apply_piece_stock($product_id, $raw_kg);
+        return;
+    }
+
     static $running = [];
 
     $product_id = (int) $product_id;
@@ -510,8 +735,14 @@ function gastronom_apply_preorder_piece_stock($product_id, float $raw_kg): void 
 
     unset($running[$product_id]);
 }
+}
 
+if (!function_exists('gastronom_apply_dotypos_stock_to_wc_product')) {
 function gastronom_apply_dotypos_stock_to_wc_product($product, float $raw_qty): bool {
+    if (function_exists('rdsb_apply_dotypos_stock_to_preorder_product')) {
+        return rdsb_apply_dotypos_stock_to_preorder_product($product, $raw_qty);
+    }
+
     if (!$product instanceof WC_Product) {
         return false;
     }
@@ -524,8 +755,14 @@ function gastronom_apply_dotypos_stock_to_wc_product($product, float $raw_qty): 
     gastronom_apply_preorder_piece_stock($product_id, $raw_qty);
     return true;
 }
+}
 
+if (!function_exists('gastronom_resolve_dotypos_order_sync_quantity')) {
 function gastronom_resolve_dotypos_order_sync_quantity($order, $item, bool $restore = false) {
+    if (function_exists('rdsb_resolve_order_sync_quantity')) {
+        return rdsb_resolve_order_sync_quantity($order, $item, $restore);
+    }
+
     if (!$item instanceof WC_Order_Item_Product) {
         return null;
     }
@@ -543,8 +780,14 @@ function gastronom_resolve_dotypos_order_sync_quantity($order, $item, bool $rest
     // manager confirms the actual weight in the order.
     return false;
 }
+}
 
+if (!function_exists('gastronom_preorder_item_is_confirmed')) {
 function gastronom_preorder_item_is_confirmed($item): bool {
+    if (function_exists('rwp_item_is_confirmed')) {
+        return rwp_item_is_confirmed($item);
+    }
+
     if (!$item instanceof WC_Order_Item_Product) {
         return false;
     }
@@ -555,8 +798,15 @@ function gastronom_preorder_item_is_confirmed($item): bool {
 
     return $item->get_meta('_gastronom_weight_confirmed', true) === 'yes';
 }
+}
 
+if (!function_exists('gastronom_normalize_preorder_order_state')) {
 function gastronom_normalize_preorder_order_state($order): void {
+    if (function_exists('rwp_normalize_order_state')) {
+        rwp_normalize_order_state($order);
+        return;
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -600,15 +850,27 @@ function gastronom_normalize_preorder_order_state($order): void {
         $order->save();
     }
 }
+}
 
+if (!function_exists('gastronom_product_has_preorder_weight')) {
 function gastronom_product_has_preorder_weight($product): bool {
+    if (function_exists('rwp_product_has_preorder_weight')) {
+        return rwp_product_has_preorder_weight($product);
+    }
+
     if ($product instanceof WC_Product) {
         return gastronom_weight_preorder_enabled($product->get_id());
     }
     return false;
 }
+}
 
+if (!function_exists('gastronom_order_has_preorder_weight')) {
 function gastronom_order_has_preorder_weight($order): bool {
+    if (function_exists('rwp_order_has_preorder_weight')) {
+        return rwp_order_has_preorder_weight($order);
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -625,24 +887,37 @@ function gastronom_order_has_preorder_weight($order): bool {
 
     return false;
 }
+}
 
-add_filter('woocommerce_can_reduce_order_stock', function($can_reduce, $order) {
+if (!function_exists('gastronom_can_reduce_order_stock')) {
+function gastronom_can_reduce_order_stock($can_reduce, $order) {
     if (gastronom_order_has_preorder_weight($order)) {
         return false;
     }
 
     return $can_reduce;
-}, 10, 2);
+}
+}
+add_filter('woocommerce_can_reduce_order_stock', 'gastronom_can_reduce_order_stock', 10, 2);
 
-add_filter('woocommerce_can_restore_order_stock', function($can_restore, $order) {
+if (!function_exists('gastronom_can_restore_order_stock')) {
+function gastronom_can_restore_order_stock($can_restore, $order) {
     if (gastronom_order_has_preorder_weight($order)) {
         return false;
     }
 
     return $can_restore;
-}, 10, 2);
+}
+}
+add_filter('woocommerce_can_restore_order_stock', 'gastronom_can_restore_order_stock', 10, 2);
 
-add_action('woocommerce_product_options_general_product_data', function() {
+if (!function_exists('gastronom_render_product_preorder_fields')) {
+function gastronom_render_product_preorder_fields(): void {
+    if (function_exists('rpa_render_product_preorder_fields')) {
+        rpa_render_product_preorder_fields();
+        return;
+    }
+
     echo '<div class="options_group">';
     woocommerce_wp_checkbox([
         'id'          => '_gastronom_weight_preorder',
@@ -667,9 +942,17 @@ add_action('woocommerce_product_options_general_product_data', function() {
         'description' => 'Необязательно. Если пусто, будет стандартное сообщение.',
     ]);
     echo '</div>';
-});
+}
+}
+add_action('woocommerce_product_options_general_product_data', 'gastronom_render_product_preorder_fields');
 
-add_action('woocommerce_process_product_meta', function($post_id) {
+if (!function_exists('gastronom_save_product_preorder_fields')) {
+function gastronom_save_product_preorder_fields($post_id): void {
+    if (function_exists('rpa_save_product_preorder_fields')) {
+        rpa_save_product_preorder_fields($post_id);
+        return;
+    }
+
     $enabled = isset($_POST['_gastronom_weight_preorder']) ? 'yes' : 'no';
     update_post_meta($post_id, '_gastronom_weight_preorder', $enabled);
 
@@ -689,9 +972,16 @@ add_action('woocommerce_process_product_meta', function($post_id) {
         }
         gastronom_apply_preorder_piece_stock($post_id, $raw);
     }
-});
+}
+}
+add_action('woocommerce_process_product_meta', 'gastronom_save_product_preorder_fields');
 
-add_filter('woocommerce_quantity_input_args', function($args, $product) {
+if (!function_exists('gastronom_quantity_input_args')) {
+function gastronom_quantity_input_args($args, $product) {
+    if (function_exists('rpsf_quantity_input_args')) {
+        return rpsf_quantity_input_args($args, $product);
+    }
+
     if (!gastronom_product_has_preorder_weight($product)) {
         return $args;
     }
@@ -703,16 +993,30 @@ add_filter('woocommerce_quantity_input_args', function($args, $product) {
     $args['input_value'] = max(1, (int) ($args['input_value'] ?: 1));
     $args['max_value'] = max(0, gastronom_weight_preorder_piece_capacity($product->get_id()));
     return $args;
-}, 20, 2);
+}
+}
+add_filter('woocommerce_quantity_input_args', 'gastronom_quantity_input_args', 20, 2);
 
-add_filter('woocommerce_add_to_cart_quantity', function($quantity, $product_id) {
+if (!function_exists('gastronom_add_to_cart_quantity')) {
+function gastronom_add_to_cart_quantity($quantity, $product_id) {
+    if (function_exists('rpsf_add_to_cart_quantity')) {
+        return rpsf_add_to_cart_quantity($quantity, $product_id);
+    }
+
     if (!gastronom_weight_preorder_enabled($product_id)) {
         return $quantity;
     }
     return max(1, (int) round((float) $quantity));
-}, 20, 2);
+}
+}
+add_filter('woocommerce_add_to_cart_quantity', 'gastronom_add_to_cart_quantity', 20, 2);
 
-add_filter('woocommerce_add_to_cart_validation', function($passed, $product_id, $quantity) {
+if (!function_exists('gastronom_add_to_cart_validation')) {
+function gastronom_add_to_cart_validation($passed, $product_id, $quantity) {
+    if (function_exists('rpsf_add_to_cart_validation')) {
+        return rpsf_add_to_cart_validation($passed, $product_id, $quantity);
+    }
+
     if (!gastronom_weight_preorder_enabled($product_id)) {
         return $passed;
     }
@@ -728,9 +1032,17 @@ add_filter('woocommerce_add_to_cart_validation', function($passed, $product_id, 
         return false;
     }
     return true;
-}, 20, 3);
+}
+}
+add_filter('woocommerce_add_to_cart_validation', 'gastronom_add_to_cart_validation', 20, 3);
 
-add_action('woocommerce_before_calculate_totals', function($cart) {
+if (!function_exists('gastronom_before_calculate_totals')) {
+function gastronom_before_calculate_totals($cart): void {
+    if (function_exists('rpsf_before_calculate_totals')) {
+        rpsf_before_calculate_totals($cart);
+        return;
+    }
+
     if (is_admin() && !defined('DOING_AJAX')) {
         return;
     }
@@ -755,9 +1067,16 @@ add_action('woocommerce_before_calculate_totals', function($cart) {
 
         $cart_item['data']->set_price($avg * $price_per_kg);
     }
-}, 20);
+}
+}
+add_action('woocommerce_before_calculate_totals', 'gastronom_before_calculate_totals', 20);
 
-add_filter('woocommerce_get_item_data', function($item_data, $cart_item) {
+if (!function_exists('gastronom_get_item_data')) {
+function gastronom_get_item_data($item_data, $cart_item) {
+    if (function_exists('rpsf_get_item_data')) {
+        return rpsf_get_item_data($item_data, $cart_item);
+    }
+
     $product_id = !empty($cart_item['product_id']) ? (int) $cart_item['product_id'] : 0;
     if (!$product_id || !gastronom_weight_preorder_enabled($product_id)) {
         return $item_data;
@@ -786,9 +1105,17 @@ add_filter('woocommerce_get_item_data', function($item_data, $cart_item) {
         'value' => $note,
     ];
     return $item_data;
-}, 20, 2);
+}
+}
+add_filter('woocommerce_get_item_data', 'gastronom_get_item_data', 20, 2);
 
-add_action('woocommerce_single_product_summary', function() {
+if (!function_exists('gastronom_render_single_product_note')) {
+function gastronom_render_single_product_note(): void {
+    if (function_exists('rpsf_render_single_product_note')) {
+        rpsf_render_single_product_note();
+        return;
+    }
+
     global $product;
     if (!$product instanceof WC_Product || !gastronom_weight_preorder_enabled($product->get_id())) {
         return;
@@ -809,9 +1136,17 @@ add_action('woocommerce_single_product_summary', function() {
     echo '<div style="margin-bottom:6px;">' . esc_html(gastronom_t('Продаётся поштучно. Примерный вес одной штуки:', 'Predáva sa po kusoch. Približná hmotnosť jedného kusa:')) . ' <strong>' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</strong>.</div>';
     echo '<div>' . esc_html($note) . '</div>';
     echo '</div>';
-}, 25);
+}
+}
+add_action('woocommerce_single_product_summary', 'gastronom_render_single_product_note', 25);
 
-add_action('woocommerce_before_cart', function() {
+if (!function_exists('gastronom_render_cart_notice')) {
+function gastronom_render_cart_notice(): void {
+    if (function_exists('rpsf_render_cart_notice')) {
+        rpsf_render_cart_notice();
+        return;
+    }
+
     if (!WC()->cart) {
         return;
     }
@@ -822,9 +1157,16 @@ add_action('woocommerce_before_cart', function() {
             break;
         }
     }
-}, 6);
+}
+}
+add_action('woocommerce_before_cart', 'gastronom_render_cart_notice', 6);
 
-add_filter('woocommerce_available_payment_gateways', function($gateways) {
+if (!function_exists('gastronom_available_payment_gateways')) {
+function gastronom_available_payment_gateways($gateways) {
+    if (function_exists('rpsf_available_payment_gateways')) {
+        return rpsf_available_payment_gateways($gateways);
+    }
+
     if (is_admin()) {
         return $gateways;
     }
@@ -888,9 +1230,16 @@ add_filter('woocommerce_available_payment_gateways', function($gateways) {
     }
 
     return $gateways;
-}, 20);
+}
+}
+add_filter('woocommerce_available_payment_gateways', 'gastronom_available_payment_gateways', 20);
 
-add_filter('woocommerce_get_price_html', function($price, $product) {
+if (!function_exists('gastronom_price_html')) {
+function gastronom_price_html($price, $product) {
+    if (function_exists('rpsf_price_html')) {
+        return rpsf_price_html($price, $product);
+    }
+
     if (!gastronom_product_has_preorder_weight($product)) {
         return $price;
     }
@@ -898,17 +1247,33 @@ add_filter('woocommerce_get_price_html', function($price, $product) {
         return $price;
     }
     return $price . ' <span class="gls-price-unit">/ kg</span>';
-}, 20, 2);
+}
+}
+add_filter('woocommerce_get_price_html', 'gastronom_price_html', 20, 2);
 
-add_action('woocommerce_checkout_create_order', function($order) {
+if (!function_exists('gastronom_checkout_create_order')) {
+function gastronom_checkout_create_order($order): void {
+    if (function_exists('rpsf_checkout_create_order')) {
+        rpsf_checkout_create_order($order);
+        return;
+    }
+
     if (!$order instanceof WC_Order) {
         return;
     }
 
     $order->update_meta_data('_gastronom_lang', gastronom_current_lang());
-}, 20, 1);
+}
+}
+add_action('woocommerce_checkout_create_order', 'gastronom_checkout_create_order', 20, 1);
 
-add_action('woocommerce_checkout_create_order_line_item', function($item, $cart_item_key, $values, $order) {
+if (!function_exists('gastronom_checkout_create_order_line_item')) {
+function gastronom_checkout_create_order_line_item($item, $cart_item_key, $values, $order): void {
+    if (function_exists('rpsf_checkout_create_order_line_item')) {
+        rpsf_checkout_create_order_line_item($item, $cart_item_key, $values, $order);
+        return;
+    }
+
     $product_id = !empty($values['product_id']) ? (int) $values['product_id'] : 0;
     if (!$product_id || !gastronom_weight_preorder_enabled($product_id)) {
         return;
@@ -925,9 +1290,16 @@ add_action('woocommerce_checkout_create_order_line_item', function($item, $cart_
     $item->add_meta_data('_gastronom_estimated_weight_kg', $avg * (int) $item->get_quantity(), true);
     $item->add_meta_data('_gastronom_price_per_kg', $price_per_kg, true);
     $item->add_meta_data('_gastronom_weight_confirmed', 'no', true);
-}, 20, 4);
+}
+}
+add_action('woocommerce_checkout_create_order_line_item', 'gastronom_checkout_create_order_line_item', 20, 4);
 
+if (!function_exists('gastronom_order_requires_weight_confirmation')) {
 function gastronom_order_requires_weight_confirmation($order): bool {
+    if (function_exists('rwp_order_requires_confirmation')) {
+        return rwp_order_requires_confirmation($order);
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -942,7 +1314,9 @@ function gastronom_order_requires_weight_confirmation($order): bool {
     }
     return false;
 }
+}
 
+if (!function_exists('gastronom_reserve_preorder_site_stock')) {
 function gastronom_reserve_preorder_site_stock($order): void {
     if (is_numeric($order)) {
         $order = wc_get_order($order);
@@ -975,7 +1349,9 @@ function gastronom_reserve_preorder_site_stock($order): void {
     $order->update_meta_data('_gastronom_preorder_site_reserved', 'yes');
     $order->save();
 }
+}
 
+if (!function_exists('gastronom_restore_preorder_site_stock')) {
 function gastronom_restore_preorder_site_stock($order): void {
     if (is_numeric($order)) {
         $order = wc_get_order($order);
@@ -1011,39 +1387,18 @@ function gastronom_restore_preorder_site_stock($order): void {
     $order->update_meta_data('_gastronom_preorder_site_restored', 'yes');
     $order->save();
 }
-
-function gastronom_send_preorder_created_emails($order): void {
-    if (is_numeric($order)) {
-        $order = wc_get_order($order);
-    }
-    if (!$order instanceof WC_Order) {
-        return;
-    }
-    if (!gastronom_order_requires_weight_confirmation($order)) {
-        return;
-    }
-    if ($order->get_meta('_gastronom_preorder_created_emails_sent', true) === 'yes') {
-        return;
-    }
-
-    $mailer = WC()->mailer();
-    $emails = $mailer ? $mailer->get_emails() : [];
-
-    foreach ($emails as $email) {
-        if ($email instanceof WC_Email_New_Order) {
-            $email->trigger($order->get_id(), $order);
-        }
-        if ($email instanceof WC_Email_Customer_On_Hold_Order) {
-            $email->trigger($order->get_id(), $order);
-        }
-    }
-
-    $order->update_meta_data('_gastronom_preorder_created_emails_sent', 'yes');
-    $order->update_meta_data('_gastronom_preorder_created_emails_sent_at', current_time('mysql'));
-    $order->save();
 }
 
-add_action('woocommerce_checkout_order_processed', function($order_id, $posted_data, $order) {
+if (!function_exists('gastronom_send_preorder_created_emails')) {
+function gastronom_send_preorder_created_emails($order): void {
+    if (function_exists('rpn_send_preorder_created_emails')) {
+        rpn_send_preorder_created_emails($order);
+    }
+}
+}
+
+if (!function_exists('gastronom_prepare_checkout_processed_preorder')) {
+function gastronom_prepare_checkout_processed_preorder($order_id, $posted_data, $order): void {
     if (!$order instanceof WC_Order || !gastronom_order_requires_weight_confirmation($order)) {
         return;
     }
@@ -1078,9 +1433,12 @@ add_action('woocommerce_checkout_order_processed', function($order_id, $posted_d
 
     gastronom_reserve_preorder_site_stock($order);
     gastronom_send_preorder_created_emails($order);
-}, 20, 3);
+}
+}
+add_action('woocommerce_checkout_order_processed', 'gastronom_prepare_checkout_processed_preorder', 20, 3);
 
-add_action('init', function() {
+if (!function_exists('gastronom_register_await_weight_status')) {
+function gastronom_register_await_weight_status(): void {
     register_post_status('wc-await-weight', [
         'label'                     => 'На уточнении веса',
         'public'                    => true,
@@ -1088,9 +1446,12 @@ add_action('init', function() {
         'show_in_admin_all_list'    => true,
         'label_count'               => _n_noop('На уточнении веса <span class="count">(%s)</span>', 'На уточнении веса <span class="count">(%s)</span>'),
     ]);
-});
+}
+}
+add_action('init', 'gastronom_register_await_weight_status');
 
-add_filter('wc_order_statuses', function($statuses) {
+if (!function_exists('gastronom_inject_await_weight_status')) {
+function gastronom_inject_await_weight_status($statuses) {
     $new = [];
     foreach ($statuses as $key => $label) {
         $new[$key] = $label;
@@ -1099,9 +1460,17 @@ add_filter('wc_order_statuses', function($statuses) {
         }
     }
     return $new;
-});
+}
+}
+add_filter('wc_order_statuses', 'gastronom_inject_await_weight_status');
 
+if (!function_exists('gastronom_sync_confirmed_preorder_items_to_dotypos')) {
 function gastronom_sync_confirmed_preorder_items_to_dotypos($order): void {
+    if (function_exists('rdsb_sync_confirmed_preorder_items')) {
+        rdsb_sync_confirmed_preorder_items($order);
+        return;
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -1149,8 +1518,15 @@ function gastronom_sync_confirmed_preorder_items_to_dotypos($order): void {
         $item->save();
     }
 }
+}
 
+if (!function_exists('gastronom_restore_confirmed_preorder_items_to_dotypos')) {
 function gastronom_restore_confirmed_preorder_items_to_dotypos($order): void {
+    if (function_exists('rdsb_restore_confirmed_preorder_items')) {
+        rdsb_restore_confirmed_preorder_items($order);
+        return;
+    }
+
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -1198,200 +1574,96 @@ function gastronom_restore_confirmed_preorder_items_to_dotypos($order): void {
         $item->save();
     }
 }
+}
 
 add_action('woocommerce_order_status_cancelled', 'gastronom_restore_confirmed_preorder_items_to_dotypos', 20);
 add_action('woocommerce_order_status_refunded', 'gastronom_restore_confirmed_preorder_items_to_dotypos', 20);
 
+if (!function_exists('gastronom_get_context_order_for_frontend_language')) {
 function gastronom_get_context_order_for_frontend_language() {
-    if (is_admin() || !function_exists('wc_get_order')) {
-        return null;
+    if (function_exists('ropl_context_order')) {
+        return ropl_context_order();
     }
-
-    $order_id = 0;
-
-    if (isset($_GET['order-pay'])) {
-        $order_id = (int) wp_unslash($_GET['order-pay']);
-    } elseif (isset($_GET['order-received'])) {
-        $order_id = (int) wp_unslash($_GET['order-received']);
-    } elseif (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('view-order')) {
-        global $wp;
-        $order_id = isset($wp->query_vars['view-order']) ? (int) $wp->query_vars['view-order'] : 0;
-    }
-
-    if ($order_id <= 0) {
-        return null;
-    }
-
-    $order = wc_get_order($order_id);
-    return $order instanceof WC_Order ? $order : null;
+    return null;
+}
 }
 
+if (!function_exists('gastronom_normalize_order_page_html')) {
 function gastronom_normalize_order_page_html(string $html, string $lang): string {
-    $is_pay = function_exists('is_checkout_pay_page') && is_checkout_pay_page();
-    $is_view_order = function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('view-order');
-    $is_order_received = function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-received');
-
-    if ($lang === 'ru') {
-        $replace = [
-            'Môj Účet' => 'Мой аккаунт',
-            'Môj účet' => 'Мой аккаунт',
-            'Doprava' => 'Доставка',
-            'Kontakt' => 'Контакты',
-            'Kontakty' => 'Контакты',
-            'Prihláste sa do svojho účtu, aby ste mohli pokračovať na platbu.' => 'Пожалуйста, войдите в свою учётную запись, чтобы перейти к оплате.',
-            'Používateľské meno alebo e-mail' => 'Имя пользователя или Email',
-            'Heslo' => 'Пароль',
-            'Zapamätať si ma' => 'Запомнить меня',
-            'Prihlásiť sa' => 'Войти',
-            'Zabudli ste heslo?' => 'Забыли пароль?',
-            'Fakturačná adresa' => 'Платёжный адрес',
-            'Informácie o objednávke' => 'Информация о заказе',
-            'Skutočná hmotnosť' => 'Фактический вес',
-            'Osobné vyzdvihnutie' => 'Самовывоз',
-            'Bankový prevod' => 'Банковский перевод',
-            'Platba po potvrdení hmotnosti' => 'Оплата после подтверждения веса',
-            'Platba kartou' => 'Оплата картой',
-            'Medzisúčet' => 'Подытог',
-            'Doprava:' => 'Доставка:',
-            'Spôsob platby:' => 'Способ оплаты:',
-            'Celkom:' => 'Итого:',
-            'Zaplatiť' => 'Оплатить',
-            'Zrušiť' => 'Отмена',
-            '— ALEBO —' => '— ИЛИ —',
-            'ALEBO' => 'ИЛИ',
-            'Prečítal(a) som si a súhlasím s' => 'Я прочитал(а) и принимаю',
-            'obchodné podmienky' => 'правила и условия',
-            'Objednávka #' => 'Заказ №',
-        ];
-
-        if ($is_pay) {
-            $replace['Objednávka'] = 'Оплатить заказ';
-        }
-
-        if ($is_view_order || $is_order_received) {
-            $replace['Objednávka'] = 'Заказ';
-        }
-
-        return strtr($html, $replace);
+    if (function_exists('ropl_normalize_order_page_html')) {
+        return ropl_normalize_order_page_html($html, $lang);
     }
-
-    $replace = [
-        'Мой Аккаунт' => 'Môj účet',
-        'Мой аккаунт' => 'Môj účet',
-        'Моя учётная запись' => 'Môj účet',
-        'Главная' => 'Domov',
-        'Доставка' => 'Doprava',
-        'Контакты' => 'Kontakt',
-        'Пожалуйста, войдите в свою учётную запись, чтобы перейти к оплате.' => 'Prihláste sa do svojho účtu, aby ste mohli pokračovať na platbu.',
-        'Пожалуйста войдите в вашу учетную запись ниже чтобы продожить к платежной форме.' => 'Prihláste sa do svojho účtu, aby ste mohli pokračovať na platbu.',
-        'Имя пользователя или Email' => 'Používateľské meno alebo e-mail',
-        'Пароль' => 'Heslo',
-        'Запомнить меня' => 'Zapamätať si ma',
-        'Войти' => 'Prihlásiť sa',
-        'Забыли пароль?' => 'Zabudli ste heslo?',
-        'Платёжный адрес' => 'Fakturačná adresa',
-        'Информация о заказе' => 'Informácie o objednávke',
-        'Фактический вес' => 'Skutočná hmotnosť',
-        'Самовывоз' => 'Osobné vyzdvihnutie',
-        'Банковский перевод' => 'Bankový prevod',
-        'Оплата после подтверждения веса' => 'Platba po potvrdení hmotnosti',
-        'Оплата картой' => 'Platba kartou',
-        'Подытог' => 'Medzisúčet',
-        'Доставка:' => 'Doprava:',
-        'Способ оплаты:' => 'Spôsob platby:',
-        'Итого:' => 'Celkom:',
-        'Оплатить' => 'Zaplatiť',
-        'Отмена' => 'Zrušiť',
-        '— ИЛИ —' => '— ALEBO —',
-        'ИЛИ' => 'ALEBO',
-        'Я прочитал(а) и принимаю' => 'Prečítal(a) som si a súhlasím s',
-        'правила и условия' => 'obchodné podmienky',
-        'Заказ №' => 'Objednávka č.',
-    ];
-
-    if ($is_pay) {
-        $replace['Оплатить заказ'] = 'Zaplatiť objednávku';
-        $replace['Заказ'] = 'Objednávka';
-    }
-
-    if ($is_view_order || $is_order_received) {
-        $replace['Заказ'] = 'Objednávka';
-    }
-
-    return strtr($html, $replace);
+    return $html;
+}
 }
 
-add_action('wp_head', function() {
-    $order = gastronom_get_context_order_for_frontend_language();
-    if (!$order instanceof WC_Order) {
-        return;
+if (!function_exists('gastronom_localize_order_item_name')) {
+function gastronom_localize_order_item_name($item_name, $item) {
+    if (function_exists('ropl_localize_order_item_name')) {
+        return ropl_localize_order_item_name($item_name, $item);
     }
 
-    $lang = gastronom_order_lang($order);
-    if ($lang !== 'ru' && $lang !== 'sk') {
-        return;
-    }
-
-    echo "<script>window.gastronomForcedOrderLang=" . wp_json_encode($lang) . ";</script>\n";
-}, 1);
-
-add_action('template_redirect', function() {
-    if (is_admin()) {
-        return;
+    if (is_admin() || !($item instanceof WC_Order_Item_Product)) {
+        return $item_name;
     }
 
     $order = gastronom_get_context_order_for_frontend_language();
     if (!$order instanceof WC_Order) {
-        return;
+        return $item_name;
     }
 
     $lang = gastronom_order_lang($order);
     if ($lang !== 'ru' && $lang !== 'sk') {
-        return;
+        return $item_name;
     }
 
-    $current_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
-    if ($current_lang === $lang) {
-        return;
+    $original_name = (string) $item->get_name();
+    $localized_name = gastronom_localize_title($original_name, $lang);
+
+    if ($localized_name === $original_name || $localized_name === '') {
+        return $item_name;
     }
 
-    $scheme = is_ssl() ? 'https://' : 'http://';
-    $host = isset($_SERVER['HTTP_HOST']) ? wp_unslash($_SERVER['HTTP_HOST']) : '';
-    $uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
-    if ($host === '' || $uri === '') {
-        return;
+    $item_name = str_replace($original_name, esc_html($localized_name), $item_name);
+
+    if ($item_name === '') {
+        return esc_html($localized_name);
     }
 
-    $target = add_query_arg('lang', $lang, $scheme . $host . $uri);
-    wp_safe_redirect($target, 302);
-    exit;
-}, 1);
+    return $item_name;
+}
+}
+add_filter('woocommerce_order_item_name', 'gastronom_localize_order_item_name', 20, 2);
 
-add_action('template_redirect', function() {
-    if (is_admin()) {
-        return;
+if (!function_exists('gastronom_render_forced_order_lang_marker')) {
+function gastronom_render_forced_order_lang_marker(): void {
+    if (function_exists('ropl_render_forced_order_lang_marker')) {
+        ropl_render_forced_order_lang_marker();
     }
+}
+}
+add_action('wp_head', 'gastronom_render_forced_order_lang_marker', 1);
 
-    $order = gastronom_get_context_order_for_frontend_language();
-    if (!$order instanceof WC_Order) {
-        return;
+if (!function_exists('gastronom_maybe_redirect_context_order_lang')) {
+function gastronom_maybe_redirect_context_order_lang(): void {
+    if (function_exists('ropl_maybe_redirect_context_order_lang')) {
+        ropl_maybe_redirect_context_order_lang();
     }
+}
+}
+add_action('template_redirect', 'gastronom_maybe_redirect_context_order_lang', 1);
 
-    $lang = gastronom_order_lang($order);
-    if ($lang !== 'ru' && $lang !== 'sk') {
-        return;
+if (!function_exists('gastronom_start_order_page_buffer')) {
+function gastronom_start_order_page_buffer(): void {
+    if (function_exists('ropl_start_order_page_buffer')) {
+        ropl_start_order_page_buffer();
     }
+}
+}
+add_action('template_redirect', 'gastronom_start_order_page_buffer', 20);
 
-    ob_start(static function($html) use ($lang) {
-        if (!is_string($html) || $html === '') {
-            return $html;
-        }
-
-        return gastronom_normalize_order_page_html($html, $lang);
-    });
-}, 20);
-
-add_action('woocommerce_order_item_meta_end', function($item_id, $item, $order, $plain_text) {
+if (!function_exists('gastronom_render_order_item_actual_weight')) {
+function gastronom_render_order_item_actual_weight($item_id, $item, $order, $plain_text): void {
     if ($plain_text) {
         return;
     }
@@ -1416,348 +1688,80 @@ add_action('woocommerce_order_item_meta_end', function($item_id, $item, $order, 
     echo '<div class="gastronom-order-item-weight" style="margin-top:4px;color:#475467;font-size:13px;">'
         . esc_html($label . ': ' . wc_format_localized_decimal($actual_weight, 2) . ' kg')
         . '</div>';
-}, 10, 4);
+}
+}
+add_action('woocommerce_order_item_meta_end', 'gastronom_render_order_item_actual_weight', 10, 4);
 
+if (!function_exists('gastronom_send_weight_confirmation_email')) {
 function gastronom_send_weight_confirmation_email($order): void {
-    if (is_numeric($order)) {
-        $order = wc_get_order($order);
-    }
-    if (!$order instanceof WC_Order) {
-        return;
-    }
-
-    $to = sanitize_email((string) $order->get_billing_email());
-    if ($to === '') {
-        return;
-    }
-
-    $lang = gastronom_order_lang($order);
-    $subject = $lang === 'ru'
-        ? sprintf('Уточнён вес заказа №%s', $order->get_order_number())
-        : sprintf('Hmotnosť objednávky č. %s bola upresnená', $order->get_order_number());
-
-    $intro = $lang === 'ru'
-        ? 'Мы уточнили фактический вес товаров в вашем заказе. Итоговая сумма заказа обновлена.'
-        : 'Upresnili sme skutočnú hmotnosť tovarov vo vašej objednávke. Konečná suma objednávky bola aktualizovaná.';
-
-    $payment_method = (string) $order->get_payment_method();
-    $cta = $lang === 'ru'
-        ? 'Итоговая сумма обновлена. Ниже указан следующий шаг оплаты по выбранному способу.'
-        : 'Konečná suma bola aktualizovaná. Nižšie nájdete ďalší krok platby podľa zvoleného spôsobu.';
-
-    $details_label = $lang === 'ru' ? 'Информация о заказе' : 'Informácie o objednávke';
-    $shipping_title = gastronom_localize_order_label((string) $order->get_shipping_method(), $lang);
-    $payment_title = gastronom_localize_order_label((string) $order->get_payment_method_title(), $lang);
-    $details_rows = [
-        [$lang === 'ru' ? 'Номер заказа' : 'Číslo objednávky', '#' . $order->get_order_number()],
-    ];
-    if ($shipping_title !== '') {
-        $details_rows[] = [$lang === 'ru' ? 'Доставка' : 'Doprava', $shipping_title];
-    }
-    if ($payment_title !== '') {
-        $details_rows[] = [$lang === 'ru' ? 'Способ оплаты' : 'Spôsob platby', $payment_title];
-    }
-    $details_rows[] = [$lang === 'ru' ? 'Итоговая сумма' : 'Konečná suma', wp_strip_all_tags($order->get_formatted_order_total())];
-
-    $details_html = '<p><strong>' . esc_html($details_label) . '</strong></p>';
-    $details_html .= '<table style="width:100%;border-collapse:collapse;margin:8px 0 16px;">';
-    foreach ($details_rows as $row) {
-        $details_html .= '<tr>';
-        $details_html .= '<td style="padding:8px 8px 8px 0;border-bottom:1px solid #f1f5f9;color:#344054;width:38%;"><strong>' . esc_html($row[0]) . '</strong></td>';
-        $details_html .= '<td style="padding:8px 0;border-bottom:1px solid #f1f5f9;color:#101828;">' . esc_html($row[1]) . '</td>';
-        $details_html .= '</tr>';
-    }
-    $details_html .= '</table>';
-
-    $items_label = $lang === 'ru' ? 'Состав заказа' : 'Obsah objednávky';
-    $items_html = '<p><strong>' . esc_html($items_label) . '</strong></p>';
-    $items_html .= '<table style="width:100%;border-collapse:collapse;margin:8px 0 16px;">';
-    $items_html .= '<thead><tr>';
-    $items_html .= '<th style="text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;">' . esc_html($lang === 'ru' ? 'Товар' : 'Tovar') . '</th>';
-    $items_html .= '<th style="text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;">' . esc_html($lang === 'ru' ? 'Кол-во' : 'Množstvo') . '</th>';
-    $items_html .= '<th style="text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;">' . esc_html($lang === 'ru' ? 'Фактический вес' : 'Skutočná hmotnosť') . '</th>';
-    $items_html .= '<th style="text-align:left;padding:8px;border-bottom:1px solid #e5e7eb;">' . esc_html($lang === 'ru' ? 'Сумма' : 'Suma') . '</th>';
-    $items_html .= '</tr></thead><tbody>';
-    foreach ($order->get_items('line_item') as $item) {
-        $name = gastronom_localize_title(wp_strip_all_tags($item->get_name()), $lang);
-        $qty = (int) $item->get_quantity();
-        $line_total = wp_strip_all_tags(wc_price((float) $item->get_total(), ['currency' => $order->get_currency()]));
-        $weight_cell = '—';
-        if ($item->get_meta('_gastronom_weight_preorder', true) === 'yes') {
-            $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
-            if ($actual_weight > 0) {
-                $weight_cell = wc_format_localized_decimal($actual_weight, 2) . ' kg';
-            }
-        }
-        $items_html .= '<tr>';
-        $items_html .= '<td style="padding:8px;border-bottom:1px solid #f1f5f9;">' . esc_html($name) . '</td>';
-        $items_html .= '<td style="padding:8px;border-bottom:1px solid #f1f5f9;">' . esc_html((string) $qty) . '</td>';
-        $items_html .= '<td style="padding:8px;border-bottom:1px solid #f1f5f9;">' . esc_html($weight_cell) . '</td>';
-        $items_html .= '<td style="padding:8px;border-bottom:1px solid #f1f5f9;">' . esc_html($line_total) . '</td>';
-        $items_html .= '</tr>';
-    }
-    $items_html .= '</tbody></table>';
-
-    $total_label = $lang === 'ru' ? 'Новая сумма заказа' : 'Nová suma objednávky';
-    $view_label = $lang === 'ru' ? 'Посмотреть заказ' : 'Zobraziť objednávku';
-    $view_url = $order->get_view_order_url();
-    $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
-    $payment_html = '';
-
-    if ($payment_method === 'cod') {
-        $payment_html = '<p>' . esc_html($lang === 'ru'
-            ? 'Вы выбрали оплату при получении. Дополнительно оплачивать заказ сейчас не нужно.'
-            : 'Zvolili ste platbu pri prevzatí. Objednávku teraz nemusíte dodatočne platiť.') . '</p>';
-    } else {
-        $pay_url = $order->get_checkout_payment_url();
-        if (!empty($pay_url)) {
-            $payment_html = '<p>' . esc_html($lang === 'ru'
-                ? 'Перейдите по ссылке ниже, чтобы оплатить заказ по обновлённой сумме.'
-                : 'Prejdite na odkaz nižšie a uhraďte objednávku podľa aktualizovanej sumy.') . '</p>'
-                . '<p><a href="' . esc_url($pay_url) . '" style="display:inline-block;padding:10px 16px;background:#067c36;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($pay_label) . '</a></p>';
-        }
-    }
-
-    $message = '<p>' . esc_html($intro) . '</p>'
-        . $details_html
-        . $items_html
-        . '<p><strong>' . esc_html($total_label) . ':</strong> ' . wp_kses_post($order->get_formatted_order_total()) . '</p>'
-        . '<p>' . esc_html($cta) . '</p>'
-        . $payment_html
-        . '<p><a href="' . esc_url($view_url) . '" style="display:inline-block;padding:10px 16px;background:#294c7a;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($view_label) . '</a></p>';
-
-    $sent = wc_mail($to, $subject, $message);
-    if ($sent) {
-        $order->update_meta_data('_gastronom_weight_confirmation_email_sent_at', current_time('mysql'));
-        $order->update_meta_data('_gastronom_weight_confirmation_email_to', $to);
-        $order->save();
+    if (function_exists('rpn_send_weight_confirmation_email')) {
+        rpn_send_weight_confirmation_email($order);
     }
 }
+}
 
+if (!function_exists('gastronom_mark_weight_confirmed_order_ready')) {
 function gastronom_mark_weight_confirmed_order_ready($order): void {
-    if (is_numeric($order)) {
-        $order = wc_get_order($order);
+    if (function_exists('rpn_mark_weight_confirmed_order_ready')) {
+        rpn_mark_weight_confirmed_order_ready($order);
     }
-    if (!$order instanceof WC_Order) {
-        return;
-    }
-
-    gastronom_normalize_preorder_order_state($order);
-
-    if (gastronom_order_requires_weight_confirmation($order)) {
-        return;
-    }
-
-    $order->update_meta_data('_gastronom_requires_weight_confirmation', 'no');
-    $order->save();
-
-    if ($order->get_status() === 'await-weight') {
-        $next_status = $order->get_payment_method() === 'cod' ? 'on-hold' : 'pending';
-        $note = $order->get_payment_method() === 'cod'
-            ? gastronom_tt($order, 'Фактический вес подтверждён. Ожидание оплаты при получении.', 'Skutočná hmotnosť bola potvrdená. Čaká sa na platbu pri doručení.')
-            : gastronom_tt($order, 'Фактический вес подтверждён. Ожидание онлайн-оплаты.', 'Skutočná hmotnosť bola potvrdená. Čaká sa na online platbu.');
-        $order->update_status($next_status, $note, true);
-    }
-
-    gastronom_send_weight_confirmation_email($order);
+}
 }
 
+if (!function_exists('gastronom_render_weight_confirmation_box')) {
 function gastronom_render_weight_confirmation_box($order_or_post): void {
-    $order = $order_or_post instanceof WP_Post ? wc_get_order($order_or_post->ID) : $order_or_post;
-    if (!$order instanceof WC_Order) {
-        echo '<p>Заказ не найден.</p>';
-        return;
-    }
-
-    $has_items = false;
-    wp_nonce_field('gastronom_weight_confirmation', 'gastronom_weight_confirmation_nonce');
-    echo '<input type="hidden" name="gastronom_weight_order_id" value="' . esc_attr((string) $order->get_id()) . '">';
-    $status_label = wc_get_order_status_name($order->get_status());
-
-    foreach ($order->get_items('line_item') as $item_id => $item) {
-        if ($item->get_meta('_gastronom_weight_preorder', true) !== 'yes') {
-            continue;
-        }
-        $has_items = true;
-        $product = $item->get_product();
-        $title = $product ? $product->get_name() : $item->get_name();
-        $qty = (int) $item->get_quantity();
-        $min = (float) $item->get_meta('_gastronom_weight_min_kg', true);
-        $max = (float) $item->get_meta('_gastronom_weight_max_kg', true);
-        $actual = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
-        $confirmed = $item->get_meta('_gastronom_weight_confirmed', true) === 'yes';
-
-        echo '<div style="margin:0 0 12px;padding:12px;border:1px solid #dcdcde;border-radius:10px;background:#fff;">';
-        echo '<div style="font-weight:600;line-height:1.35;margin-bottom:6px;">' . esc_html($title) . '</div>';
-        echo '<div style="margin-bottom:8px;color:#50575e;">' . esc_html((string) $qty) . ' шт. · ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
-        echo '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">';
-        echo '<input type="number" step="0.01" min="0" placeholder="0.37 кг" name="gastronom_actual_weight[' . esc_attr((string) $item_id) . ']" value="' . esc_attr($actual > 0 ? (string) $actual : '') . '" style="width:120px;">';
-        echo '<button type="button" class="button button-primary gastronom-confirm-weight-button">Подтвердить вес</button>';
-        echo '</div>';
-        echo '<div style="margin-top:8px;color:#50575e;">Статус: <strong>' . esc_html($status_label) . '</strong></div>';
-        if ($confirmed) {
-            echo '<div style="margin-top:6px;color:#067c36;">Вес подтверждён</div>';
-        }
-        echo '</div>';
-    }
-
-    if (!$has_items) {
-        echo '<p>В этом заказе нет товаров с предзаказом по весу.</p>';
-        return;
+    if (function_exists('rpa_render_weight_confirmation_box')) {
+        rpa_render_weight_confirmation_box($order_or_post);
     }
 }
+}
 
+if (!function_exists('gastronom_order_screen_ids')) {
 function gastronom_order_screen_ids(): array {
-    $ids = ['shop_order', 'woocommerce_page_wc-orders'];
-    if (function_exists('wc_get_page_screen_id')) {
-        $ids[] = wc_get_page_screen_id('shop-order');
+    if (function_exists('rpa_order_screen_ids')) {
+        return rpa_order_screen_ids();
     }
-    return array_values(array_unique(array_filter($ids)));
+    return [];
+}
 }
 
-add_action('admin_footer', function() {
+if (!function_exists('gastronom_admin_footer_hook')) {
+function gastronom_admin_footer_hook(): void {
     $screen = function_exists('get_current_screen') ? get_current_screen() : null;
     $screen_id = $screen && isset($screen->id) ? (string) $screen->id : '';
     if (!in_array($screen_id, gastronom_order_screen_ids(), true)) {
         return;
     }
-    ?>
-    <style>
-    #woocommerce-order-notes,
-    .woocommerce-order-notes {
-        display: none !important;
+    if (function_exists('rpa_render_order_admin_footer')) {
+        rpa_render_order_admin_footer();
     }
-    </style>
-    <script>
-    function gastronomHideClosestContainer(node) {
-        if (!node) return;
-        const selectors = [
-            '.postbox',
-            '.components-panel__body',
-            '.components-card',
-            '.wc-orders__order-preview',
-            '.wc-orders__order-panel',
-            '.woocommerce-layout__main section',
-            '.woocommerce-layout__main .components-flex',
-            '.woocommerce-layout__main .components-card',
-            '.woocommerce-layout__main .components-panel__body',
-            '.misc-pub-section'
+}
+}
+add_action('admin_footer', 'gastronom_admin_footer_hook');
+
+if (!function_exists('gastronom_remove_hidden_meta_boxes')) {
+function gastronom_remove_hidden_meta_boxes(): void {
+    $hide_ids = function_exists('rpa_hidden_meta_box_ids')
+        ? rpa_hidden_meta_box_ids()
+        : [
+            'tsseph_meta_box',
+            'woocommerce-order-actions',
+            'woocommerce-order-notes',
+            'gls_shipping_info_meta_box',
+            'gastronom-weight-confirmation',
         ];
-        const container = node.closest(selectors.join(', '));
-        if (container) {
-            container.style.display = 'none';
-        }
-    }
-
-    function gastronomHideOrderBoxes() {
-        const titlesToHide = [
-            'Доступные действия',
-            'Order actions',
-            'Actions',
-            'ePodaci',
-            'GLS shipping info',
-            'Order notes',
-            'Заметки к заказу',
-            'Poznámky k objednávke'
-        ];
-
-        document.querySelectorAll('.postbox, .components-panel__body, .components-card, .woocommerce-layout__main *').forEach(function(box) {
-            const heading = box.querySelector && box.querySelector('.hndle, .postbox-header h2, .postbox-header, h1, h2, h3, h4, button, summary, .components-panel__body-title, .components-card__header');
-            if (!heading) return;
-            const text = (heading.textContent || '').trim();
-            if (!text) return;
-            if (titlesToHide.some(function(title) { return text === title || text.indexOf(title) !== -1; })) {
-                gastronomHideClosestContainer(heading);
-            }
-        });
-
-        document.querySelectorAll('h1, h2, h3, h4, button, summary, span, div').forEach(function(el) {
-            const text = (el.textContent || '').trim();
-            if (!text) return;
-            if (titlesToHide.some(function(title) { return text === title || text.indexOf(title) !== -1; })) {
-                gastronomHideClosestContainer(el);
-            }
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', gastronomHideOrderBoxes);
-    setTimeout(gastronomHideOrderBoxes, 300);
-    setTimeout(gastronomHideOrderBoxes, 1000);
-    setTimeout(gastronomHideOrderBoxes, 2500);
-
-    const gastronomAdminObserver = new MutationObserver(function() {
-        gastronomHideOrderBoxes();
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        if (document.body) {
-            gastronomAdminObserver.observe(document.body, {childList: true, subtree: true});
-        }
-    });
-
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.gastronom-confirm-weight-button');
-        if (!btn) return;
-        e.preventDefault();
-
-        const box = btn.closest('.gastronom-inline-weight-box');
-        if (!box || !window.ajaxurl) return;
-
-        const nonceField = box.querySelector('input[name="gastronom_weight_confirmation_nonce"]');
-        const orderField = box.querySelector('input[name="gastronom_weight_order_id"]');
-        if (!nonceField || !orderField) return;
-
-        const params = new URLSearchParams();
-        params.set('action', 'gastronom_confirm_weight');
-        params.set('nonce', nonceField.value);
-        params.set('order_id', orderField.value);
-
-        box.querySelectorAll('input[name^="gastronom_actual_weight["]').forEach(function(input) {
-            params.append(input.name, input.value || '');
-        });
-
-        btn.disabled = true;
-        fetch(window.ajaxurl, {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
-            body: params.toString()
-        }).then(function(res) {
-            return res.json();
-        }).then(function(res) {
-            if (!res || !res.success) {
-                const msg = res && res.data && res.data.message ? res.data.message : 'Не удалось подтвердить вес.';
-                alert(msg);
-                btn.disabled = false;
-                return;
-            }
-            window.location.reload();
-        }).catch(function() {
-            alert('Не удалось подтвердить вес.');
-            btn.disabled = false;
-        });
-    });
-
-    </script>
-    <?php
-});
-
-add_action('add_meta_boxes', function() {
-    $hide_ids = [
-        'tsseph_meta_box',
-        'woocommerce-order-actions',
-        'woocommerce-order-notes',
-        'gls_shipping_info_meta_box',
-        'gastronom-weight-confirmation',
-    ];
 
     foreach (gastronom_order_screen_ids() as $screen_id) {
         foreach ($hide_ids as $box_id) {
             remove_meta_box($box_id, $screen_id, 'side');
         }
     }
-}, 999);
+}
+}
+add_action('add_meta_boxes', 'gastronom_remove_hidden_meta_boxes', 999);
 
-add_action('woocommerce_admin_order_data_after_order_details', function($order) {
+if (!function_exists('gastronom_render_inline_weight_panel')) {
+function gastronom_render_inline_weight_panel($order): void {
     if (!gastronom_order_requires_weight_confirmation($order)) {
         return;
     }
@@ -1765,73 +1769,15 @@ add_action('woocommerce_admin_order_data_after_order_details', function($order) 
     echo '<h3 style="margin:0 0 12px;font-size:15px;">Подтверждение фактического веса</h3>';
     gastronom_render_weight_confirmation_box($order);
     echo '</div>';
-});
+}
+}
+add_action('woocommerce_admin_order_data_after_order_details', 'gastronom_render_inline_weight_panel');
 
-add_action('wp_ajax_gastronom_confirm_weight', function() {
-    if (empty($_POST['nonce']) || !wp_verify_nonce(wp_unslash($_POST['nonce']), 'gastronom_weight_confirmation')) {
-        wp_send_json_error(['message' => 'Неверный nonce.'], 403);
+if (!function_exists('gastronom_handle_weight_confirmation_ajax')) {
+function gastronom_handle_weight_confirmation_ajax(): void {
+    if (function_exists('rpa_handle_weight_confirmation_ajax')) {
+        rpa_handle_weight_confirmation_ajax();
     }
-
-    $order_id = isset($_POST['order_id']) ? (int) $_POST['order_id'] : 0;
-    if ($order_id <= 0 || !current_user_can('edit_shop_orders')) {
-        wp_send_json_error(['message' => 'Нет доступа.'], 403);
-    }
-
-    $order = wc_get_order($order_id);
-    if (!$order instanceof WC_Order) {
-        wp_send_json_error(['message' => 'Заказ не найден.'], 404);
-    }
-
-    $actual_weights = isset($_POST['gastronom_actual_weight']) ? wp_unslash($_POST['gastronom_actual_weight']) : [];
-    $changed = false;
-
-    foreach ($order->get_items('line_item') as $item_id => $item) {
-        if ($item->get_meta('_gastronom_weight_preorder', true) !== 'yes') {
-            continue;
-        }
-        if (!isset($actual_weights[$item_id])) {
-            continue;
-        }
-
-        $actual_weight = max(0.0, (float) wc_clean($actual_weights[$item_id]));
-        if ($actual_weight <= 0) {
-            continue;
-        }
-
-        $product = $item->get_product();
-        if (!$product) {
-            continue;
-        }
-
-        $price_per_kg = (float) $item->get_meta('_gastronom_price_per_kg', true);
-        if ($price_per_kg <= 0) {
-            $price_per_kg = gastronom_weight_preorder_price_per_kg($product->get_id());
-        }
-
-        $gross_total = $actual_weight * $price_per_kg;
-        $net_total = wc_prices_include_tax()
-            ? wc_get_price_excluding_tax($product, ['price' => $gross_total, 'qty' => 1])
-            : $gross_total;
-
-        $item->set_subtotal($net_total);
-        $item->set_total($net_total);
-        $item->update_meta_data('_gastronom_actual_weight_kg', $actual_weight);
-        $item->update_meta_data('_gastronom_weight_confirmed', 'yes');
-        $item->save();
-        $changed = true;
-    }
-
-    if (!$changed) {
-        wp_send_json_error(['message' => 'Не указан фактический вес.'], 400);
-    }
-
-    $order->calculate_taxes();
-    $order->calculate_totals(false);
-    $order->add_order_note(gastronom_tt($order, 'Фактический вес подтверждён, заказ пересчитан.', 'Skutočná hmotnosť bola potvrdená, objednávka bola prepočítaná.'));
-    $order->save();
-
-    gastronom_sync_confirmed_preorder_items_to_dotypos($order);
-    gastronom_mark_weight_confirmed_order_ready($order);
-
-    wp_send_json_success(['message' => 'ok']);
-});
+}
+}
+add_action('wp_ajax_gastronom_confirm_weight', 'gastronom_handle_weight_confirmation_ajax');
