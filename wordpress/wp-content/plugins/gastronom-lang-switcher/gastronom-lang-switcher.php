@@ -346,6 +346,13 @@ function gls_translate_woocommerce_storefront_phrase(string $value, string $lang
     return $map[$lang][$value] ?? $value;
 }
 
+function gls_apply_phrase_translation(string $translated, string $text, string $lang, callable $translator): string {
+    $translated = $translator($translated, $lang);
+    $source_translation = $translator($text, $lang);
+
+    return $source_translation === $text ? $translated : $source_translation;
+}
+
 add_filter('option_blogname', function($value) {
     if (is_admin() && !wp_doing_ajax()) {
         return $value;
@@ -554,13 +561,11 @@ add_filter('gettext', function($translated, $text, $domain) {
     $lang = gls_server_lang();
 
     if ((function_exists('is_account_page') && is_account_page()) || (function_exists('is_checkout_pay_page') && is_checkout_pay_page())) {
-        $translated = gls_translate_account_checkout_phrase($translated, $lang);
-        $translated = gls_translate_account_checkout_phrase($text, $lang) === $text ? $translated : gls_translate_account_checkout_phrase($text, $lang);
+        $translated = gls_apply_phrase_translation($translated, $text, $lang, 'gls_translate_account_checkout_phrase');
     }
 
     if ((function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout())) {
-        $translated = gls_translate_account_checkout_phrase($translated, $lang);
-        $translated = gls_translate_account_checkout_phrase($text, $lang) === $text ? $translated : gls_translate_account_checkout_phrase($text, $lang);
+        $translated = gls_apply_phrase_translation($translated, $text, $lang, 'gls_translate_account_checkout_phrase');
     }
 
     if ($lang === 'ru') {
@@ -574,17 +579,11 @@ add_filter('gettext', function($translated, $text, $domain) {
     }
 
     if ($domain === 'food-grocery-store' || $domain === 'cookie-notice') {
-        $translated = gls_translate_theme_chrome_phrase($translated, $lang);
-        $translated = gls_translate_theme_chrome_phrase($text, $lang) === $text
-            ? $translated
-            : gls_translate_theme_chrome_phrase($text, $lang);
+        $translated = gls_apply_phrase_translation($translated, $text, $lang, 'gls_translate_theme_chrome_phrase');
     }
 
     if ($domain === 'woocommerce') {
-        $translated = gls_translate_woocommerce_storefront_phrase($translated, $lang);
-        $translated = gls_translate_woocommerce_storefront_phrase($text, $lang) === $text
-            ? $translated
-            : gls_translate_woocommerce_storefront_phrase($text, $lang);
+        $translated = gls_apply_phrase_translation($translated, $text, $lang, 'gls_translate_woocommerce_storefront_phrase');
     }
 
     return $translated;
