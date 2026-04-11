@@ -781,6 +781,13 @@ function gls_normalize_footer_brand_heading_html(string $html, string $lang): st
     return str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
 }
 
+function gls_strip_storefront_title_shell_html(string $html): string {
+    $html = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $html, 1);
+    $html = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $html, 1);
+
+    return (string) $html;
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -829,10 +836,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
             return $value;
         }
 
-        $value = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $value, 1);
-        $value = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $value, 1);
-
-        return (string) $value;
+        return gls_strip_storefront_title_shell_html($value);
     };
 
     if ($lang === 'ru') {
@@ -917,9 +921,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
 
 function gls_normalize_front_page_html(string $html, string $lang): string {
     $html = gls_normalize_skip_link_html($html, $lang);
-
-    $html = preg_replace('~<div class="bradcrumbs">.*?</div>\s*~su', '', $html, 1);
-    $html = preg_replace('~<h1 class="vw-page-title">.*?</h1>\s*~su', '', $html, 1);
+    $html = gls_strip_storefront_title_shell_html($html);
 
     $html = preg_replace_callback(
         '~(<div class="gc-card-name">)(.*?)(</div>)~su',
