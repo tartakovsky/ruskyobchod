@@ -743,6 +743,22 @@ function gls_normalize_skip_link_html(string $html, string $lang): string {
     );
 }
 
+function gls_normalize_legal_company_text_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        return strtr($html, [
+            'Slovenská republika' => 'Словацкая Республика',
+            'Zapísaná v OR OS Bratislava I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава I,',
+            'Oddiel: Sro, Vložka č. 182562/B' => 'Раздел s.r.o., № записи 182562/B',
+        ]);
+    }
+
+    return strtr($html, [
+        'Словацкая Республика' => 'Slovenská republika',
+        'Зарегистрирована в торговом реестре окружного суда Братислава I,' => 'Zapísaná v OR OS Bratislava I,',
+        'Раздел s.r.o., № записи 182562/B' => 'Oddiel: Sro, Vložka č. 182562/B',
+    ]);
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
     $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
         $value = gls_normalize_skip_link_html($value, $lang);
@@ -797,7 +813,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
     };
 
     if ($lang === 'ru') {
-        return $normalize_empty_cart_shell(strtr($html, [
+        return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
             'Môj účet' => 'Мой аккаунт',
             'Môj Účet' => 'Мой аккаунт',
             'My account' => 'Мой аккаунт',
@@ -811,9 +827,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
             'Rolovať nahor' => 'Прокрутить вверх',
             'Horné menu' => 'Верхнее меню',
             'Pätička' => 'Подвал',
-            'Slovenská republika' => 'Словацкая Республика',
-            'Zapísaná v OR OS Bratislava I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава I,',
-            'Oddiel: Sro, Vložka č. 182562/B' => 'Раздел s.r.o., № записи 182562/B',
             'Nie' => 'Нет',
             'Osobne vyzdvihnutie' => 'Самовывоз',
             'GLS doručenie na adresu' => 'GLS доставка на адрес',
@@ -824,10 +837,10 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
             'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.' => 'К заказу будет добавлена комиссия за наложенный платеж в размере 2,00 €.',
             'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.' => 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.',
             'Card <img' => 'Оплата картой <img',
-        ]));
+        ]), $lang));
     }
 
-    return $normalize_empty_cart_shell(strtr($html, [
+    return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
         'Контакты' => 'Kontakt',
         'Мой аккаунт' => 'Môj účet',
         'Мой Аккаунт' => 'Môj účet',
@@ -843,9 +856,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Прокрутить вверх' => 'Rolovať nahor',
         'Верхнее меню' => 'Horné menu',
         'Подвал' => 'Pätička',
-        'Словацкая Республика' => 'Slovenská republika',
-        'Зарегистрирована в торговом реестре окружного суда Братислава I,' => 'Zapísaná v OR OS Bratislava I,',
-        'Раздел s.r.o., № записи 182562/B' => 'Oddiel: Sro, Vložka č. 182562/B',
         'Нет' => 'Nie',
         'Имя' => 'Meno',
         'Фамилия' => 'Priezvisko',
@@ -879,7 +889,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         '"i18n_optional_text":"\u043d\u0435\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e"' => '"i18n_optional_text":"voliteľné"',
         '</a> сайта</span>' => '</a></span>',
         'Card <img' => 'Platba kartou <img',
-    ]));
+    ]), $lang));
 }
 
 function gls_normalize_front_page_html(string $html, string $lang): string {
@@ -927,17 +937,13 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
 
     if ($lang === 'ru') {
         $html = str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
-        $html = str_replace('Slovenská republika', 'Словацкая Республика', $html);
-        $html = str_replace('Zapísaná v OR OS Bratislava I,', 'Зарегистрирована в торговом реестре окружного суда Братислава I,', $html);
-        $html = str_replace('Oddiel: Sro, Vložka č. 182562/B', 'Раздел s.r.o., № записи 182562/B', $html);
+        $html = gls_normalize_legal_company_text_html($html, $lang);
         $html = str_replace('>Ok</button>', '>Ок</button>', $html);
         $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
         $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
     } else {
         $html = str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
-        $html = str_replace('Словацкая Республика', 'Slovenská republika', $html);
-        $html = str_replace('Зарегистрирована в торговом реестре окружного суда Братислава I,', 'Zapísaná v OR OS Bratislava I,', $html);
-        $html = str_replace('Раздел s.r.o., № записи 182562/B', 'Oddiel: Sro, Vložka č. 182562/B', $html);
+        $html = gls_normalize_legal_company_text_html($html, $lang);
         $html = str_replace('>Ок</button>', '>Ok</button>', $html);
         $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
         $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
