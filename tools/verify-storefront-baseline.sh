@@ -60,6 +60,8 @@ check_contains "$product_ru" 'Количество товара' 'product RU qua
 check_contains "$product_ru" 'Артикул:' 'product RU SKU label present'
 check_contains "$product_ru" 'Категория:' 'product RU category label present'
 check_contains "$product_ru" 'Похожие товары' 'product RU related products heading present'
+check_contains "$home_ru" 'id="cn-accept-cookie"[^>]*>Ок<' 'home RU cookie accept button present'
+check_contains "$home_ru" 'id="cn-close-notice"[^>]*aria-label="Нет"' 'home RU cookie close aria present'
 
 if [ "$failures" -gt 0 ]; then
     echo "Baseline verification complete with failures: $failures"
