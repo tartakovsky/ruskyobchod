@@ -1113,6 +1113,10 @@ function gls_wcpay_locale_pair(): array {
     return [$target_locale, $target_locale === 'ru' ? 'sk' : 'ru'];
 }
 
+function gls_is_wcpay_handle(string $handle): bool {
+    return strpos($handle, 'wcpay') !== false || strpos($handle, 'WCPAY') !== false;
+}
+
 add_action('template_redirect', function() {
     if (gls_is_sensitive_runtime_context()) {
         return;
@@ -1154,7 +1158,7 @@ add_filter('script_loader_tag', function($tag, $handle) {
         return $tag;
     }
 
-    if (strpos($handle, 'wcpay') !== false || strpos($handle, 'WCPAY') !== false) {
+    if (gls_is_wcpay_handle($handle)) {
         [$target_locale, $source_locale] = gls_wcpay_locale_pair();
         $tag = gls_replace_encoded_locale_markers($tag, $source_locale, $target_locale);
     }
@@ -1173,7 +1177,7 @@ add_action('wp_enqueue_scripts', function() {
         [$target_locale, $source_locale] = gls_wcpay_locale_pair();
         // Replace locale in ALL registered scripts containing wcpay
         foreach ($wp_scripts->registered as $handle => $script) {
-            if (strpos($handle, 'wcpay') === false) continue;
+            if (!gls_is_wcpay_handle($handle)) continue;
             // Replace in localized data (wp_localize_script)
             if (!empty($script->extra['data'])) {
                 $wp_scripts->registered[$handle]->extra['data'] = gls_replace_encoded_locale_markers(
