@@ -934,13 +934,16 @@ function gls_checkout_order_title_span_replacement(string $lang): string {
         : '$1Objednávka$3';
 }
 
+function gls_checkout_order_title_prefix_replacement(): array {
+    return [
+        '>Гастроном</a> <span> Objednávka',
+        '>Гастроном</a> <span> Оформление заказа',
+    ];
+}
+
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
-        $html = str_replace(
-            '>Гастроном</a> <span> Objednávka',
-            '>Гастроном</a> <span> Оформление заказа',
-            $html
-        );
+        $html = str_replace(...array_merge(gls_checkout_order_title_prefix_replacement(), [$html]));
         $html = preg_replace(
             '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su',
             gls_checkout_order_title_span_replacement($lang),
