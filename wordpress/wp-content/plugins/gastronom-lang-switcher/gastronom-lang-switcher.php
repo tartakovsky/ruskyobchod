@@ -1257,8 +1257,12 @@ function gls_style_handle(): string {
     return 'gls-style';
 }
 
+function gls_style_asset_basename(): string {
+    return 'gls-style.css';
+}
+
 function gls_style_asset_url(): string {
-    return plugin_dir_url(__FILE__) . 'gls-style.css';
+    return plugin_dir_url(__FILE__) . gls_style_asset_basename();
 }
 
 function gls_switcher_link_title(string $lang): string {
