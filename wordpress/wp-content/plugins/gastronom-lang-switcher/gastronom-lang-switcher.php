@@ -1288,6 +1288,10 @@ function gls_switcher_data_lang(string $lang): string {
     return $lang;
 }
 
+function gls_switcher_langs(): array {
+    return ['ru', 'sk'];
+}
+
 function gls_render_internal_switcher_link(string $lang, string $href, string $class): string {
     return '<a class="' . esc_attr($class) . '" data-lang="' . esc_attr(gls_switcher_data_lang($lang)) . '" href="' . $href . '" title="' . esc_attr(gls_switcher_link_title($lang)) . '">' . esc_html(gls_switcher_label($lang)) . '</a>';
 }
@@ -1310,13 +1314,14 @@ function gls_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
 function gls_render_internal_switcher_html(string $current_lang): string {
+    $langs = gls_switcher_langs();
     $urls = gls_switcher_urls();
-    $ru_class = gls_switcher_button_class('ru', $current_lang);
-    $sk_class = gls_switcher_button_class('sk', $current_lang);
+    $ru_class = gls_switcher_button_class($langs[0], $current_lang);
+    $sk_class = gls_switcher_button_class($langs[1], $current_lang);
 
     return gls_switcher_container_open_html()
-        . gls_render_internal_switcher_link('ru', $urls['ru'], $ru_class)
-        . gls_render_internal_switcher_link('sk', $urls['sk'], $sk_class)
+        . gls_render_internal_switcher_link($langs[0], $urls[$langs[0]], $ru_class)
+        . gls_render_internal_switcher_link($langs[1], $urls[$langs[1]], $sk_class)
         . gls_switcher_container_close_html();
 }
 
