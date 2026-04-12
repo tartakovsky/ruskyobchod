@@ -822,18 +822,24 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
     ]);
 }
 
-function gls_normalize_cookie_notice_button_html(string $html, string $lang): string {
+function gls_cookie_notice_button_pairs(string $lang): array {
     if ($lang === 'ru') {
-        $html = str_replace('>Ok</button>', '>Ок</button>', $html);
-        $html = str_replace('aria-label="Ok"', 'aria-label="Ок"', $html);
-        $html = str_replace('aria-label="Nie"', 'aria-label="Нет"', $html);
-        return $html;
+        return [
+            '>Ok</button>' => '>Ок</button>',
+            'aria-label="Ok"' => 'aria-label="Ок"',
+            'aria-label="Nie"' => 'aria-label="Нет"',
+        ];
     }
 
-    $html = str_replace('>Ок</button>', '>Ok</button>', $html);
-    $html = str_replace('aria-label="Ок"', 'aria-label="Ok"', $html);
-    $html = str_replace('aria-label="Нет"', 'aria-label="Nie"', $html);
-    return $html;
+    return [
+        '>Ок</button>' => '>Ok</button>',
+        'aria-label="Ок"' => 'aria-label="Ok"',
+        'aria-label="Нет"' => 'aria-label="Nie"',
+    ];
+}
+
+function gls_normalize_cookie_notice_button_html(string $html, string $lang): string {
+    return gls_replace_text_pairs($html, gls_cookie_notice_button_pairs($lang));
 }
 
 function gls_normalize_footer_brand_heading_html(string $html, string $lang): string {
