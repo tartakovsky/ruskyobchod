@@ -5,10 +5,10 @@ This is the authoritative current-state document.
 ## source of truth
 
 - repo: `tartakovsky/ruskyobchod`
-- current documented handoff point commit: `6c28431e`
+- current live docs marker: `72278352`
 - current completed safe-refactor runtime baseline:
   - stable refactor point: `00d840a7`
-  - current docs marker after phase close: `6c28431e`
+  - current runtime/docs marker after commerce-tail stop-line: `72278352`
 
 ## live state now
 
@@ -19,11 +19,16 @@ Validated repeatedly during the safe phase:
 - `tools/verify-storefront-baseline.sh`
 - `tools/verify-checkout-shell.sh`
 - `tools/verify-account-shell.sh`
+- `tools/verify-commerce-shell.sh`
+- `tools/verify-commerce-shell-sk.sh`
 
-Latest status at phase close:
+Latest status at current stop-line:
 
 - storefront baseline green
 - checkout shell baseline green
+- account shell baseline green
+- commerce shell RU green
+- commerce shell SK green
 
 ## what is complete
 
@@ -64,13 +69,21 @@ One attempted extraction inside the empty-cart shell area caused a regression an
 
 That is now a hard stop-line, not an open invitation for another blind cleanup pass.
 
+### 5. commerce late-shell tail was reduced to stop-line
+
+The late-shell SK commerce tail in `gls_normalize_server_rendered_html()` was reduced further under full live verification.
+
+Dead residual pairs were removed one at a time while keeping all five verification contours green.
+
+This block is considered complete at its current stop-line.
+
 ## stop line
 
 Do not continue the completed safe-refactor phase into these areas without a new mini-plan:
 
 - empty-cart shell orchestration
 - retained fallback/output cleanup surface
-- any change that requires exact-output proof instead of structural equivalence
+- any remaining commerce residual that is not already covered by exact-output proof and the five verification contours
 
 ## current rule for live work
 
@@ -82,10 +95,10 @@ Do not continue the completed safe-refactor phase into these areas without a new
 
 ## next block
 
-The next rational block is not more helper extraction in the same safe phase.
+The next rational block is no longer more commerce-tail cleanup.
 
 It should be one of:
 
-1. explicit plan for risky residuals inside `gastronom-lang-switcher.php`
-2. next server-first translation zone outside the completed safe phase
-3. retained-fallback review with keep/remove/defer decisions
+1. explicit mini-plan for the remaining retained residual surface inside `gastronom-lang-switcher.php`
+2. next server-first translation zone outside the already-closed commerce tail
+3. Dotypos integration boundary work
