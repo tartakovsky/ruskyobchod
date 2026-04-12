@@ -1073,7 +1073,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Словакия' => 'Slovensko',
         'Адрес' => 'Adresa',
         'Номер дома и название улицы' => 'Číslo domu a názov ulice',
-        'Почтовый индекс' => 'PSČ',
         'Населённый пункт' => 'Mesto',
         'Область / район' => 'Kraj / okres',
         '(необязательно)' => '(voliteľné)',
