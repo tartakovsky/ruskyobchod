@@ -21,6 +21,7 @@ Validated repeatedly during the safe phase:
 - `tools/verify-account-shell.sh`
 - `tools/verify-commerce-shell.sh`
 - `tools/verify-commerce-shell-sk.sh`
+- `tools/verify-preorder-shell.sh`
 
 Latest status at current stop-line:
 
@@ -29,6 +30,7 @@ Latest status at current stop-line:
 - account shell baseline green
 - commerce shell RU green
 - commerce shell SK green
+- preorder shell green
 
 ## what is complete
 
@@ -126,6 +128,22 @@ Confirmed hooks/functions include:
 - `gastronom_inject_await_weight_status`
 
 This means the live file boundary and the runtime hook boundary are now aligned closely enough to begin business-flow proof.
+
+### 10. preorder discovery is now grounded in real live products
+
+Read-only discovery confirmed:
+
+- exactly 3 published live preorder products currently exist
+- all 3 render the expected preorder note and `/ kg` unit on RU/SK public product pages
+- `wc-await-weight` is registered on live
+- current `await-weight` order count is `0`
+
+This means the next business-flow proof block must use either:
+
+- those exact three products
+- or a controlled temporary order path
+
+It should not rely on abstract code reasoning alone.
 
 ## stop line
 

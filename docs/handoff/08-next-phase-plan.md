@@ -64,4 +64,30 @@ The highest-signal next block is now:
    - restore path
 4. do not re-enter the already-closed commerce tail unless a real regression appears
 
+## current entry conditions for business-flow proof
+
+Now confirmed:
+
+- live parity is complete for `gastronom-stock-fix.php` and the missing owner MU files
+- runtime proof is positive
+- there are exactly 3 live preorder products to use as real fixtures
+- current `await-weight` order count is `0`
+- preorder storefront path now has its own verification contour:
+  - `tools/verify-preorder-shell.sh`
+
+## next practical move
+
+Do not guess about preorder lifecycle behavior.
+
+The next block should decide explicitly whether to:
+
+1. prove the next path read-only from existing live state
+2. or create one controlled temporary preorder order for end-to-end proof
+
+If the second option is chosen, it must have:
+
+- explicit cleanup/rollback
+- exact expected state transitions
+- verification before and after
+
 That preserves the progress already achieved and avoids re-entering the same file blindly.
