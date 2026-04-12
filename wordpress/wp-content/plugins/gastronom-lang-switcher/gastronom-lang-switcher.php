@@ -941,11 +941,17 @@ function gls_checkout_order_title_prefix_replacement(): array {
     ];
 }
 
+function gls_checkout_order_title_span_pattern(string $lang): string {
+    return $lang === 'ru'
+        ? '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su'
+        : '~(<div class="bradcrumbs">.*?<span>\s*)(Оформление заказа|Заказ)(\s*</span>)~su';
+}
+
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         $html = str_replace(...array_merge(gls_checkout_order_title_prefix_replacement(), [$html]));
         $html = preg_replace(
-            '~(<div class="bradcrumbs">.*?<span>\s*)Objednávka(\s*</span>)~su',
+            gls_checkout_order_title_span_pattern($lang),
             gls_checkout_order_title_span_replacement($lang),
             $html,
             1
@@ -959,7 +965,7 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
     }
 
     $html = preg_replace(
-        '~(<div class="bradcrumbs">.*?<span>\s*)(Оформление заказа|Заказ)(\s*</span>)~su',
+        gls_checkout_order_title_span_pattern($lang),
         gls_checkout_order_title_span_replacement($lang),
         $html,
         1
