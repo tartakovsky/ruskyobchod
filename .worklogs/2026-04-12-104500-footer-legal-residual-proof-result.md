@@ -1,0 +1,23 @@
+# 2026-04-12 10:45:00 CET
+
+- Completed exact-output proof for retained residual slice:
+  - legal/footer normalization inside `gls_normalize_storefront_footer_shell_html()`
+- Before-state on live RU homepage:
+  - `Словацкая Республика`
+  - `Зарегистрирована в торговом реестре окружного суда Братислава I,`
+  - `Раздел s.r.o., № записи 182562/B`
+- Test:
+  - removed only the call to `gls_normalize_legal_company_text_html()` inside the storefront footer shell path
+- After-state on live RU homepage:
+  - footer/legal text regressed to Slovak:
+    - `Slovenská republika`
+    - `Zapísaná v OR OS Bratislava I,`
+    - `Oddiel: Sro, Vložka č. 182562/B`
+- Baseline result:
+  - `home RU legal country present` failed
+  - `home RU legal registry line present` failed
+  - `home RU legal company line present` failed
+- Decision:
+  - classify this slice as `keep`
+- Action:
+  - reverted the test change immediately with single-step rollback

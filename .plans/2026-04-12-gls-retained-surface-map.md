@@ -51,6 +51,18 @@ Reason:
   - `cn-accept-cookie` aria-label regressed from `Ок` to `Ok`
 - this means the slice still owns part of the live output contract
 
+### 5. legal/footer normalization inside `gls_normalize_storefront_footer_shell_html()`
+
+Keep.
+
+Reason:
+
+- exact-output proof attempt on RU homepage showed immediate regression to Slovak footer/legal text
+- baseline failures after removal:
+  - `home RU legal country present`
+  - `home RU legal registry line present`
+  - `home RU legal company line present`
+
 ## remove later
 
 These areas are plausible cleanup candidates, but only after explicit proof.
