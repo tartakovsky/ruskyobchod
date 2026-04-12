@@ -890,10 +890,6 @@ function gls_normalize_footer_brand_heading_html(string $html, string $lang): st
     return gls_replace_text_pairs($html, gls_footer_brand_heading_pairs($lang));
 }
 
-function gls_normalize_storefront_footer_shell_html(string $html, string $lang): string {
-    return $html;
-}
-
 function gls_footer_block_needs_brand_normalization(string $content): bool {
     return strpos($content, '>Gastronom</h3>') !== false || strpos($content, '>Гастроном</h3>') !== false;
 }
@@ -1167,7 +1163,7 @@ function gls_normalize_storefront_chrome_html(string $html, string $lang): strin
         $lang
     );
 
-    return gls_normalize_storefront_footer_shell_html($html, $lang);
+    return $html;
 }
 
 function gls_localize_feed_link_titles(string $html, string $lang): string {
