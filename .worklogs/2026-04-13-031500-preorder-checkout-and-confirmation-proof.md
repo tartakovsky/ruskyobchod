@@ -40,6 +40,7 @@ Using a temporary preorder order:
 Using a temporary preorder order already in `await-weight` with confirmed item meta:
 
 - `gastronom_mark_weight_confirmed_order_ready()` now transitions `await-weight -> on-hold` for COD
+- `gastronom_mark_weight_confirmed_order_ready()` now transitions `await-weight -> pending` for non-COD (`bacs`)
 - `_gastronom_requires_weight_confirmation` becomes `no`
 - email path was intercepted through `pre_wp_mail`, confirming a send attempt without real outbound mail
 - cleanup deleted the order

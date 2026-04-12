@@ -168,6 +168,7 @@ Controlled temporary-order proof on live already confirmed:
 - checkout-prepared preorder path
 - reserve/restore site stock path
 - `await-weight -> on-hold` confirmation-ready transition for COD
+- `await-weight -> pending` confirmation-ready transition for non-COD
 - Dotypos sync/restore algorithm through in-memory service stub without real API mutation
 - admin AJAX weight-confirmation path returned live success under controlled conditions
 
@@ -185,6 +186,17 @@ Current status:
   - or a specific live/runtime defect
 
 They should not be deployed as a blind parity batch.
+
+Current remaining missing files on live:
+
+- `rusky-language-switcher-lite.php`
+- `rusky-order-language-helpers.php`
+- `rusky-order-page-language.php`
+- `rusky-preorder-storefront.php`
+- `rusky-runtime-shim.php`
+- `rusky-server-language-core.php`
+- `rusky-stock-normalization.php`
+- `rusky-stock-policy.php`
 
 ## stop line
 

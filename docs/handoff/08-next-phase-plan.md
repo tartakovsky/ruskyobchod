@@ -87,14 +87,18 @@ Already proven:
 - checkout-prepared preorder path
 - reserve/restore site stock path
 - confirmation-ready transition for COD
+- confirmation-ready transition for non-COD
 - sync/restore algorithm via in-memory Dotypos stub
 - admin AJAX confirmation path success with controlled cleanup
 
 The next block should be one of these, not several:
 
-1. prove the non-COD confirmation-ready transition (`await-weight -> pending`)
-2. tighten the admin/AJAX proof harness so cleanup is guaranteed even after `wp_send_json_*()` termination
-3. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
+1. tighten the admin/AJAX proof harness so cleanup is guaranteed even after `wp_send_json_*()` termination
+2. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
+3. pick the next highest-signal remaining gap from:
+   - `rusky-preorder-storefront.php`
+   - `rusky-order-page-language.php`
+   - `rusky-order-language-helpers.php`
 
 If option 2 is chosen, it must have:
 
