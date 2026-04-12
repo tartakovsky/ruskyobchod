@@ -1068,7 +1068,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Фамилия' => 'Priezvisko',
         'Выберите страну/регион&hellip;' => 'Vyberte krajinu/región&hellip;',
         'Выберите страну/регион…' => 'Vyberte krajinu/región…',
-        'Словакия' => 'Slovensko',
         '(необязательно)' => '(voliteľné)',
         'Телефон' => 'Telefón',
         'Доставка по другому адресу?' => 'Doručiť na inú adresu?',
