@@ -1277,8 +1277,12 @@ function gls_switcher_button_class_prefix(): string {
     return 'gls-btn gls-btn-';
 }
 
+function gls_switcher_active_class_suffix(bool $is_active): string {
+    return $is_active ? ' active' : '';
+}
+
 function gls_switcher_button_class(string $lang, string $current_lang): string {
-    return gls_switcher_button_class_prefix() . $lang . ($current_lang === $lang ? ' active' : '');
+    return gls_switcher_button_class_prefix() . $lang . gls_switcher_active_class_suffix($current_lang === $lang);
 }
 
 function gls_switcher_urls(): array {
