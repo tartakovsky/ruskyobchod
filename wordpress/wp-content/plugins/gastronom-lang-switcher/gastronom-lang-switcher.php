@@ -760,17 +760,26 @@ function gls_normalize_account_title_text(string $title, string $lang): string {
     ]);
 }
 
-function gls_normalize_checkout_public_title_text(string $title, string $lang, bool $include_order_title): string {
+function gls_checkout_public_title_pairs(string $lang, bool $include_order_title): array {
     if ($lang === 'ru') {
-        return str_replace('Objednávka', 'Оплатить заказ', $title);
+        return [
+            'Objednávka' => 'Оплатить заказ',
+        ];
     }
 
-    $title = str_replace('Оплатить заказ', 'Zaplatiť objednávku', $title);
+    $pairs = [
+        'Оплатить заказ' => 'Zaplatiť objednávku',
+    ];
+
     if ($include_order_title) {
-        $title = str_replace('Заказ', 'Objednávka', $title);
+        $pairs['Заказ'] = 'Objednávka';
     }
 
-    return $title;
+    return $pairs;
+}
+
+function gls_normalize_checkout_public_title_text(string $title, string $lang, bool $include_order_title): string {
+    return gls_replace_text_pairs($title, gls_checkout_public_title_pairs($lang, $include_order_title));
 }
 
 function gls_normalize_public_title(string $title): string {
