@@ -1076,7 +1076,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Поскольку ваш браузер не поддерживает JavaScript или в нем он отключен, просим убедиться в том, что вы нажали кнопку <em>Обновить итог</em> перед регистрацией заказа. Иначе, есть риск неправильного подсчета стоимости.' => 'Keďže váš prehliadač nepodporuje JavaScript alebo je vypnutý, pred odoslaním objednávky sa uistite, že ste klikli na tlačidlo <em>Prepočítať spolu</em>. Inak hrozí nesprávny výpočet ceny.',
         'Обновить итог' => 'Prepočítať spolu',
         'Я прочитал(а) и принимаю ' => 'Prečítal(a) som si a súhlasím s ',
-        'правила и условия' => 'obchodnými podmienkami',
         'обязательно' => 'povinné',
         'необязательно' => 'voliteľné',
         'Примечание к заказу' => 'Poznámka k objednávke',
