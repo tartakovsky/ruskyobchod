@@ -39,6 +39,18 @@ Reason:
 - one extraction attempt already caused a live regression
 - this is a proven risky zone
 
+### 4. cookie notice button normalization inside the server-rendered shell path
+
+Keep.
+
+Reason:
+
+- exact-output proof attempt showed that removing the residual call changed RU cart output
+- observed regression:
+  - button text stayed `Ок`
+  - `cn-accept-cookie` aria-label regressed from `Ок` to `Ok`
+- this means the slice still owns part of the live output contract
+
 ## remove later
 
 These areas are plausible cleanup candidates, but only after explicit proof.
