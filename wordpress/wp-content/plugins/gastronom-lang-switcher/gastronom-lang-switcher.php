@@ -1079,7 +1079,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'правила и условия' => 'obchodnými podmienkami',
         'обязательно' => 'povinné',
         'необязательно' => 'voliteľné',
-        'Обновить страну/регион' => 'Aktualizovať krajinu/región',
         'Примечание к заказу' => 'Poznámka k objednávke',
         'Примечания к заказу, например, указания по доставке.' => 'Poznámky k objednávke, napríklad pokyny k doručeniu.',
         '"i18n_required_text":"\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e"' => '"i18n_required_text":"povinné"',
