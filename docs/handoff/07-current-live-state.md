@@ -77,7 +77,7 @@ Dead residual pairs were removed one at a time while keeping all five verificati
 
 This block is considered complete at its current stop-line.
 
-### 6. Dotypos live boundary is now explicitly known
+### 6. Dotypos live boundary was identified first
 
 Read-only live audit confirmed:
 
@@ -86,7 +86,7 @@ Read-only live audit confirmed:
 - live does not currently contain `rusky-dotypos-stock-bridge.php`
 - live does not currently contain `rusky-weight-preorder.php`
 
-Therefore current Dotypos/preorder behavior on live must still be treated as owned by the old `gastronom-stock-fix.php` path until parity is handled intentionally.
+That was the required entry condition for the parity block.
 
 ### 7. stock-fix parity rollout completed safely
 
@@ -100,7 +100,32 @@ Post-deploy verification stayed green for:
 - commerce shell RU
 - commerce shell SK
 
-The next safe step is now owner-file parity for the missing Dotypos/preorder MU files.
+### 8. owner-file parity rollout completed safely
+
+The missing live MU owner files were then deployed intentionally:
+
+- `rusky-dotypos-stock-bridge.php`
+- `rusky-weight-preorder.php`
+
+All five verification contours stayed green after the rollout.
+
+### 9. Dotypos runtime proof is now positive
+
+Read-only runtime proof on live now confirms:
+
+- owner-file functions are loaded
+- compatibility wrapper functions are available
+- critical preorder/Dotypos hooks are registered
+
+Confirmed hooks/functions include:
+
+- `gastronom_prepare_checkout_processed_preorder`
+- `gastronom_sync_confirmed_preorder_items_to_dotypos`
+- `gastronom_restore_confirmed_preorder_items_to_dotypos`
+- `gastronom_handle_weight_confirmation_ajax`
+- `gastronom_inject_await_weight_status`
+
+This means the live file boundary and the runtime hook boundary are now aligned closely enough to begin business-flow proof.
 
 ## stop line
 
@@ -126,4 +151,4 @@ It should be one of:
 
 1. explicit mini-plan for the remaining retained residual surface inside `gastronom-lang-switcher.php`
 2. next server-first translation zone outside the already-closed commerce tail
-3. Dotypos parity block, then Dotypos integration boundary work
+3. Dotypos business-flow proof
