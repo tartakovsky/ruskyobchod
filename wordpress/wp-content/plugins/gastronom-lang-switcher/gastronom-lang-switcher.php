@@ -643,6 +643,14 @@ add_filter('single_term_title', function($title) {
     return gls_localize_bilingual_text((string) $title, gls_server_lang());
 }, 20);
 
+add_filter('render_block', function($block_content, $block = []) {
+    if (!is_string($block_content) || $block_content === '') {
+        return $block_content;
+    }
+
+    return gls_normalize_footer_block_content($block_content);
+}, 20, 2);
+
 add_filter('woocommerce_page_title', function($title) {
     if (is_admin()) {
         return $title;
@@ -867,6 +875,37 @@ function gls_normalize_storefront_footer_shell_html(string $html, string $lang):
     $html = gls_normalize_legal_company_text_html($html, $lang);
 
     return gls_normalize_cookie_notice_button_html($html, $lang);
+}
+
+function gls_footer_block_needs_brand_normalization(string $content): bool {
+    return strpos($content, '>Gastronom</h3>') !== false || strpos($content, '>Гастроном</h3>') !== false;
+}
+
+function gls_footer_block_needs_legal_normalization(string $content): bool {
+    return strpos($content, 'Slovenská republika') !== false
+        || strpos($content, 'Словацкая Республика') !== false
+        || strpos($content, 'Zapísaná v OR OS Bratislava I,') !== false
+        || strpos($content, 'Зарегистрирована в торговом реестре окружного суда Братислава I,') !== false
+        || strpos($content, 'Oddiel: Sro, Vložka č. 182562/B') !== false
+        || strpos($content, 'Раздел s.r.o., № записи 182562/B') !== false;
+}
+
+function gls_normalize_footer_block_content(string $content): string {
+    if (gls_is_sensitive_runtime_context()) {
+        return $content;
+    }
+
+    $lang = gls_server_lang();
+
+    if (gls_footer_block_needs_brand_normalization($content)) {
+        $content = gls_normalize_footer_brand_heading_html($content, $lang);
+    }
+
+    if (gls_footer_block_needs_legal_normalization($content)) {
+        $content = gls_normalize_legal_company_text_html($content, $lang);
+    }
+
+    return $content;
 }
 
 function gls_footer_brand_heading_tag_replacement(string $lang): string {
