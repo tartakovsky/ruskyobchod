@@ -865,12 +865,16 @@ function gls_normalize_storefront_footer_shell_html(string $html, string $lang):
     return gls_normalize_cookie_notice_button_html($html, $lang);
 }
 
+function gls_footer_brand_heading_tag_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '<h3$1>Гастроном</h3>'
+        : '<h3$1>Gastronom</h3>';
+}
+
 function gls_normalize_footer_brand_heading_tag_html(string $html, string $lang): string {
     return (string) preg_replace(
         '~<h3([^>]*)>\s*(Гастроном|Gastronom)\s*</h3>~su',
-        $lang === 'ru'
-            ? '<h3$1>Гастроном</h3>'
-            : '<h3$1>Gastronom</h3>',
+        gls_footer_brand_heading_tag_replacement($lang),
         $html
     );
 }
