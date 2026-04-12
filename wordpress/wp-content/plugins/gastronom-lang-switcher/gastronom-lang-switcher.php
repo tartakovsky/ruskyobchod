@@ -988,7 +988,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         $value = gls_normalize_skip_link_html($value, $lang);
         $value = gls_normalize_footer_brand_heading_tag_html($value, $lang);
         $value = gls_normalize_ok_button_html($value, $lang);
-        $value = gls_normalize_cookie_notice_button_html($value, $lang);
 
         $value = gls_normalize_checkout_order_title_shell_html($value, $lang);
 
