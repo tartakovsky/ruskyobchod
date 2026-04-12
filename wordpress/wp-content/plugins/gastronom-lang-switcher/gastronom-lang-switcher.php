@@ -1167,6 +1167,35 @@ function gls_filter_woocommerce_currency_symbol(string $symbol, string $currency
     return gls_currency_symbol_override($symbol, $currency);
 }
 
+function gls_apply_wcpay_locale_to_footer_scripts(): void {
+    if (gls_is_sensitive_runtime_context()) {
+        return;
+    }
+
+    if (!is_checkout()) {
+        return;
+    }
+
+    global $wp_scripts;
+    [$target_locale, $source_locale] = gls_wcpay_locale_pair();
+
+    foreach ($wp_scripts->registered as $handle => $script) {
+        if (!gls_is_wcpay_handle($handle)) {
+            continue;
+        }
+
+        $wp_scripts->registered[$handle]->extra = gls_apply_wcpay_locale_to_script_extra(
+            $script,
+            $source_locale,
+            $target_locale
+        );
+    }
+}
+
+function gls_enqueue_wcpay_locale_footer_patch(): void {
+    add_action('wp_print_footer_scripts', 'gls_apply_wcpay_locale_to_footer_scripts', 1);
+}
+
 function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $handle): string {
     if (gls_is_sensitive_runtime_context()) {
         return $tag;
@@ -1213,26 +1242,7 @@ add_filter('wcpay_locale', 'gls_filter_wcpay_locale');
 add_filter('script_loader_tag', 'gls_filter_script_loader_tag_for_wcpay_locale', 10, 2);
 
 // Override locale in wp_localize_script data before it's printed
-add_action('wp_enqueue_scripts', function() {
-    add_action('wp_print_footer_scripts', function() {
-        if (gls_is_sensitive_runtime_context()) {
-            return;
-        }
-
-        if (!is_checkout()) return;
-        global $wp_scripts;
-        [$target_locale, $source_locale] = gls_wcpay_locale_pair();
-        // Replace locale in ALL registered scripts containing wcpay
-        foreach ($wp_scripts->registered as $handle => $script) {
-            if (!gls_is_wcpay_handle($handle)) continue;
-            $wp_scripts->registered[$handle]->extra = gls_apply_wcpay_locale_to_script_extra(
-                $script,
-                $source_locale,
-                $target_locale
-            );
-        }
-    }, 1);
-}, 999);
+add_action('wp_enqueue_scripts', 'gls_enqueue_wcpay_locale_footer_patch', 999);
 
 // Force EUR symbol to always be € regardless of WP locale (ru_RU shows ₽ by default)
 add_filter('woocommerce_currency_symbol', 'gls_filter_woocommerce_currency_symbol', 999, 2);
