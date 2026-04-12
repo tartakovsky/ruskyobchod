@@ -145,6 +145,33 @@ This means the next business-flow proof block must use either:
 
 It should not rely on abstract code reasoning alone.
 
+### 11. critical preorder owner parity gaps were closed
+
+The live repo-vs-server audit exposed two critical missing owner files:
+
+- `rusky-preorder-notifications.php`
+- `rusky-preorder-admin.php`
+
+Both were then deployed intentionally and verified.
+
+Runtime markers now confirmed on live:
+
+- `rpn_mark_weight_confirmed_order_ready`
+- `rpn_send_preorder_created_emails`
+- `rpa_handle_weight_confirmation_ajax`
+- `rpa_render_weight_confirmation_box`
+
+### 12. preorder lifecycle proof is now partially positive
+
+Controlled temporary-order proof on live already confirmed:
+
+- checkout-prepared preorder path
+- reserve/restore site stock path
+- `await-weight -> on-hold` confirmation-ready transition for COD
+- Dotypos sync/restore algorithm through in-memory service stub without real API mutation
+
+All temporary proofs were followed by cleanup and then by all six green verification contours.
+
 ## stop line
 
 Do not continue the completed safe-refactor phase into these areas without a new mini-plan:
@@ -169,4 +196,4 @@ It should be one of:
 
 1. explicit mini-plan for the remaining retained residual surface inside `gastronom-lang-switcher.php`
 2. next server-first translation zone outside the already-closed commerce tail
-3. Dotypos business-flow proof
+3. remaining Dotypos/preorder proof and targeted parity cleanup

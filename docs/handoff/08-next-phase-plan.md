@@ -74,15 +74,26 @@ Now confirmed:
 - current `await-weight` order count is `0`
 - preorder storefront path now has its own verification contour:
   - `tools/verify-preorder-shell.sh`
+- critical preorder owner gaps have been closed on live:
+  - `rusky-preorder-notifications.php`
+  - `rusky-preorder-admin.php`
 
 ## next practical move
 
-Do not guess about preorder lifecycle behavior.
+Do not guess about the remaining preorder/Dotypos lifecycle behavior.
 
-The next block should decide explicitly whether to:
+Already proven:
 
-1. prove the next path read-only from existing live state
-2. or create one controlled temporary preorder order for end-to-end proof
+- checkout-prepared preorder path
+- reserve/restore site stock path
+- confirmation-ready transition for COD
+- sync/restore algorithm via in-memory Dotypos stub
+
+The next block should be one of these, not several:
+
+1. prove the non-COD confirmation-ready transition (`await-weight -> pending`)
+2. prove or close the admin/AJAX confirmation path with a controlled temporary order
+3. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
 
 If the second option is chosen, it must have:
 
