@@ -1284,6 +1284,10 @@ function gls_render_internal_switcher_link(string $lang, string $href, string $c
     return '<a class="' . esc_attr($class) . '" data-lang="' . esc_attr(gls_switcher_data_lang($lang)) . '" href="' . $href . '" title="' . esc_attr(gls_switcher_link_title($lang)) . '">' . esc_html(gls_switcher_label($lang)) . '</a>';
 }
 
+function gls_switcher_container_open_html(): string {
+    return '<div id="gls-switcher" class="gls-switcher">';
+}
+
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
@@ -1294,7 +1298,7 @@ function gls_render_internal_switcher_html(string $current_lang): string {
     $ru_class = gls_switcher_button_class('ru', $current_lang);
     $sk_class = gls_switcher_button_class('sk', $current_lang);
 
-    return '<div id="gls-switcher" class="gls-switcher">'
+    return gls_switcher_container_open_html()
         . gls_render_internal_switcher_link('ru', $urls['ru'], $ru_class)
         . gls_render_internal_switcher_link('sk', $urls['sk'], $sk_class)
         . '</div>';
