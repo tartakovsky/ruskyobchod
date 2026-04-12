@@ -1328,8 +1328,12 @@ function gls_switcher_container_class(): string {
     return 'gls-switcher';
 }
 
+function gls_switcher_container_id(): string {
+    return 'gls-switcher';
+}
+
 function gls_switcher_container_attributes(): string {
-    return 'id="gls-switcher" class="' . gls_switcher_container_class() . '"';
+    return 'id="' . gls_switcher_container_id() . '" class="' . gls_switcher_container_class() . '"';
 }
 
 function gls_enqueue_scripts() {
