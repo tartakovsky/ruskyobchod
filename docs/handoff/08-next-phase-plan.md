@@ -52,7 +52,10 @@ After the residual map exists, choose one of these, not several:
 The highest-signal next block is now:
 
 1. freeze the current commerce-tail result as complete
-2. pick one next bounded architecture block
+2. execute Dotypos parity block in the safe order:
+   - `gastronom-stock-fix.php` parity first
+   - owner-file parity second
+   - integration proof third
 3. do not re-enter the already-closed commerce tail unless a real regression appears
 
 That preserves the progress already achieved and avoids re-entering the same file blindly.
