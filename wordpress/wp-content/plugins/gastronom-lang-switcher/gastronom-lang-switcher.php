@@ -1279,6 +1279,8 @@ function gls_render_switcher_html(string $current_lang): string {
 }
 
 function gls_add_switcher() {
-    echo gls_render_switcher_html(gls_current_lang_code());
+    $current_lang = gls_current_lang_code();
+
+    echo gls_render_switcher_html($current_lang);
 }
 add_action('wp_body_open', 'gls_add_switcher');
