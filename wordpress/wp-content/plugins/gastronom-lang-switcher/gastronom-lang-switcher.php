@@ -1253,8 +1253,12 @@ function gls_asset_version(): string {
     return '6.24';
 }
 
+function gls_style_asset_url(): string {
+    return plugin_dir_url(__FILE__) . 'gls-style.css';
+}
+
 function gls_enqueue_scripts() {
-    wp_enqueue_style('gls-style', plugin_dir_url(__FILE__) . 'gls-style.css', [], gls_asset_version());
+    wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
