@@ -1266,12 +1266,15 @@ function gls_render_internal_switcher_html(string $current_lang): string {
         . '</div>';
 }
 
-function gls_add_switcher() {
+function gls_render_switcher_html(string $current_lang): string {
     if (function_exists('rslc_render_switcher')) {
-        echo rslc_render_switcher(gls_current_lang_code());
-        return;
+        return (string) rslc_render_switcher($current_lang);
     }
 
-    echo gls_render_internal_switcher_html(gls_current_lang_code());
+    return gls_render_internal_switcher_html($current_lang);
+}
+
+function gls_add_switcher() {
+    echo gls_render_switcher_html(gls_current_lang_code());
 }
 add_action('wp_body_open', 'gls_add_switcher');
