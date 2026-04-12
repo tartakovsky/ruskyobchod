@@ -1288,6 +1288,10 @@ function gls_switcher_container_open_html(): string {
     return '<div id="gls-switcher" class="gls-switcher">';
 }
 
+function gls_switcher_container_close_html(): string {
+    return '</div>';
+}
+
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
@@ -1301,7 +1305,7 @@ function gls_render_internal_switcher_html(string $current_lang): string {
     return gls_switcher_container_open_html()
         . gls_render_internal_switcher_link('ru', $urls['ru'], $ru_class)
         . gls_render_internal_switcher_link('sk', $urls['sk'], $sk_class)
-        . '</div>';
+        . gls_switcher_container_close_html();
 }
 
 function gls_render_switcher_html(string $current_lang): string {
