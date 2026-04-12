@@ -934,10 +934,9 @@ function gls_checkout_order_title_span_replacement(string $lang): string {
         : '$1Objednávka$3';
 }
 
-function gls_checkout_order_title_prefix_replacement(): array {
+function gls_checkout_order_title_prefix_pairs(): array {
     return [
-        '>Гастроном</a> <span> Objednávka',
-        '>Гастроном</a> <span> Оформление заказа',
+        '>Гастроном</a> <span> Objednávka' => '>Гастроном</a> <span> Оформление заказа',
     ];
 }
 
@@ -955,7 +954,7 @@ function gls_checkout_order_title_h1_pattern(string $lang): string {
 
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
-        $html = str_replace(...array_merge(gls_checkout_order_title_prefix_replacement(), [$html]));
+        $html = gls_replace_text_pairs($html, gls_checkout_order_title_prefix_pairs());
         $html = preg_replace(
             gls_checkout_order_title_span_pattern($lang),
             gls_checkout_order_title_span_replacement($lang),
