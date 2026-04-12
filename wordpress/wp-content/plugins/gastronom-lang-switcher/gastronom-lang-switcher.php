@@ -1257,6 +1257,10 @@ function gls_style_asset_url(): string {
     return plugin_dir_url(__FILE__) . 'gls-style.css';
 }
 
+function gls_switcher_link_title(string $lang): string {
+    return $lang === 'ru' ? 'Русский' : 'Slovenčina';
+}
+
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
@@ -1269,8 +1273,8 @@ function gls_render_internal_switcher_html(string $current_lang): string {
     $sk_class = 'gls-btn gls-btn-sk' . ($current_lang === 'sk' ? ' active' : '');
 
     return '<div id="gls-switcher" class="gls-switcher">'
-        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="Русский">RU</a>'
-        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="Slovenčina">SK</a>'
+        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="' . esc_attr(gls_switcher_link_title('ru')) . '">RU</a>'
+        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="' . esc_attr(gls_switcher_link_title('sk')) . '">SK</a>'
         . '</div>';
 }
 
