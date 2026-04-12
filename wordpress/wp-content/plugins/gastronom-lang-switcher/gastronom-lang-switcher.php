@@ -871,9 +871,6 @@ function gls_normalize_footer_brand_heading_html(string $html, string $lang): st
 }
 
 function gls_normalize_storefront_footer_shell_html(string $html, string $lang): string {
-    $html = gls_normalize_footer_brand_heading_html($html, $lang);
-    $html = gls_normalize_legal_company_text_html($html, $lang);
-
     return gls_normalize_cookie_notice_button_html($html, $lang);
 }
 
