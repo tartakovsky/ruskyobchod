@@ -1196,6 +1196,32 @@ function gls_enqueue_wcpay_locale_footer_patch(): void {
     add_action('wp_print_footer_scripts', 'gls_apply_wcpay_locale_to_footer_scripts', 1);
 }
 
+function gls_filter_template_output_html(string $html): string {
+    $lang = gls_server_lang();
+
+    $html = gls_localize_feed_link_titles($html, $lang);
+
+    if (gls_is_server_rendered_language_page()) {
+        $html = gls_normalize_server_rendered_html($html, $lang);
+    } else {
+        $html = gls_normalize_storefront_chrome_html($html, $lang);
+    }
+
+    if (is_front_page()) {
+        $html = gls_normalize_front_page_html($html, $lang);
+    }
+
+    return gls_strip_inactive_language_blocks($html, $lang);
+}
+
+function gls_start_template_output_buffer(): void {
+    if (gls_is_sensitive_runtime_context()) {
+        return;
+    }
+
+    ob_start('gls_filter_template_output_html');
+}
+
 function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $handle): string {
     if (gls_is_sensitive_runtime_context()) {
         return $tag;
@@ -1209,31 +1235,7 @@ function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $hand
     return $tag;
 }
 
-add_action('template_redirect', function() {
-    if (gls_is_sensitive_runtime_context()) {
-        return;
-    }
-
-    ob_start(static function($html) {
-        $lang = gls_server_lang();
-
-        $html = gls_localize_feed_link_titles($html, $lang);
-
-        if (gls_is_server_rendered_language_page()) {
-            $html = gls_normalize_server_rendered_html($html, $lang);
-        } else {
-            $html = gls_normalize_storefront_chrome_html($html, $lang);
-        }
-
-        if (is_front_page()) {
-            $html = gls_normalize_front_page_html($html, $lang);
-        }
-
-        $html = gls_strip_inactive_language_blocks($html, $lang);
-
-        return $html;
-    });
-}, 5);
+add_action('template_redirect', 'gls_start_template_output_buffer', 5);
 
 // Override locale for WooPayments scripts according to the current page language.
 add_filter('wcpay_locale', 'gls_filter_wcpay_locale');
