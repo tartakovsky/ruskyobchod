@@ -1076,7 +1076,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Обновить итог' => 'Prepočítať spolu',
         'Я прочитал(а) и принимаю ' => 'Prečítal(a) som si a súhlasím s ',
         'обязательно' => 'povinné',
-        'необязательно' => 'voliteľné',
         'Card <img' => 'Platba kartou <img',
     ]), $lang));
 }
