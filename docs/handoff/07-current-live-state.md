@@ -18,6 +18,7 @@ Validated repeatedly during the safe phase:
 
 - `tools/verify-storefront-baseline.sh`
 - `tools/verify-checkout-shell.sh`
+- `tools/verify-account-shell.sh`
 
 Latest status at phase close:
 
@@ -55,6 +56,7 @@ Completed migrations:
 
 - footer brand/legal slice moved from late footer shell cleanup to earlier server-side ownership through `render_block`
 - cookie notice labels moved from late output cleanup to source-level ownership through `cn_cookie_notice_args`
+- account/login/cart shell labels moved out of late server-rendered shell ownership and are now held by earlier phrase/title/menu owners
 
 ### 4. rollback discipline was proven
 

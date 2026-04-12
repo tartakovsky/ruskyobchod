@@ -90,6 +90,33 @@ Verification:
 - exact output preserved on RU homepage after removing late footer-shell brand heading normalization
 - direct output capture still shows `Гастроном`
 
+#### account/login/cart shell labels
+
+Status:
+
+- migrated out of retained late shell ownership
+
+Current owner:
+
+- `gls_translate_account_checkout_phrase()`
+- `gls_translate_menu_label()`
+- `gls_normalize_account_title_text()`
+- `gls_title_parts()`
+
+Verification:
+
+- exact output preserved after removing late server-rendered shell pairs for:
+  - `Мой аккаунт`
+  - `Корзина`
+  - `Вход / Регистрация`
+  - `Регистрация`
+  - `Забыли пароль?`
+  - cookie close `Нет`
+- all three verification contours remained green:
+  - `tools/verify-storefront-baseline.sh`
+  - `tools/verify-checkout-shell.sh`
+  - `tools/verify-account-shell.sh`
+
 ## remove later
 
 These areas are plausible cleanup candidates, but only after explicit proof.
