@@ -488,13 +488,17 @@ add_filter('wpseo_title', function($title) {
     return gls_brand_name() . ' — ' . gls_brand_description();
 }, 20);
 
+function gls_server_locale_code(): string {
+    return gls_server_lang() === 'ru' ? 'ru' : 'sk';
+}
+
 // Keep Stripe/WooPayments aligned with the current server-side page language.
 add_filter('wcpay_elements_options', function($options) {
-    $options['locale'] = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+    $options['locale'] = gls_server_locale_code();
     return $options;
 });
 add_filter('wc_stripe_elements_options', function($options) {
-    $options['locale'] = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+    $options['locale'] = gls_server_locale_code();
     return $options;
 });
 
@@ -571,7 +575,7 @@ function gls_frontend_locale(string $locale): string {
         return $locale;
     }
 
-    return gls_server_lang() === 'ru' ? 'ru_RU' : 'sk_SK';
+    return gls_server_locale_code() === 'ru' ? 'ru_RU' : 'sk_SK';
 }
 
 add_filter('locale', 'gls_frontend_locale', 20);
@@ -1132,13 +1136,13 @@ function gls_replace_encoded_locale_markers(string $value, string $source_locale
 }
 
 function gls_wcpay_locale_pair(): array {
-    $target_locale = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+    $target_locale = gls_server_locale_code();
 
     return [$target_locale, $target_locale === 'ru' ? 'sk' : 'ru'];
 }
 
 function gls_wcpay_wp_locale(): string {
-    return gls_server_lang() === 'ru' ? 'ru_RU' : 'sk_SK';
+    return gls_server_locale_code() === 'ru' ? 'ru_RU' : 'sk_SK';
 }
 
 function gls_is_wcpay_handle(string $handle): bool {
