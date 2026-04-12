@@ -51,26 +51,39 @@ Reason:
   - `cn-accept-cookie` aria-label regressed from `Ок` to `Ok`
 - this means the slice still owns part of the live output contract
 
-### 5. legal/footer normalization inside `gls_normalize_storefront_footer_shell_html()`
+### moved out of retained late shell ownership
 
-Keep.
+These slices were previously proven as dependent on late footer shell cleanup, but have now been moved to an earlier server-side owner path through `render_block`.
 
-Reason:
+#### footer legal lines
 
-- exact-output proof attempt on RU homepage showed immediate regression to Slovak footer/legal text
-- baseline failures after removal:
-  - `home RU legal country present`
-  - `home RU legal registry line present`
-  - `home RU legal company line present`
+Status:
 
-### 6. footer brand heading normalization inside `gls_normalize_storefront_footer_shell_html()`
+- migrated out of retained late shell ownership
 
-Keep.
+Current owner:
 
-Reason:
+- `gls_normalize_footer_block_content()`
 
-- exact-output proof attempt on RU homepage showed immediate regression from `Гастроном` to `Gastronom`
-- baseline does not currently check this marker, but direct output capture proves live dependency
+Verification:
+
+- exact output preserved on RU homepage after removing late footer-shell legal normalization
+- storefront baseline remained green
+
+#### footer brand heading
+
+Status:
+
+- migrated out of retained late shell ownership
+
+Current owner:
+
+- `gls_normalize_footer_block_content()`
+
+Verification:
+
+- exact output preserved on RU homepage after removing late footer-shell brand heading normalization
+- direct output capture still shows `Гастроном`
 
 ## remove later
 
