@@ -1316,9 +1316,13 @@ function gls_render_switcher_html(string $current_lang): string {
     return gls_render_internal_switcher_html($current_lang);
 }
 
+function gls_output_switcher_html(string $current_lang): void {
+    echo gls_render_switcher_html($current_lang);
+}
+
 function gls_add_switcher() {
     $current_lang = gls_current_lang_code();
 
-    echo gls_render_switcher_html($current_lang);
+    gls_output_switcher_html($current_lang);
 }
 add_action('wp_body_open', 'gls_add_switcher');
