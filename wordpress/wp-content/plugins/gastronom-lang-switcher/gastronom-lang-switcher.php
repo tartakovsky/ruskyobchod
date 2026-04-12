@@ -1324,8 +1324,12 @@ function gls_switcher_container_close_html(): string {
     return '</div>';
 }
 
+function gls_switcher_container_class(): string {
+    return 'gls-switcher';
+}
+
 function gls_switcher_container_attributes(): string {
-    return 'id="gls-switcher" class="gls-switcher"';
+    return 'id="gls-switcher" class="' . gls_switcher_container_class() . '"';
 }
 
 function gls_enqueue_scripts() {
