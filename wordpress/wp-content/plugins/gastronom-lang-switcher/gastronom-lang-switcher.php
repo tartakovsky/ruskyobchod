@@ -723,15 +723,23 @@ add_filter('pre_get_document_title', function($title) {
 
 function gls_normalize_common_public_title_text(string $title, string $lang): string {
     if ($lang === 'ru') {
-        $title = str_replace('Gastronom', 'Гастроном', $title);
+        $title = gls_normalize_brand_title_text($title, $lang);
         $title = gls_normalize_account_title_text($title, $lang);
         return $title;
     }
 
-    $title = str_replace('Гастроном', 'Gastronom', $title);
+    $title = gls_normalize_brand_title_text($title, $lang);
     $title = gls_normalize_account_title_text($title, $lang);
 
     return $title;
+}
+
+function gls_normalize_brand_title_text(string $title, string $lang): string {
+    if ($lang === 'ru') {
+        return str_replace('Gastronom', 'Гастроном', $title);
+    }
+
+    return str_replace('Гастроном', 'Gastronom', $title);
 }
 
 function gls_normalize_account_title_text(string $title, string $lang): string {
