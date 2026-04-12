@@ -1254,21 +1254,24 @@ function gls_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
+function gls_render_internal_switcher_html(string $current_lang): string {
+    $ru_url = esc_url(gls_switcher_url('ru'));
+    $sk_url = esc_url(gls_switcher_url('sk'));
+    $ru_class = 'gls-btn gls-btn-ru' . ($current_lang === 'ru' ? ' active' : '');
+    $sk_class = 'gls-btn gls-btn-sk' . ($current_lang === 'sk' ? ' active' : '');
+
+    return '<div id="gls-switcher" class="gls-switcher">'
+        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="Русский">RU</a>'
+        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="Slovenčina">SK</a>'
+        . '</div>';
+}
+
 function gls_add_switcher() {
     if (function_exists('rslc_render_switcher')) {
         echo rslc_render_switcher(gls_current_lang_code());
         return;
     }
 
-    $current_lang = gls_current_lang_code();
-    $ru_url = esc_url(gls_switcher_url('ru'));
-    $sk_url = esc_url(gls_switcher_url('sk'));
-    $ru_class = 'gls-btn gls-btn-ru' . ($current_lang === 'ru' ? ' active' : '');
-    $sk_class = 'gls-btn gls-btn-sk' . ($current_lang === 'sk' ? ' active' : '');
-
-    echo '<div id="gls-switcher" class="gls-switcher">'
-        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="Русский">RU</a>'
-        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="Slovenčina">SK</a>'
-        . '</div>';
+    echo gls_render_internal_switcher_html(gls_current_lang_code());
 }
 add_action('wp_body_open', 'gls_add_switcher');
