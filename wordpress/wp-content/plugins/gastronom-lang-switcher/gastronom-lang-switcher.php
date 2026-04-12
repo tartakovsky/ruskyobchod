@@ -1320,8 +1320,12 @@ function gls_output_switcher_html(string $current_lang): void {
     echo gls_render_switcher_html($current_lang);
 }
 
+function gls_switcher_current_lang(): string {
+    return gls_current_lang_code();
+}
+
 function gls_add_switcher() {
-    $current_lang = gls_current_lang_code();
+    $current_lang = gls_switcher_current_lang();
 
     gls_output_switcher_html($current_lang);
 }
