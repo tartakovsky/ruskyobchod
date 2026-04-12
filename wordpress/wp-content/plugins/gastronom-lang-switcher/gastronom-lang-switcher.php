@@ -952,15 +952,19 @@ function gls_checkout_order_title_h1_pattern(string $lang): string {
         : '~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u';
 }
 
+function gls_normalize_checkout_order_title_span_html(string $html, string $lang): string {
+    return (string) preg_replace(
+        gls_checkout_order_title_span_pattern($lang),
+        gls_checkout_order_title_span_replacement($lang),
+        $html,
+        1
+    );
+}
+
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         $html = gls_replace_text_pairs($html, gls_checkout_order_title_prefix_pairs());
-        $html = preg_replace(
-            gls_checkout_order_title_span_pattern($lang),
-            gls_checkout_order_title_span_replacement($lang),
-            $html,
-            1
-        );
+        $html = gls_normalize_checkout_order_title_span_html($html, $lang);
         return (string) preg_replace(
             gls_checkout_order_title_h1_pattern($lang),
             gls_checkout_order_title_h1_replacement($lang),
@@ -969,12 +973,7 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
         );
     }
 
-    $html = preg_replace(
-        gls_checkout_order_title_span_pattern($lang),
-        gls_checkout_order_title_span_replacement($lang),
-        $html,
-        1
-    );
+    $html = gls_normalize_checkout_order_title_span_html($html, $lang);
 
     return (string) preg_replace(
         gls_checkout_order_title_h1_pattern($lang),
