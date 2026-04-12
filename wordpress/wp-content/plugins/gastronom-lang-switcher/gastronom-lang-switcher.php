@@ -114,7 +114,7 @@ function gls_switcher_url(string $lang): string {
 }
 
 function gls_brand_name() {
-    return gls_is_current_lang_ru() ? 'Гастроном' : 'Gastronom';
+    return gls_is_current_lang_ru() ? gls_brand_name_ru() : gls_brand_name_sk();
 }
 
 function gls_brand_description() {
@@ -125,6 +125,14 @@ function gls_brand_description() {
 
 function gls_is_current_lang_ru(): bool {
     return gls_current_lang_code() === 'ru';
+}
+
+function gls_brand_name_ru(): string {
+    return 'Гастроном';
+}
+
+function gls_brand_name_sk(): string {
+    return 'Gastronom';
 }
 
 function gls_localize_bilingual_text(string $text, ?string $lang = null): string {
