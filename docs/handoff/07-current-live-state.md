@@ -77,6 +77,17 @@ Dead residual pairs were removed one at a time while keeping all five verificati
 
 This block is considered complete at its current stop-line.
 
+### 6. Dotypos live boundary is now explicitly known
+
+Read-only live audit confirmed:
+
+- live `gastronom-lang-switcher.php` matches repo
+- live `gastronom-stock-fix.php` does not match repo
+- live does not currently contain `rusky-dotypos-stock-bridge.php`
+- live does not currently contain `rusky-weight-preorder.php`
+
+Therefore current Dotypos/preorder behavior on live must still be treated as owned by the old `gastronom-stock-fix.php` path until parity is handled intentionally.
+
 ## stop line
 
 Do not continue the completed safe-refactor phase into these areas without a new mini-plan:
@@ -101,4 +112,4 @@ It should be one of:
 
 1. explicit mini-plan for the remaining retained residual surface inside `gastronom-lang-switcher.php`
 2. next server-first translation zone outside the already-closed commerce tail
-3. Dotypos integration boundary work
+3. Dotypos parity block, then Dotypos integration boundary work
