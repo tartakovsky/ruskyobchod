@@ -1052,9 +1052,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
 
     if ($lang === 'ru') {
         return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
-            'Môj účet' => 'Мой аккаунт',
-            'Môj Účet' => 'Мой аккаунт',
-            'My account' => 'Мой аккаунт',
             'Prihlásenie / Registrácia' => 'Вход / Регистрация',
             'Registrácia' => 'Регистрация',
             'Zabudli ste heslo?' => 'Забыли пароль?',
@@ -1080,9 +1077,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
 
     return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
         'Контакты' => 'Kontakt',
-        'Мой аккаунт' => 'Môj účet',
-        'Мой Аккаунт' => 'Môj účet',
-        'Моя учётная запись' => 'Môj účet',
         'Вход / Регистрация' => 'Prihlásenie / Registrácia',
         'Регистрация' => 'Registrácia',
         'Забыли пароль?' => 'Zabudli ste heslo?',
