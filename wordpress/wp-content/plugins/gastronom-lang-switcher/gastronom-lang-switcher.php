@@ -1052,11 +1052,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
 
     if ($lang === 'ru') {
         return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
-            'Tlačidlo Otvoriť' => 'Кнопка Открыть',
-            'Tlačidlo Zavrieť' => 'Кнопка Закрыть',
-            'Rolovať nahor' => 'Прокрутить вверх',
-            'Horné menu' => 'Верхнее меню',
-            'Pätička' => 'Подвал',
             'Osobne vyzdvihnutie' => 'Самовывоз',
             'GLS doručenie na adresu' => 'GLS доставка на адрес',
             'SK Packeta Pick-up Point (Z-Point, Z-Box)' => 'SK Packeta пункт выдачи (Z-Point, Z-Box)',
