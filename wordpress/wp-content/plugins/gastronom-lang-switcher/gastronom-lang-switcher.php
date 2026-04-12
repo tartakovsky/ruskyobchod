@@ -378,6 +378,24 @@ function gls_translate_woocommerce_storefront_phrase(string $value, string $lang
     return $map[$lang][$value] ?? $value;
 }
 
+function gls_cookie_notice_source_args(array $options): array {
+    $lang = gls_server_lang();
+
+    if ($lang === 'ru') {
+        $options['accept_text'] = 'Ок';
+        $options['refuse_text'] = 'Нет';
+        $options['aria_label'] = 'Уведомление о cookie';
+
+        return $options;
+    }
+
+    $options['accept_text'] = 'Ok';
+    $options['refuse_text'] = 'Nie';
+    $options['aria_label'] = 'Cookie Notice';
+
+    return $options;
+}
+
 function gls_apply_phrase_translation(string $translated, string $text, string $lang, callable $translator): string {
     $translated = $translator($translated, $lang);
     $source_translation = $translator($text, $lang);
@@ -650,6 +668,8 @@ add_filter('render_block', function($block_content, $block = []) {
 
     return gls_normalize_footer_block_content($block_content);
 }, 20, 2);
+
+add_filter('cn_cookie_notice_args', 'gls_cookie_notice_source_args', 20);
 
 add_filter('woocommerce_page_title', function($title) {
     if (is_admin()) {
