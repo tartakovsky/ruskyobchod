@@ -119,8 +119,8 @@ function gls_brand_name() {
 
 function gls_brand_description() {
     return gls_is_current_lang_ru()
-        ? 'русский магазин продуктов в Братиславе'
-        : 'obchod s ruskými potravinami v Bratislave';
+        ? gls_brand_description_ru()
+        : gls_brand_description_sk();
 }
 
 function gls_is_current_lang_ru(): bool {
@@ -133,6 +133,14 @@ function gls_brand_name_ru(): string {
 
 function gls_brand_name_sk(): string {
     return 'Gastronom';
+}
+
+function gls_brand_description_ru(): string {
+    return 'русский магазин продуктов в Братиславе';
+}
+
+function gls_brand_description_sk(): string {
+    return 'obchod s ruskými potravinami v Bratislave';
 }
 
 function gls_localize_bilingual_text(string $text, ?string $lang = null): string {
