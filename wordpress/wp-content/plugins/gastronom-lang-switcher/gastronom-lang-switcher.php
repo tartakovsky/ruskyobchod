@@ -1079,7 +1079,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         '(необязательно)' => '(voliteľné)',
         'Телефон' => 'Telefón',
         'Доставка по другому адресу?' => 'Doručiť na inú adresu?',
-        'Подытог' => 'Medzisúčet',
         'Итого' => 'Celkom',
         '(включая ' => '(vrátane ',
         ' НДС)' => ' DPH)',
