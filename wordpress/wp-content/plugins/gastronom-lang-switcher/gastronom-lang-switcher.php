@@ -1301,7 +1301,19 @@ function gls_switcher_langs(): array {
 }
 
 function gls_render_internal_switcher_link(string $lang, string $href, string $class): string {
-    return '<a class="' . esc_attr($class) . '" data-lang="' . esc_attr(gls_switcher_data_lang($lang)) . '" href="' . $href . '" title="' . esc_attr(gls_switcher_link_title($lang)) . '">' . esc_html(gls_switcher_label($lang)) . '</a>';
+    return '<a class="' . esc_attr($class) . '" data-lang="' . esc_attr(gls_switcher_link_data_lang_html($lang)) . '" href="' . $href . '" title="' . esc_attr(gls_switcher_link_title_html($lang)) . '">' . gls_switcher_link_label_html($lang) . '</a>';
+}
+
+function gls_switcher_link_data_lang_html(string $lang): string {
+    return gls_switcher_data_lang($lang);
+}
+
+function gls_switcher_link_title_html(string $lang): string {
+    return gls_switcher_link_title($lang);
+}
+
+function gls_switcher_link_label_html(string $lang): string {
+    return esc_html(gls_switcher_label($lang));
 }
 
 function gls_switcher_container_open_html(): string {
