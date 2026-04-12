@@ -114,13 +114,17 @@ function gls_switcher_url(string $lang): string {
 }
 
 function gls_brand_name() {
-    return gls_current_lang_code() === 'ru' ? 'Гастроном' : 'Gastronom';
+    return gls_is_current_lang_ru() ? 'Гастроном' : 'Gastronom';
 }
 
 function gls_brand_description() {
-    return gls_current_lang_code() === 'ru'
+    return gls_is_current_lang_ru()
         ? 'русский магазин продуктов в Братиславе'
         : 'obchod s ruskými potravinami v Bratislave';
+}
+
+function gls_is_current_lang_ru(): bool {
+    return gls_current_lang_code() === 'ru';
 }
 
 function gls_localize_bilingual_text(string $text, ?string $lang = null): string {
