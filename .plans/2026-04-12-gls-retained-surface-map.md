@@ -63,6 +63,15 @@ Reason:
   - `home RU legal registry line present`
   - `home RU legal company line present`
 
+### 6. footer brand heading normalization inside `gls_normalize_storefront_footer_shell_html()`
+
+Keep.
+
+Reason:
+
+- exact-output proof attempt on RU homepage showed immediate regression from `Гастроном` to `Gastronom`
+- baseline does not currently check this marker, but direct output capture proves live dependency
+
 ## remove later
 
 These areas are plausible cleanup candidates, but only after explicit proof.
