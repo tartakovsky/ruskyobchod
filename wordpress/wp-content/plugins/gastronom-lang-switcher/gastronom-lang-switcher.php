@@ -922,6 +922,12 @@ function gls_localize_html_text_pattern(string $html, string $pattern, string $l
     );
 }
 
+function gls_checkout_order_title_h1_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '<h1 class="vw-page-title">Оформление заказа</h1>'
+        : '<h1 class="vw-page-title">Objednávka</h1>';
+}
+
 function gls_normalize_checkout_order_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         $html = str_replace(
@@ -937,7 +943,7 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
         );
         return (string) preg_replace(
             '~<h1 class="vw-page-title">\s*Objednávka\s*</h1>~u',
-            '<h1 class="vw-page-title">Оформление заказа</h1>',
+            gls_checkout_order_title_h1_replacement($lang),
             $html,
             1
         );
@@ -952,7 +958,7 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
 
     return (string) preg_replace(
         '~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u',
-        '<h1 class="vw-page-title">Objednávka</h1>',
+        gls_checkout_order_title_h1_replacement($lang),
         $html,
         1
     );
