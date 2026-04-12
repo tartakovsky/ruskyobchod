@@ -190,6 +190,10 @@ function gls_resolve_text_lang(?string $lang): string {
     return is_string($lang) && gls_is_supported_lang($lang) ? $lang : gls_current_lang_code();
 }
 
+function gls_replace_text_pairs(string $value, array $pairs): string {
+    return str_replace(array_keys($pairs), array_values($pairs), $value);
+}
+
 function gls_translate_static_title($title) {
     $lang = gls_current_lang_code();
 
@@ -732,19 +736,20 @@ function gls_normalize_common_public_title_text(string $title, string $lang): st
 
 function gls_normalize_account_title_text(string $title, string $lang): string {
     if ($lang === 'ru') {
-        $title = str_replace('Môj účet', 'Мой аккаунт', $title);
-        $title = str_replace('Môj Účet', 'Мой аккаунт', $title);
-        $title = str_replace('Моя учётная запись', 'Мой аккаунт', $title);
-        $title = str_replace('Мой Аккаунт', 'Мой аккаунт', $title);
-        return $title;
+        return gls_replace_text_pairs($title, [
+            'Môj účet' => 'Мой аккаунт',
+            'Môj Účet' => 'Мой аккаунт',
+            'Моя учётная запись' => 'Мой аккаунт',
+            'Мой Аккаунт' => 'Мой аккаунт',
+        ]);
     }
 
-    $title = str_replace('Мой аккаунт', 'Môj účet', $title);
-    $title = str_replace('Мой Аккаунт', 'Môj účet', $title);
-    $title = str_replace('Моя учётная запись', 'Môj účet', $title);
-    $title = str_replace('Môj Účet', 'Môj účet', $title);
-
-    return $title;
+    return gls_replace_text_pairs($title, [
+        'Мой аккаунт' => 'Môj účet',
+        'Мой Аккаунт' => 'Môj účet',
+        'Моя учётная запись' => 'Môj účet',
+        'Môj Účet' => 'Môj účet',
+    ]);
 }
 
 function gls_normalize_checkout_public_title_text(string $title, string $lang, bool $include_order_title): string {
