@@ -47,7 +47,16 @@ Repeated replacement maps, regex patterns, and replacement values were extracted
 - footer heading normalization
 - checkout order shell normalization
 
-### 3. rollback discipline was proven
+### 3. post-safe-phase residual work has already produced real migrations
+
+Not just proofs.
+
+Completed migrations:
+
+- footer brand/legal slice moved from late footer shell cleanup to earlier server-side ownership through `render_block`
+- cookie notice labels moved from late output cleanup to source-level ownership through `cn_cookie_notice_args`
+
+### 4. rollback discipline was proven
 
 One attempted extraction inside the empty-cart shell area caused a regression and was reverted immediately by single-step rollback.
 

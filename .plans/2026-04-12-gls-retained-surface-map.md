@@ -41,15 +41,20 @@ Reason:
 
 ### 4. cookie notice button normalization inside the server-rendered shell path
 
-Keep.
+Status:
 
-Reason:
+- migrated out of retained late shell ownership
 
-- exact-output proof attempt showed that removing the residual call changed RU cart output
-- observed regression:
-  - button text stayed `Ок`
-  - `cn-accept-cookie` aria-label regressed from `Ок` to `Ok`
-- this means the slice still owns part of the live output contract
+Current owner:
+
+- `gls_cookie_notice_source_args()` through `cn_cookie_notice_args`
+
+Verification:
+
+- exact output preserved on RU home and RU cart after removing late cookie notice normalization from:
+  - storefront footer shell
+  - server-rendered empty-cart shell path
+- checkout shell baseline remained green
 
 ### moved out of retained late shell ownership
 
