@@ -842,12 +842,20 @@ function gls_normalize_cookie_notice_button_html(string $html, string $lang): st
     return gls_replace_text_pairs($html, gls_cookie_notice_button_pairs($lang));
 }
 
-function gls_normalize_footer_brand_heading_html(string $html, string $lang): string {
+function gls_footer_brand_heading_pairs(string $lang): array {
     if ($lang === 'ru') {
-        return str_replace('>Gastronom</h3>', '>Гастроном</h3>', $html);
+        return [
+            '>Gastronom</h3>' => '>Гастроном</h3>',
+        ];
     }
 
-    return str_replace('>Гастроном</h3>', '>Gastronom</h3>', $html);
+    return [
+        '>Гастроном</h3>' => '>Gastronom</h3>',
+    ];
+}
+
+function gls_normalize_footer_brand_heading_html(string $html, string $lang): string {
+    return gls_replace_text_pairs($html, gls_footer_brand_heading_pairs($lang));
 }
 
 function gls_normalize_storefront_footer_shell_html(string $html, string $lang): string {
