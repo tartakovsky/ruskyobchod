@@ -1056,7 +1056,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
             'GLS doručenie na adresu' => 'GLS доставка на адрес',
             'SK Packeta Pick-up Point (Z-Point, Z-Box)' => 'SK Packeta пункт выдачи (Z-Point, Z-Box)',
             'GLS Balíkomat' => 'GLS Баликомат',
-            'Platba pri doručení' => 'Оплата при получении',
             'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.' => 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.',
             'Card <img' => 'Оплата картой <img',
         ]), $lang));
