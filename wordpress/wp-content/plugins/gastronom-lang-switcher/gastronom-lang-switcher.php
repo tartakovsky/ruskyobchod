@@ -1077,7 +1077,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'Я прочитал(а) и принимаю ' => 'Prečítal(a) som si a súhlasím s ',
         'обязательно' => 'povinné',
         'необязательно' => 'voliteľné',
-        'Примечание к заказу' => 'Poznámka k objednávke',
         'Card <img' => 'Platba kartou <img',
     ]), $lang));
 }
