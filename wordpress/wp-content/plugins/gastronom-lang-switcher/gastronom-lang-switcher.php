@@ -8,6 +8,10 @@
 
 if (!defined('ABSPATH')) exit;
 
+function gls_is_supported_lang(string $lang): bool {
+    return $lang === 'ru' || $lang === 'sk';
+}
+
 function gls_current_lang_code() {
     if (function_exists('rslc_current_lang')) {
         return rslc_current_lang();
@@ -19,14 +23,14 @@ function gls_current_lang_code() {
 
     if (isset($_GET['lang'])) {
         $lang = sanitize_key(wp_unslash($_GET['lang']));
-        if ($lang === 'ru' || $lang === 'sk') {
+        if (gls_is_supported_lang($lang)) {
             return $lang;
         }
     }
 
     if (isset($_COOKIE['gastronom_lang'])) {
         $lang = sanitize_key(wp_unslash($_COOKIE['gastronom_lang']));
-        if ($lang === 'ru' || $lang === 'sk') {
+        if (gls_is_supported_lang($lang)) {
             return $lang;
         }
     }
@@ -183,7 +187,7 @@ function gls_localize_bilingual_text(string $text, ?string $lang = null): string
 }
 
 function gls_resolve_text_lang(?string $lang): string {
-    return $lang === 'ru' || $lang === 'sk' ? $lang : gls_current_lang_code();
+    return is_string($lang) && gls_is_supported_lang($lang) ? $lang : gls_current_lang_code();
 }
 
 function gls_translate_static_title($title) {
@@ -512,7 +516,7 @@ function gls_server_lang(): string {
     }
 
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
-    if ($query_lang === 'ru' || $query_lang === 'sk') {
+    if (gls_is_supported_lang($query_lang)) {
         return $query_lang;
     }
 
@@ -526,7 +530,7 @@ add_action('init', function() {
     }
 
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
-    if ($query_lang !== 'ru' && $query_lang !== 'sk') {
+    if (!gls_is_supported_lang($query_lang)) {
         return;
     }
 
@@ -540,7 +544,7 @@ add_filter('wp_redirect', function($location, $status) {
     }
 
     $lang = gls_server_lang();
-    if ($lang !== 'ru' && $lang !== 'sk') {
+    if (!gls_is_supported_lang($lang)) {
         return $location;
     }
 
