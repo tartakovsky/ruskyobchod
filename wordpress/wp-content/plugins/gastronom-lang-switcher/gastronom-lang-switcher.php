@@ -879,12 +879,16 @@ function gls_normalize_footer_brand_heading_tag_html(string $html, string $lang)
     );
 }
 
+function gls_ok_button_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '<button$1>Ок</button>'
+        : '<button$1>Ok</button>';
+}
+
 function gls_normalize_ok_button_html(string $html, string $lang): string {
     return (string) preg_replace(
         '~<button([^>]*)>\s*(Ок|Ok)\s*</button>~su',
-        $lang === 'ru'
-            ? '<button$1>Ок</button>'
-            : '<button$1>Ok</button>',
+        gls_ok_button_replacement($lang),
         $html
     );
 }
