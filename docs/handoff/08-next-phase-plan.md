@@ -88,14 +88,15 @@ Already proven:
 - reserve/restore site stock path
 - confirmation-ready transition for COD
 - sync/restore algorithm via in-memory Dotypos stub
+- admin AJAX confirmation path success with controlled cleanup
 
 The next block should be one of these, not several:
 
 1. prove the non-COD confirmation-ready transition (`await-weight -> pending`)
-2. prove or close the admin/AJAX confirmation path with a controlled temporary order
+2. tighten the admin/AJAX proof harness so cleanup is guaranteed even after `wp_send_json_*()` termination
 3. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
 
-If the second option is chosen, it must have:
+If option 2 is chosen, it must have:
 
 - explicit cleanup/rollback
 - exact expected state transitions

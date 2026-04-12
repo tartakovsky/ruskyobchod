@@ -169,8 +169,22 @@ Controlled temporary-order proof on live already confirmed:
 - reserve/restore site stock path
 - `await-weight -> on-hold` confirmation-ready transition for COD
 - Dotypos sync/restore algorithm through in-memory service stub without real API mutation
+- admin AJAX weight-confirmation path returned live success under controlled conditions
 
 All temporary proofs were followed by cleanup and then by all six green verification contours.
+
+### 13. remaining live-vs-repo MU gaps are no longer all equally urgent
+
+The full `mu-plugins` audit showed that live still does not contain every repo `rusky-*.php` file.
+
+Current status:
+
+- the critical preorder owner gaps have been closed
+- the remaining missing MU files are now deferred until they are proven necessary for:
+  - Tuesday-morning integration readiness
+  - or a specific live/runtime defect
+
+They should not be deployed as a blind parity batch.
 
 ## stop line
 
