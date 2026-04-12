@@ -1,5 +1,9 @@
 # current state and experiments
 
+This file is historical incident context.
+
+For the authoritative current live state, read `07-current-live-state.md` first.
+
 This file is the current incident log in plain English.
 
 ## what we confirmed

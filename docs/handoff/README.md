@@ -8,10 +8,12 @@ This folder exists because the live site was edited for weeks like a group proje
 
 1. `01-agent-git-workflow.md`
 2. `02-issue-overview.md`
-3. `03-current-state-and-experiments.md`
-4. `04-architecture-review-and-rebuild-plan.md`
-5. `05-quick-fix-plan.md`
-6. `06-gls-regression-findings.md`
+3. `07-current-live-state.md`
+4. `03-current-state-and-experiments.md`
+5. `04-architecture-review-and-rebuild-plan.md`
+6. `05-quick-fix-plan.md`
+7. `06-gls-regression-findings.md`
+8. `08-next-phase-plan.md`
 
 ## What this pack is for
 
@@ -19,6 +21,7 @@ This folder exists because the live site was edited for weeks like a group proje
 - summarize what the site history says went wrong
 - capture the fixes and tests already done in the current incident
 - separate proper architecture from emergency stabilization
+- expose one authoritative current-state entry point before older incident notes
 
 ## What this pack is not
 
