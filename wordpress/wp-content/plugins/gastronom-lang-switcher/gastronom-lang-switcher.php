@@ -1269,20 +1269,26 @@ function gls_switcher_button_class(string $lang, string $current_lang): string {
     return 'gls-btn gls-btn-' . $lang . ($current_lang === $lang ? ' active' : '');
 }
 
+function gls_switcher_urls(): array {
+    return [
+        'ru' => esc_url(gls_switcher_url('ru')),
+        'sk' => esc_url(gls_switcher_url('sk')),
+    ];
+}
+
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
 function gls_render_internal_switcher_html(string $current_lang): string {
-    $ru_url = esc_url(gls_switcher_url('ru'));
-    $sk_url = esc_url(gls_switcher_url('sk'));
+    $urls = gls_switcher_urls();
     $ru_class = gls_switcher_button_class('ru', $current_lang);
     $sk_class = gls_switcher_button_class('sk', $current_lang);
 
     return '<div id="gls-switcher" class="gls-switcher">'
-        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="' . esc_attr(gls_switcher_link_title('ru')) . '">' . esc_html(gls_switcher_label('ru')) . '</a>'
-        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $sk_url . '" title="' . esc_attr(gls_switcher_link_title('sk')) . '">' . esc_html(gls_switcher_label('sk')) . '</a>'
+        . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $urls['ru'] . '" title="' . esc_attr(gls_switcher_link_title('ru')) . '">' . esc_html(gls_switcher_label('ru')) . '</a>'
+        . '<a class="' . esc_attr($sk_class) . '" data-lang="sk" href="' . $urls['sk'] . '" title="' . esc_attr(gls_switcher_link_title('sk')) . '">' . esc_html(gls_switcher_label('sk')) . '</a>'
         . '</div>';
 }
 
