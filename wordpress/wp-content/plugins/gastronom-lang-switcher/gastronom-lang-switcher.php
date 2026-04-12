@@ -1078,7 +1078,6 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         'обязательно' => 'povinné',
         'необязательно' => 'voliteľné',
         'Примечание к заказу' => 'Poznámka k objednávke',
-        '</a> сайта</span>' => '</a></span>',
         'Card <img' => 'Platba kartou <img',
     ]), $lang));
 }
