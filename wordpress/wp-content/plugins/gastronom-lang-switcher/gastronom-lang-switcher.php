@@ -1265,6 +1265,10 @@ function gls_switcher_label(string $lang): string {
     return strtoupper($lang);
 }
 
+function gls_switcher_button_class(string $lang, string $current_lang): string {
+    return 'gls-btn gls-btn-' . $lang . ($current_lang === $lang ? ' active' : '');
+}
+
 function gls_enqueue_scripts() {
     wp_enqueue_style('gls-style', gls_style_asset_url(), [], gls_asset_version());
 }
@@ -1273,8 +1277,8 @@ add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 function gls_render_internal_switcher_html(string $current_lang): string {
     $ru_url = esc_url(gls_switcher_url('ru'));
     $sk_url = esc_url(gls_switcher_url('sk'));
-    $ru_class = 'gls-btn gls-btn-ru' . ($current_lang === 'ru' ? ' active' : '');
-    $sk_class = 'gls-btn gls-btn-sk' . ($current_lang === 'sk' ? ' active' : '');
+    $ru_class = gls_switcher_button_class('ru', $current_lang);
+    $sk_class = gls_switcher_button_class('sk', $current_lang);
 
     return '<div id="gls-switcher" class="gls-switcher">'
         . '<a class="' . esc_attr($ru_class) . '" data-lang="ru" href="' . $ru_url . '" title="' . esc_attr(gls_switcher_link_title('ru')) . '">' . esc_html(gls_switcher_label('ru')) . '</a>'
