@@ -16,7 +16,6 @@ function gastronom_setup_decimal_stock_amount(): void {
     add_filter('woocommerce_stock_amount', 'floatval');
 }
 }
-}
 add_action('plugins_loaded', 'gastronom_setup_decimal_stock_amount', 99);
 
 // Too noisy for this store: do not email admins about low stock thresholds.
@@ -35,7 +34,6 @@ function gastronom_disable_stock_notifications(): void {
     }
 }
 }
-}
 add_action('init', 'gastronom_disable_stock_notifications', 5);
 
 if (!function_exists('gastronom_disable_stock_email_actions')) {
@@ -50,7 +48,6 @@ function gastronom_disable_stock_email_actions($mailer): void {
     remove_action('woocommerce_product_on_backorder_notification', [$mailer, 'backorder']);
 }
 }
-}
 add_action('woocommerce_email', 'gastronom_disable_stock_email_actions', 1);
 
 if (!function_exists('gastronom_detach_dotypos_product_updated_hook')) {
@@ -60,7 +57,6 @@ function gastronom_detach_dotypos_product_updated_hook(): void {
     if ($dotypos && is_object($dotypos) && method_exists($dotypos, 'handle_product_updated')) {
         remove_action('woocommerce_update_product', [$dotypos, 'handle_product_updated'], 10);
     }
-}
 }
 }
 add_action('plugins_loaded', 'gastronom_detach_dotypos_product_updated_hook', 100);
@@ -80,7 +76,6 @@ function gastronom_adjust_rest_endpoints_for_decimal_stock($endpoints) {
         }
     }
     return $endpoints;
-}
 }
 }
 add_filter('rest_endpoints', 'gastronom_adjust_rest_endpoints_for_decimal_stock');
@@ -228,7 +223,6 @@ function gastronom_sync_stock_status_after_set_stock($product): void {
     gastronom_reconcile_decimal_stock($product_id);
 }
 }
-}
 add_action('woocommerce_product_set_stock', 'gastronom_sync_stock_status_after_set_stock', 10, 1);
 
 // ============================================================
@@ -241,7 +235,6 @@ function gastronom_sync_stock_status_after_rest_insert($product): void {
     gastronom_reconcile_decimal_stock($product->get_id());
 }
 }
-}
 add_action('woocommerce_rest_insert_product_object', 'gastronom_sync_stock_status_after_rest_insert', 99, 1);
 
 if (!function_exists('gastronom_reconcile_on_updated_post_meta')) {
@@ -251,7 +244,6 @@ function gastronom_reconcile_on_updated_post_meta($meta_id, $object_id, $meta_ke
     }
 }
 }
-}
 add_action('updated_post_meta', 'gastronom_reconcile_on_updated_post_meta', 20, 3);
 
 if (!function_exists('gastronom_reconcile_on_added_post_meta')) {
@@ -259,7 +251,6 @@ function gastronom_reconcile_on_added_post_meta($meta_id, $object_id, $meta_key)
     if ($meta_key === '_stock') {
         gastronom_reconcile_decimal_stock($object_id);
     }
-}
 }
 }
 add_action('added_post_meta', 'gastronom_reconcile_on_added_post_meta', 20, 3);
@@ -336,7 +327,6 @@ function gastronom_run_stock_fix_repair_once(): void {
         // Log for debugging
         error_log("Gastronom Stock Fix v{$fix_version}: fixed {$fixed} products stock status + visibility");
     }
-}
 }
 }
 add_action('admin_init', 'gastronom_run_stock_fix_repair_once');

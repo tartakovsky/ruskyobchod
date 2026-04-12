@@ -88,6 +88,20 @@ Read-only live audit confirmed:
 
 Therefore current Dotypos/preorder behavior on live must still be treated as owned by the old `gastronom-stock-fix.php` path until parity is handled intentionally.
 
+### 7. stock-fix parity rollout completed safely
+
+`gastronom-stock-fix.php` parity rollout was completed as a one-file controlled deploy.
+
+Post-deploy verification stayed green for:
+
+- storefront baseline
+- checkout shell baseline
+- account shell baseline
+- commerce shell RU
+- commerce shell SK
+
+The next safe step is now owner-file parity for the missing Dotypos/preorder MU files.
+
 ## stop line
 
 Do not continue the completed safe-refactor phase into these areas without a new mini-plan:
