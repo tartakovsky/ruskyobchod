@@ -1285,11 +1285,15 @@ function gls_render_internal_switcher_link(string $lang, string $href, string $c
 }
 
 function gls_switcher_container_open_html(): string {
-    return '<div id="gls-switcher" class="gls-switcher">';
+    return '<div ' . gls_switcher_container_attributes() . '>';
 }
 
 function gls_switcher_container_close_html(): string {
     return '</div>';
+}
+
+function gls_switcher_container_attributes(): string {
+    return 'id="gls-switcher" class="gls-switcher"';
 }
 
 function gls_enqueue_scripts() {
