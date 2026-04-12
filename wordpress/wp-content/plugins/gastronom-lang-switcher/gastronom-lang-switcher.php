@@ -954,24 +954,23 @@ function gls_normalize_checkout_order_title_shell_html(string $html, string $lan
     );
 }
 
+function gls_normalize_empty_cart_shell_html(string $html, string $lang): string {
+    $html = gls_normalize_skip_link_html($html, $lang);
+    $html = gls_normalize_footer_brand_heading_tag_html($html, $lang);
+    $html = gls_normalize_ok_button_html($html, $lang);
+    $html = gls_normalize_cookie_notice_button_html($html, $lang);
+    $html = gls_normalize_checkout_order_title_shell_html($html, $lang);
+
+    if (strpos($html, 'wc-empty-cart-message') === false) {
+        return $html;
+    }
+
+    return gls_strip_storefront_title_shell_html($html);
+}
+
 function gls_normalize_server_rendered_html(string $html, string $lang): string {
-    $normalize_empty_cart_shell = static function(string $value) use ($lang): string {
-        $value = gls_normalize_skip_link_html($value, $lang);
-        $value = gls_normalize_footer_brand_heading_tag_html($value, $lang);
-        $value = gls_normalize_ok_button_html($value, $lang);
-        $value = gls_normalize_cookie_notice_button_html($value, $lang);
-
-        $value = gls_normalize_checkout_order_title_shell_html($value, $lang);
-
-        if (strpos($value, 'wc-empty-cart-message') === false) {
-            return $value;
-        }
-
-        return gls_strip_storefront_title_shell_html($value);
-    };
-
     if ($lang === 'ru') {
-        return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
+        return gls_normalize_empty_cart_shell_html(gls_normalize_legal_company_text_html(strtr($html, [
             'Môj účet' => 'Мой аккаунт',
             'Môj Účet' => 'Мой аккаунт',
             'My account' => 'Мой аккаунт',
@@ -998,7 +997,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         ]), $lang));
     }
 
-    return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
+    return gls_normalize_empty_cart_shell_html(gls_normalize_legal_company_text_html(strtr($html, [
         'Контакты' => 'Kontakt',
         'Мой аккаунт' => 'Môj účet',
         'Мой Аккаунт' => 'Môj účet',
