@@ -149,7 +149,7 @@ function gls_localize_bilingual_text(string $text, ?string $lang = null): string
         return trim($text);
     }
 
-    $lang = $lang === 'ru' || $lang === 'sk' ? $lang : gls_current_lang_code();
+    $lang = gls_resolve_text_lang($lang);
 
     if (function_exists('gastronom_localize_title')) {
         return gastronom_localize_title($value, $lang);
@@ -180,6 +180,10 @@ function gls_localize_bilingual_text(string $text, ?string $lang = null): string
     }
 
     return $value;
+}
+
+function gls_resolve_text_lang(?string $lang): string {
+    return $lang === 'ru' || $lang === 'sk' ? $lang : gls_current_lang_code();
 }
 
 function gls_translate_static_title($title) {
