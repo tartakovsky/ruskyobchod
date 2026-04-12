@@ -795,12 +795,16 @@ add_filter('rank_math/frontend/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/facebook/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/twitter/title', 'gls_normalize_public_title', 20);
 
+function gls_skip_link_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
+        : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>';
+}
+
 function gls_normalize_skip_link_html(string $html, string $lang): string {
     return (string) preg_replace(
         '~<a[^>]*class="[^"]*skip-link[^"]*"[^>]*href="#maincontent"[^>]*>.*?</a>~su',
-        $lang === 'ru'
-            ? '<a class="screen-reader-text skip-link" href="#maincontent">Перейти к содержимому</a>'
-            : '<a class="screen-reader-text skip-link" href="#maincontent">Preskočiť na obsah</a>',
+        gls_skip_link_replacement($lang),
         $html,
         1
     );
