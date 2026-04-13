@@ -55,6 +55,38 @@ function gls_is_logged_in_operator_request(): bool {
     return false;
 }
 
+function gls_is_render_blocked_request(): bool {
+    if (gls_is_wp_login_request()) {
+        return true;
+    }
+
+    if (is_admin() && !wp_doing_ajax()) {
+        return true;
+    }
+
+    if (wp_doing_ajax()) {
+        return true;
+    }
+
+    if ((defined('REST_REQUEST') && REST_REQUEST) || (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST)) {
+        return true;
+    }
+
+    if (isset($_GET['elementor-preview']) || (isset($_GET['action']) && $_GET['action'] === 'elementor')) {
+        return true;
+    }
+
+    return false;
+}
+
+function gls_is_runtime_mutation_blocked_request(): bool {
+    if (gls_is_render_blocked_request()) {
+        return true;
+    }
+
+    return gls_is_logged_in_operator_request();
+}
+
 function gls_has_explicit_lang_context(): bool {
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if (gls_is_supported_lang($query_lang)) {
@@ -629,7 +661,7 @@ add_filter('wp_redirect', function($location, $status) {
         return $location;
     }
 
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return $location;
     }
 
@@ -657,35 +689,11 @@ add_filter('wp_redirect', function($location, $status) {
 }, 20, 2);
 
 function gls_is_sensitive_runtime_context(): bool {
-    if (gls_is_wp_login_request()) {
-        return true;
-    }
-
-    if (gls_is_logged_in_operator_request()) {
-        return true;
-    }
-
-    if (is_admin() && !wp_doing_ajax()) {
-        return true;
-    }
-
-    if (wp_doing_ajax()) {
-        return true;
-    }
-
-    if ((defined('REST_REQUEST') && REST_REQUEST) || (defined('XMLRPC_REQUEST') && XMLRPC_REQUEST)) {
-        return true;
-    }
-
-    if (isset($_GET['elementor-preview']) || isset($_GET['action']) && $_GET['action'] === 'elementor') {
-        return true;
-    }
-    
-    return false;
+    return gls_is_runtime_mutation_blocked_request();
 }
 
 function gls_frontend_locale(string $locale): string {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return $locale;
     }
 
@@ -696,7 +704,7 @@ add_filter('locale', 'gls_frontend_locale', 20);
 add_filter('determine_locale', 'gls_frontend_locale', 20);
 
 add_filter('gettext', function($translated, $text, $domain) {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return $translated;
     }
 
@@ -997,7 +1005,7 @@ function gls_footer_block_needs_legal_normalization(string $content): bool {
 }
 
 function gls_normalize_footer_block_content(string $content): string {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_render_blocked_request()) {
         return $content;
     }
 
@@ -1413,7 +1421,7 @@ function gls_currency_symbol_override(string $symbol, string $currency): string 
 }
 
 function gls_filter_wcpay_locale() {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return get_locale();
     }
 
@@ -1425,7 +1433,7 @@ function gls_filter_woocommerce_currency_symbol(string $symbol, string $currency
 }
 
 function gls_apply_wcpay_locale_to_footer_scripts(): void {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return;
     }
 
@@ -1472,7 +1480,7 @@ function gls_filter_template_output_html(string $html): string {
 }
 
 function gls_start_template_output_buffer(): void {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_render_blocked_request()) {
         return;
     }
 
@@ -1480,7 +1488,7 @@ function gls_start_template_output_buffer(): void {
 }
 
 function gls_filter_script_loader_tag_for_wcpay_locale(string $tag, string $handle): string {
-    if (gls_is_sensitive_runtime_context()) {
+    if (gls_is_runtime_mutation_blocked_request()) {
         return $tag;
     }
 
