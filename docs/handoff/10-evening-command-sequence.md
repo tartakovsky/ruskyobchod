@@ -35,6 +35,17 @@ Expected result:
 - exact after-state for product `10617`
 - green `evening-gate.txt`
 
+Then compare the two bundles:
+
+- `tools/compare-evening-evidence.sh artifacts/evening-integration/<precheck-dir> artifacts/evening-integration/<postcheck-dir>`
+
+Expected result:
+
+- `product-state.txt` matches
+- `active-plugins.txt` matches
+- `mu-parity.txt` matches
+- `dotypos-readonly.txt` matches
+
 ## 4. rollback
 
 If mutation is not clean, stop and use:
