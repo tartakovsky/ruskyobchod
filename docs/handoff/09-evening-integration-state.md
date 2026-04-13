@@ -61,3 +61,9 @@ If the evening roundtrip is not clean, use:
 Use the exact evening order from:
 
 - `docs/handoff/10-evening-command-sequence.md`
+
+## decision matrix
+
+Use the go/skip/mutate criteria from:
+
+- `docs/handoff/11-evening-decision-matrix.md`
