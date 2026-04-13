@@ -75,8 +75,8 @@ function rpn_send_weight_confirmation_email($order): void {
 
         $payment_method = (string) $order->get_payment_method();
         $cta = $lang === 'ru'
-            ? 'Итоговая сумма обновлена. Ниже указан следующий шаг оплаты по выбранному способу.'
-            : 'Konečná suma bola aktualizovaná. Nižšie nájdete ďalší krok platby podľa zvoleného spôsobu.';
+            ? 'Итоговая сумма обновлена. Ниже указан следующий шаг по выбранному способу оплаты.'
+            : 'Konečná suma bola aktualizovaná. Nižšie nájdete ďalší krok podľa zvoleného spôsobu platby.';
 
         $details_label = $lang === 'ru' ? 'Информация о заказе' : 'Informácie o objednávke';
         $shipping_title = gastronom_localize_order_label((string) $order->get_shipping_method(), $lang);
@@ -137,14 +137,24 @@ function rpn_send_weight_confirmation_email($order): void {
             ? $order->get_view_order_url()
             : $order->get_checkout_order_received_url();
         $view_url = add_query_arg('lang', $lang, $view_url);
-        $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
         $payment_html = '';
 
         if ($payment_method === 'cod') {
             $payment_html = '<p>' . esc_html($lang === 'ru'
                 ? 'Вы выбрали оплату при получении. Дополнительно оплачивать заказ сейчас не нужно.'
                 : 'Zvolili ste platbu pri prevzatí. Objednávku teraz nemusíte dodatočne platiť.') . '</p>';
+        } elseif ($payment_method === 'bacs') {
+            $bank_label = $lang === 'ru' ? 'Проверить заказ и оплатить' : 'Skontrolovať objednávku a zaplatiť';
+            $bank_text = $lang === 'ru'
+                ? 'Перейдите по ссылке ниже, чтобы открыть заказ, увидеть реквизиты для банковского перевода и завершить оплату переводом.'
+                : 'Prejdite na odkaz nižšie, otvoríte objednávku, zobrazíte platobné údaje pre bankový prevod a dokončíte úhradu prevodom.';
+            $bank_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
+            if (!empty($bank_url)) {
+                $payment_html = '<p>' . esc_html($bank_text) . '</p>'
+                    . '<p><a href="' . esc_url($bank_url) . '" style="display:inline-block;padding:10px 16px;background:#067c36;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($bank_label) . '</a></p>';
+            }
         } else {
+            $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
             $pay_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
             if (!empty($pay_url)) {
                 $payment_html = '<p>' . esc_html($lang === 'ru'
