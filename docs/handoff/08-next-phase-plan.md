@@ -82,6 +82,9 @@ Now confirmed:
   - `rusky-order-language-helpers.php`
   - `rusky-stock-normalization.php`
   - `rusky-stock-policy.php`
+- language-runtime parity also moved forward safely:
+  - `rusky-server-language-core.php`
+  - `rusky-language-switcher-lite.php`
 
 ## next practical move
 
@@ -100,15 +103,18 @@ The next block should be one of these, not several:
 
 1. tighten the admin/AJAX proof harness so cleanup is guaranteed even after `wp_send_json_*()` termination
 2. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
-3. pick the next highest-signal remaining gap from:
-   - `rusky-language-switcher-lite.php`
-   - `rusky-runtime-shim.php`
-   - `rusky-server-language-core.php`
+3. if runtime filtering becomes necessary again, take `rusky-runtime-shim.php` only under an explicit mini-plan with exact before/after active-plugin proof
 
 If option 2 is chosen, it must have:
 
 - explicit cleanup/rollback
 - exact expected state transitions
 - verification before and after
+
+Current read-only conclusion:
+
+- `rusky-runtime-shim.php` is the only remaining live-vs-repo MU gap
+- `real-time-find-and-replace/real-time-find-and-replace.php` is currently not active on live
+- because of that, forcing runtime-shim parity tonight would add risk without clear Tuesday-morning value
 
 That preserves the progress already achieved and avoids re-entering the same file blindly.
