@@ -87,21 +87,19 @@ function rpa_render_weight_confirmation_box($order_or_post): void {
         $actual = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
         $confirmed = $item->get_meta('_gastronom_weight_confirmed', true) === 'yes';
 
-        echo '<div style="margin:0 0 12px;padding:14px 16px;border:1px solid #dcdcde;border-radius:10px;background:#fff;">';
-        echo '<div style="display:grid;grid-template-columns:minmax(0,1fr) 170px;gap:14px;align-items:end;">';
-        echo '<div>';
-        echo '<div style="font-weight:600;line-height:1.35;margin-bottom:6px;">' . esc_html($title) . '</div>';
-        echo '<div style="color:#50575e;font-size:13px;">' . esc_html((string) $qty) . ' шт. · ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
-        echo '<div style="margin-top:8px;color:#50575e;font-size:13px;">Статус заказа: <strong>' . esc_html($status_label) . '</strong></div>';
+        echo '<div class="gastronom-weight-item">';
+        echo '<div class="gastronom-weight-item__summary">';
+        echo '<div class="gastronom-weight-item__title">' . esc_html($title) . '</div>';
+        echo '<div class="gastronom-weight-item__meta">' . esc_html((string) $qty) . ' шт. · ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
+        echo '<div class="gastronom-weight-item__status">Статус заказа: <strong>' . esc_html($status_label) . '</strong></div>';
         if ($confirmed) {
-            echo '<div style="margin-top:6px;color:#067c36;font-size:13px;font-weight:600;">Вес подтверждён</div>';
+            echo '<div class="gastronom-weight-item__confirmed">Вес подтверждён</div>';
         }
         echo '</div>';
-        echo '<label style="display:flex;flex-direction:column;gap:6px;">';
-        echo '<span style="font-size:12px;font-weight:600;color:#344054;">Фактический вес, кг</span>';
-        echo '<input type="number" step="0.01" min="0" placeholder="0.37" name="gastronom_actual_weight[' . esc_attr((string) $item_id) . ']" value="' . esc_attr($actual > 0 ? (string) $actual : '') . '" style="width:100%;max-width:170px;">';
+        echo '<label class="gastronom-weight-item__field">';
+        echo '<span class="gastronom-weight-item__field-label">Фактический вес, кг</span>';
+        echo '<input type="number" step="0.01" min="0" placeholder="0.37" name="gastronom_actual_weight[' . esc_attr((string) $item_id) . ']" value="' . esc_attr($actual > 0 ? (string) $actual : '') . '">';
         echo '</label>';
-        echo '</div>';
         echo '</div>';
     }
 
@@ -110,8 +108,8 @@ function rpa_render_weight_confirmation_box($order_or_post): void {
         return;
     }
 
-    echo '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid #dcdcde;">';
-    echo '<div style="color:#50575e;max-width:70%;">Подтверждение применяется ко всем товарам с указанным фактическим весом в этом заказе.</div>';
+    echo '<div class="gastronom-weight-box__actions">';
+    echo '<div class="gastronom-weight-box__hint">Подтверждение применяется ко всем товарам с указанным фактическим весом в этом заказе.</div>';
     echo '<button type="button" class="button button-primary gastronom-confirm-weight-button">Подтвердить вес по заказу</button>';
     echo '</div>';
 }
@@ -141,6 +139,89 @@ function rpa_render_order_admin_footer(): void {
     #woocommerce-order-notes,
     .woocommerce-order-notes {
         display: none !important;
+    }
+    .gastronom-inline-weight-box {
+        margin: 16px 0 8px;
+        padding: 18px 20px;
+        border: 1px solid #dcdcde;
+        border-radius: 10px;
+        background: #fff;
+    }
+    .gastronom-inline-weight-box h3 {
+        margin: 0 0 14px;
+        font-size: 15px;
+        line-height: 1.4;
+    }
+    .gastronom-weight-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 220px;
+        gap: 16px;
+        align-items: end;
+        margin: 0 0 12px;
+        padding: 14px 16px;
+        border: 1px solid #dcdcde;
+        border-radius: 10px;
+        background: #f9fafb;
+    }
+    .gastronom-weight-item__title {
+        font-weight: 600;
+        line-height: 1.35;
+        margin-bottom: 6px;
+    }
+    .gastronom-weight-item__meta,
+    .gastronom-weight-item__status,
+    .gastronom-weight-box__hint {
+        color: #50575e;
+        font-size: 13px;
+        line-height: 1.45;
+    }
+    .gastronom-weight-item__status {
+        margin-top: 8px;
+    }
+    .gastronom-weight-item__confirmed {
+        margin-top: 6px;
+        color: #067c36;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    .gastronom-weight-item__field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+    }
+    .gastronom-weight-item__field-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #344054;
+    }
+    .gastronom-weight-item__field input {
+        width: 100%;
+        min-width: 0;
+    }
+    .gastronom-weight-box__actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #dcdcde;
+    }
+    .gastronom-weight-box__hint {
+        max-width: 70%;
+    }
+    @media (max-width: 960px) {
+        .gastronom-weight-item {
+            grid-template-columns: 1fr;
+        }
+        .gastronom-weight-box__actions {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .gastronom-weight-box__hint {
+            max-width: none;
+        }
     }
     </style>
     <script>
@@ -347,8 +428,8 @@ function rpa_render_inline_weight_panel($order): void {
         return;
     }
 
-    echo '<div class="gastronom-inline-weight-box" style="margin:16px 0 8px;padding:16px 18px;border:1px solid #dcdcde;border-radius:8px;background:#fff;">';
-    echo '<h3 style="margin:0 0 12px;font-size:15px;">Подтверждение фактического веса</h3>';
+    echo '<div class="gastronom-inline-weight-box">';
+    echo '<h3>Подтверждение фактического веса</h3>';
     rpa_render_weight_confirmation_box($order);
     echo '</div>';
 }
