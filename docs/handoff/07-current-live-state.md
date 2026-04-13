@@ -161,6 +161,17 @@ Runtime markers now confirmed on live:
 - `rpa_handle_weight_confirmation_ajax`
 - `rpa_render_weight_confirmation_box`
 
+The preorder storefront owner gap was also closed:
+
+- `rusky-preorder-storefront.php`
+
+Runtime markers now confirmed on live:
+
+- `rpsf_add_to_cart_validation`
+- `rpsf_available_payment_gateways`
+- `rpsf_render_single_product_note`
+- `rpsf_checkout_create_order_line_item`
+
 ### 12. preorder lifecycle proof is now partially positive
 
 Controlled temporary-order proof on live already confirmed:
@@ -192,7 +203,6 @@ Current remaining missing files on live:
 - `rusky-language-switcher-lite.php`
 - `rusky-order-language-helpers.php`
 - `rusky-order-page-language.php`
-- `rusky-preorder-storefront.php`
 - `rusky-runtime-shim.php`
 - `rusky-server-language-core.php`
 - `rusky-stock-normalization.php`
