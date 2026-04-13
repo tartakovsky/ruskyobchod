@@ -265,9 +265,25 @@ That admin/AJAX proof path is now stronger than the earlier one-off CLI proof:
   - `bacs -> pending`
 - it restores stock/cash state and deletes the temporary order through guaranteed cleanup
 
+### 13. read-only Dotypos connectivity and mapping proof is now positive
+
+Read-only proof on live now also confirms:
+
+- `Dotypos::instance()->dotyposService` is live and callable
+- `syncToDotypos=true`
+- live warehouse id is present
+- all 3 live preorder products have valid `dotypos_id` mapping
+- for all 3 preorder products:
+  - local `_gastronom_cash_stock_kg`
+  - matches remote `stockQuantityStatus`
+
+This is now covered by:
+
+- `tools/verify-dotypos-readonly.sh`
+
 All temporary proofs were followed by cleanup and then by all six green verification contours.
 
-### 13. remaining live-vs-repo MU gaps are no longer all equally urgent
+### 14. remaining live-vs-repo MU gaps are no longer all equally urgent
 
 The full `mu-plugins` audit showed that live still does not contain every repo `rusky-*.php` file.
 

@@ -98,6 +98,8 @@ Already proven:
 - confirmation-ready transition for non-COD
 - sync/restore algorithm via in-memory Dotypos stub
 - admin AJAX confirmation path success with controlled cleanup
+- read-only live Dotypos connectivity, warehouse mapping, and product stock parity via:
+  - `tools/verify-dotypos-readonly.sh`
 
 The next block should be one of these, not several:
 
@@ -105,6 +107,8 @@ The next block should be one of these, not several:
 2. if runtime filtering becomes necessary again, take `rusky-runtime-shim.php` only under an explicit mini-plan with exact before/after active-plugin proof
 3. use the cleanup-safe admin proof harness for any further preorder confirmation verification:
    - `tools/prove-admin-weight-confirmation.sh`
+4. keep using the read-only Dotypos verifier before any real external-stock mutation step:
+   - `tools/verify-dotypos-readonly.sh`
 
 The runtime-shim mini-plan now exists explicitly:
 
