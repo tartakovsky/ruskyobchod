@@ -133,6 +133,19 @@ function rpa_hidden_meta_box_ids(): array {
     ];
 }
 
+function rpa_add_weight_confirmation_meta_box(): void {
+    foreach (rpa_order_screen_ids() as $screen_id) {
+        add_meta_box(
+            'gastronom-weight-confirmation',
+            'Подтверждение фактического веса',
+            'gastronom_render_weight_confirmation_box',
+            $screen_id,
+            'normal',
+            'high'
+        );
+    }
+}
+
 function rpa_render_order_admin_footer(): void {
     ?>
     <style>
@@ -140,14 +153,23 @@ function rpa_render_order_admin_footer(): void {
     .woocommerce-order-notes {
         display: none !important;
     }
-    .gastronom-inline-weight-box {
-        margin: 16px 0 8px;
+    #gastronom-weight-confirmation .inside {
+        margin: 0;
+        padding: 0;
+    }
+    #gastronom-weight-confirmation .postbox-header {
+        border-bottom: 1px solid #dcdcde;
+    }
+    .gastronom-inline-weight-box,
+    .gastronom-weight-metabox {
+        margin: 0;
         padding: 18px 20px;
         border: 1px solid #dcdcde;
         border-radius: 10px;
         background: #fff;
     }
-    .gastronom-inline-weight-box h3 {
+    .gastronom-inline-weight-box h3,
+    .gastronom-weight-metabox h3 {
         margin: 0 0 14px;
         font-size: 15px;
         line-height: 1.4;
@@ -428,10 +450,15 @@ function rpa_render_inline_weight_panel($order): void {
         return;
     }
 
-    echo '<div class="gastronom-inline-weight-box">';
+    echo '<div class="gastronom-weight-metabox">';
     echo '<h3>Подтверждение фактического веса</h3>';
     rpa_render_weight_confirmation_box($order);
     echo '</div>';
+}
+
+function rpa_register_admin_weight_panel(): void {
+    remove_action('woocommerce_admin_order_data_after_order_details', 'gastronom_render_inline_weight_panel');
+    add_action('add_meta_boxes', 'rpa_add_weight_confirmation_meta_box', 50);
 }
 
 if (!function_exists('gastronom_render_product_preorder_fields')) {
@@ -481,6 +508,14 @@ if (!function_exists('gastronom_render_inline_weight_panel')) {
         rpa_render_inline_weight_panel($order);
     }
 }
+
+if (!function_exists('gastronom_register_admin_weight_panel')) {
+    function gastronom_register_admin_weight_panel(): void {
+        rpa_register_admin_weight_panel();
+    }
+}
+
+add_action('admin_init', 'gastronom_register_admin_weight_panel', 20);
 
 if (!function_exists('gastronom_handle_weight_confirmation_ajax')) {
     function gastronom_handle_weight_confirmation_ajax(): void {

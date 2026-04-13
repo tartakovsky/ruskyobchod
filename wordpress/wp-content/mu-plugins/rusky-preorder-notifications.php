@@ -132,19 +132,18 @@ function rpn_send_weight_confirmation_email($order): void {
         $items_html .= '</tbody></table>';
 
         $total_label = $lang === 'ru' ? 'Новая сумма заказа' : 'Nová suma objednávky';
-        $view_label = $lang === 'ru' ? 'Посмотреть заказ' : 'Zobraziť objednávku';
+        $view_label = $lang === 'ru' ? 'Проверить и подтвердить заказ' : 'Skontrolovať a potvrdiť objednávku';
         $view_url = $order->get_user_id() > 0
             ? $order->get_view_order_url()
             : $order->get_checkout_order_received_url();
         $view_url = add_query_arg('lang', $lang, $view_url);
         $payment_html = '';
-        $secondary_action_html = '';
 
         if ($payment_method === 'cod') {
             $payment_html = '<p>' . esc_html($lang === 'ru'
                 ? 'Вы выбрали оплату при получении. Дополнительно оплачивать заказ сейчас не нужно.'
                 : 'Zvolili ste platbu pri prevzatí. Objednávku teraz nemusíte dodatočne platiť.') . '</p>';
-            $secondary_action_html = '<p><a href="' . esc_url($view_url) . '" style="display:inline-block;padding:10px 16px;background:#294c7a;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($view_label) . '</a></p>';
+            $payment_html .= '<p><a href="' . esc_url($view_url) . '" style="display:inline-block;padding:10px 16px;background:#294c7a;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($view_label) . '</a></p>';
         } else {
             $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
             $pay_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
@@ -154,7 +153,6 @@ function rpn_send_weight_confirmation_email($order): void {
                     : 'Prejdite na odkaz nižšie a uhraďte objednávku podľa aktualizovanej sumy.') . '</p>'
                     . '<p><a href="' . esc_url($pay_url) . '" style="display:inline-block;padding:10px 16px;background:#067c36;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($pay_label) . '</a></p>';
             }
-            $secondary_action_html = '<p><a href="' . esc_url($view_url) . '" style="display:inline-block;padding:10px 16px;background:#294c7a;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($view_label) . '</a></p>';
         }
 
         $message = '<p>' . esc_html($intro) . '</p>'
@@ -162,8 +160,7 @@ function rpn_send_weight_confirmation_email($order): void {
             . $items_html
             . '<p><strong>' . esc_html($total_label) . ':</strong> ' . wp_kses_post($order->get_formatted_order_total()) . '</p>'
             . '<p>' . esc_html($cta) . '</p>'
-            . $payment_html
-            . $secondary_action_html;
+            . $payment_html;
 
         return [$subject, $message];
     });
