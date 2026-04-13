@@ -1051,7 +1051,12 @@ function gls_normalize_checkout_order_title_span_html(string $html, string $lang
 function gls_normalize_cart_title_shell_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         $html = gls_replace_text_pairs($html, [
-            '>Гастроном</a> <span> Ko&scaron;&iacute;k' => '>Гастроном</a> <span> Корзина',
+            'Ko&scaron;&iacute;k' => 'Корзина',
+            'Košík' => 'Корзина',
+        ]);
+    } else {
+        $html = gls_replace_text_pairs($html, [
+            'Корзина' => 'Košík',
         ]);
     }
 
@@ -1098,7 +1103,9 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         $value = gls_normalize_footer_brand_heading_tag_html($value, $lang);
         $value = gls_normalize_ok_button_html($value, $lang);
 
-        $value = gls_normalize_cart_title_shell_html($value, $lang);
+        if (function_exists('is_cart') && is_cart()) {
+            $value = gls_normalize_cart_title_shell_html($value, $lang);
+        }
         $value = gls_normalize_checkout_order_title_shell_html($value, $lang);
 
         if (strpos($value, 'wc-empty-cart-message') === false) {
