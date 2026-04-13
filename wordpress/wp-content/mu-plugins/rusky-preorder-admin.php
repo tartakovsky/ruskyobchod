@@ -135,7 +135,38 @@ function rpa_hidden_meta_box_ids(): array {
     ];
 }
 
-function rpa_add_weight_confirmation_meta_box(): void {
+function rpa_current_admin_order($post = null) {
+    if ($post instanceof WP_Post) {
+        $order = wc_get_order($post->ID);
+        return $order instanceof WC_Order ? $order : null;
+    }
+
+    $post_id = isset($_GET['post']) ? (int) wp_unslash($_GET['post']) : 0;
+    if ($post_id <= 0 && isset($_POST['post_ID'])) {
+        $post_id = (int) wp_unslash($_POST['post_ID']);
+    }
+    if ($post_id <= 0) {
+        return null;
+    }
+
+    $order = wc_get_order($post_id);
+    return $order instanceof WC_Order ? $order : null;
+}
+
+function rpa_order_has_weight_confirmation_panel($order): bool {
+    return $order instanceof WC_Order && gastronom_order_requires_weight_confirmation($order);
+}
+
+function rpa_order_has_preorder_items($order): bool {
+    return $order instanceof WC_Order && gastronom_order_has_preorder_weight($order);
+}
+
+function rpa_add_weight_confirmation_meta_box($post_type = '', $post = null): void {
+    $order = rpa_current_admin_order($post);
+    if (!rpa_order_has_weight_confirmation_panel($order)) {
+        return;
+    }
+
     foreach (rpa_order_screen_ids() as $screen_id) {
         add_meta_box(
             'gastronom-weight-confirmation',
@@ -442,7 +473,12 @@ function rpa_admin_footer_hook(): void {
         return;
     }
 
+    $order = rpa_current_admin_order();
     rpa_render_order_admin_footer();
+
+    if (rpa_order_has_preorder_items($order)) {
+        echo '<style>#woocommerce-order-items button.calculate-action{display:none !important;}</style>';
+    }
 }
 
 function rpa_remove_hidden_meta_boxes(): void {
@@ -466,8 +502,7 @@ function rpa_render_inline_weight_panel($order): void {
 
 function rpa_render_weight_confirmation_metabox($order_or_post): void {
     $order = $order_or_post instanceof WP_Post ? wc_get_order($order_or_post->ID) : $order_or_post;
-    if (!$order instanceof WC_Order || !gastronom_order_requires_weight_confirmation($order)) {
-        echo '<p>В этом заказе нет товаров с предзаказом по весу.</p>';
+    if (!rpa_order_has_weight_confirmation_panel($order)) {
         return;
     }
 

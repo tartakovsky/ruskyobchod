@@ -167,9 +167,7 @@ function rpsf_has_preorder_checkout_cart(): bool {
 
 function rpsf_has_preorder_context(): bool {
     if (is_checkout_pay_page()) {
-        global $wp;
-        $order_id = isset($wp->query_vars['order-pay']) ? (int) $wp->query_vars['order-pay'] : 0;
-        $order = $order_id > 0 ? wc_get_order($order_id) : null;
+        $order = rpsf_checkout_pay_order();
 
         return $order instanceof WC_Order && gastronom_order_has_preorder_weight($order);
     }
@@ -199,12 +197,50 @@ function rpsf_render_checkout_payment_notice(): void {
     wc_print_notice(rpsf_preorder_checkout_notice_text(), 'notice');
 }
 
+function rpsf_checkout_pay_order() {
+    if (!function_exists('is_checkout_pay_page') || !is_checkout_pay_page()) {
+        return null;
+    }
+
+    global $wp;
+    $order_id = isset($wp->query_vars['order-pay']) ? (int) $wp->query_vars['order-pay'] : 0;
+    if ($order_id <= 0 && isset($_GET['order-pay'])) {
+        $order_id = (int) wp_unslash($_GET['order-pay']);
+    }
+
+    if ($order_id <= 0) {
+        return null;
+    }
+
+    $order = wc_get_order($order_id);
+    return $order instanceof WC_Order ? $order : null;
+}
+
 function rpsf_available_payment_gateways($gateways) {
     if (is_admin()) {
         return $gateways;
     }
 
     unset($gateways['bacs']);
+
+    $pay_order = rpsf_checkout_pay_order();
+    if ($pay_order instanceof WC_Order && gastronom_order_has_preorder_weight($pay_order)) {
+        $selected_gateway = (string) $pay_order->get_payment_method();
+        if ($selected_gateway !== '') {
+            foreach (array_keys($gateways) as $gateway_id) {
+                if ($gateway_id !== $selected_gateway) {
+                    unset($gateways[$gateway_id]);
+                }
+            }
+        }
+    }
+
+    if (isset($gateways['cod'])) {
+        $gateways['cod']->title = gastronom_t(
+            'Оплата при получении',
+            'Platba pri doručení'
+        );
+    }
 
     return $gateways;
 }
