@@ -52,8 +52,8 @@ function rusky_verify_order_page_contains(string $body, array $checks): void {
 function rusky_verify_order_page_language(string $lang, WC_Product $product, array &$created_orders): void {
     $order = wc_create_order();
     $created_orders[] = $order->get_id();
-    $order->set_payment_method('bacs');
-    $order->set_payment_method_title($lang === 'ru' ? 'Банковский перевод' : 'Bankový prevod');
+    $order->set_payment_method('woocommerce_payments');
+    $order->set_payment_method_title($lang === 'ru' ? 'Оплата картой' : 'Platba kartou');
     $order->set_billing_email('proof-order-page@example.com');
     $order->set_currency(get_woocommerce_currency());
     $order->add_product($product, 1);
@@ -87,14 +87,14 @@ function rusky_verify_order_page_language(string $lang, WC_Product $product, arr
             'RU received notice' => 'Ваш заказ принят. Благодарим вас.',
             'RU received order number' => 'Номер заказа:',
             'RU received payment label' => 'Способ оплаты:',
-            'RU received bank transfer' => 'Банковский перевод',
+            'RU received card payment' => 'Оплата картой',
             'RU received subtotal' => 'Подытог',
             'RU received total' => 'Итого',
         ]);
         rusky_verify_order_page_contains($pay_body, [
             'RU pay title' => 'Оплатить заказ',
             'RU pay payment label' => 'Способ оплаты',
-            'RU pay bank transfer' => 'Банковский перевод',
+            'RU pay card payment' => 'Оплата картой',
             'RU pay subtotal' => 'Подытог',
             'RU pay total' => 'Итого',
         ]);
@@ -106,13 +106,13 @@ function rusky_verify_order_page_language(string $lang, WC_Product $product, arr
         'SK received notice' => 'Ďakujeme. Vaša objednávka bola prijatá.',
         'SK received order number' => 'Číslo objednávky:',
         'SK received payment label' => 'Spôsob platby:',
-        'SK received bank transfer' => 'Bankový prevod',
+        'SK received card payment' => 'Platba kartou',
         'SK received subtotal' => 'Medzisúčet',
     ]);
     rusky_verify_order_page_contains($pay_body, [
         'SK pay title' => 'Zaplatiť objednávku',
         'SK pay payment label' => 'Spôsob platby:',
-        'SK pay bank transfer' => 'Bankový prevod',
+        'SK pay card payment' => 'Platba kartou',
         'SK pay subtotal' => 'Medzisúčet',
         'SK pay total column' => 'Spolu',
     ]);
