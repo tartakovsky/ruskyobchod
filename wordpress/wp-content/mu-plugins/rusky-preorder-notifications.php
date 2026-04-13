@@ -133,7 +133,10 @@ function rpn_send_weight_confirmation_email($order): void {
 
         $total_label = $lang === 'ru' ? 'Новая сумма заказа' : 'Nová suma objednávky';
         $view_label = $lang === 'ru' ? 'Посмотреть заказ' : 'Zobraziť objednávku';
-        $view_url = add_query_arg('lang', $lang, $order->get_view_order_url());
+        $view_url = $order->get_user_id() > 0
+            ? $order->get_view_order_url()
+            : $order->get_checkout_order_received_url();
+        $view_url = add_query_arg('lang', $lang, $view_url);
         $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
         $payment_html = '';
 

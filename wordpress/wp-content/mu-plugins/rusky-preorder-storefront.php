@@ -209,10 +209,15 @@ function rpsf_available_payment_gateways($gateways) {
     }
 
     if (is_checkout_pay_page()) {
-        unset($gateways['cod']);
+        foreach ($gateways as $gateway_id => $gateway) {
+            if ($gateway_id !== 'bacs') {
+                unset($gateways[$gateway_id]);
+            }
+        }
 
         if (isset($gateways['bacs'])) {
             $gateways['bacs']->title = gastronom_t('Банковский перевод', 'Bankový prevod');
+            $gateways['bacs']->description = rpsf_preorder_bank_transfer_description();
         }
 
         return $gateways;
