@@ -69,6 +69,20 @@ The combined readiness runner now exists and passes:
 
 - `tools/verify-tuesday-readiness.sh`
 
+### one-command evening integration gate
+
+The higher-level gate runner now also exists and passes:
+
+- `tools/verify-evening-integration-gate.sh`
+
+It confirms in one pass:
+
+- all Tuesday readiness verifiers
+- MU parity shape
+- active plugin assumptions
+- FAR inactivity
+- single deferred MU gap only
+
 ## what was intentionally deferred
 
 ### `rusky-runtime-shim.php`
