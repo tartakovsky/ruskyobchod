@@ -195,6 +195,18 @@ Runtime markers now confirmed on live:
 - `rslh_with_order_locale`
 - `rslh_localize_title`
 
+The stock-normalization owner gap was also closed:
+
+- `rusky-stock-normalization.php`
+
+Runtime markers now confirmed on live:
+
+- `rsn_normalize_product_name`
+- `rsn_catalog_policy`
+- `rsn_reconcile_decimal_stock`
+- `rsn_apply_catalog_policy`
+- `rsn_enforce_product_rules`
+
 ### 12. preorder lifecycle proof is now partially positive
 
 Controlled temporary-order proof on live already confirmed:
@@ -226,7 +238,6 @@ Current remaining missing files on live:
 - `rusky-language-switcher-lite.php`
 - `rusky-runtime-shim.php`
 - `rusky-server-language-core.php`
-- `rusky-stock-normalization.php`
 - `rusky-stock-policy.php`
 
 ## stop line
