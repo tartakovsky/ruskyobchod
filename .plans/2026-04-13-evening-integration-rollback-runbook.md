@@ -27,16 +27,19 @@ Rollback immediately if any of these happens:
 ## rollback order
 
 1. Stop. Do not run a second mutation.
-2. Run the readonly product-state check:
+2. Keep the `precheck` evidence bundle for comparison.
+3. Run the readonly product-state check:
    - `tools/verify-dotypos-product-state.sh 10617`
-3. Run the readonly global verifier:
+4. Run the readonly global verifier:
    - `tools/verify-dotypos-readonly.sh`
-4. If the remote stock still differs from the initial known value, run one exact compensating restore:
+5. If the remote stock still differs from the initial known value, run one exact compensating restore:
    - same product
    - exact missing delta only
-5. Re-run:
+6. Re-run:
    - `tools/verify-dotypos-product-state.sh 10617`
    - `tools/verify-evening-integration-gate.sh`
+7. Capture a fresh evidence bundle after rollback:
+   - `tools/collect-evening-integration-evidence.sh 10617 rollback`
 
 ## hard rules
 

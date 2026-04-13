@@ -55,3 +55,9 @@ It remains deferred unless a new runtime defect or integration-specific need app
 If the evening roundtrip is not clean, use:
 
 - `.plans/2026-04-13-evening-integration-rollback-runbook.md`
+
+## command sequence
+
+Use the exact evening order from:
+
+- `docs/handoff/10-evening-command-sequence.md`
