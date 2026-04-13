@@ -161,6 +161,55 @@ function rpa_order_has_preorder_items($order): bool {
     return $order instanceof WC_Order && gastronom_order_has_preorder_weight($order);
 }
 
+function rpa_hidden_order_itemmeta(array $hidden): array {
+    return array_values(array_unique(array_merge($hidden, [
+        '_gastronom_weight_preorder',
+        '_gastronom_weight_preorder_min_kg',
+        '_gastronom_weight_preorder_max_kg',
+        '_gastronom_weight_preorder_note',
+        '_gastronom_weight_min_kg',
+        '_gastronom_weight_max_kg',
+        '_gastronom_price_per_kg',
+        '_gastronom_weight_confirmed',
+        '_gastronom_weight_cash_synced',
+        '_gastronom_actual_weight_kg',
+    ])));
+}
+
+function rpa_render_admin_order_item_summary($item_id, $item, $product): void {
+    if (!is_admin() || !$item instanceof WC_Order_Item_Product) {
+        return;
+    }
+    if ($item->get_meta('_gastronom_weight_preorder', true) !== 'yes') {
+        return;
+    }
+
+    $order = $item->get_order();
+    $currency = $order instanceof WC_Order ? $order->get_currency() : get_woocommerce_currency();
+    $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
+    $price_per_kg = (float) $item->get_meta('_gastronom_price_per_kg', true);
+    $line_total = (float) $item->get_total();
+
+    echo '<div class="gastronom-admin-order-item-summary">';
+
+    if ($actual_weight > 0) {
+        echo '<div><strong>Фактический вес:</strong> ' . esc_html(wc_format_localized_decimal($actual_weight, 2)) . ' кг</div>';
+    } else {
+        $min = (float) $item->get_meta('_gastronom_weight_min_kg', true);
+        $max = (float) $item->get_meta('_gastronom_weight_max_kg', true);
+        if ($min > 0 || $max > 0) {
+            echo '<div><strong>Диапазон веса:</strong> ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
+        }
+    }
+
+    if ($price_per_kg > 0) {
+        echo '<div><strong>Цена за кг:</strong> ' . wp_kses_post(wc_price($price_per_kg, ['currency' => $currency])) . '</div>';
+    }
+
+    echo '<div><strong>Итог по позиции:</strong> ' . wp_kses_post(wc_price($line_total, ['currency' => $currency])) . '</div>';
+    echo '</div>';
+}
+
 function rpa_add_weight_confirmation_meta_box($post_type = '', $post = null): void {
     $order = rpa_current_admin_order($post);
     if (!rpa_order_has_weight_confirmation_panel($order)) {
@@ -269,6 +318,15 @@ function rpa_render_order_admin_footer(): void {
     .gastronom-weight-box__button-row {
         display: flex;
         justify-content: flex-end;
+    }
+    .gastronom-admin-order-item-summary {
+        margin-top: 8px;
+        color: #50575e;
+        font-size: 12px;
+        line-height: 1.55;
+    }
+    .gastronom-admin-order-item-summary strong {
+        color: #1d2327;
     }
     @media (max-width: 960px) {
         .gastronom-weight-item {
@@ -514,6 +572,8 @@ function rpa_render_weight_confirmation_metabox($order_or_post): void {
 function rpa_register_admin_weight_panel(): void {
     remove_action('woocommerce_admin_order_data_after_order_details', 'gastronom_render_inline_weight_panel');
     add_action('add_meta_boxes', 'rpa_add_weight_confirmation_meta_box', 50);
+    add_filter('woocommerce_hidden_order_itemmeta', 'rpa_hidden_order_itemmeta', 20);
+    add_action('woocommerce_after_order_itemmeta', 'rpa_render_admin_order_item_summary', 20, 3);
 }
 
 if (!function_exists('gastronom_render_product_preorder_fields')) {

@@ -333,6 +333,27 @@ function ropl_render_order_item_actual_weight($item_id, $item, $order, $plain_te
         . '</div>';
 }
 
+function ropl_order_item_quantity_html($quantity_html, $item) {
+    if (is_admin() || !$item instanceof WC_Order_Item_Product) {
+        return $quantity_html;
+    }
+    if ($item->get_meta('_gastronom_weight_preorder', true) !== 'yes') {
+        return $quantity_html;
+    }
+
+    $order = ropl_context_order();
+    if (!$order instanceof WC_Order) {
+        return $quantity_html;
+    }
+
+    $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
+    if ($actual_weight <= 0) {
+        return $quantity_html;
+    }
+
+    return ' <strong class="product-quantity">' . esc_html(wc_format_localized_decimal($actual_weight, 2) . ' kg') . '</strong>';
+}
+
 if (!function_exists('gastronom_get_context_order_for_frontend_language')) {
     function gastronom_get_context_order_for_frontend_language() {
         return ropl_context_order();
@@ -374,3 +395,11 @@ if (!function_exists('gastronom_render_order_item_actual_weight')) {
         ropl_render_order_item_actual_weight($item_id, $item, $order, $plain_text);
     }
 }
+
+if (!function_exists('gastronom_order_item_quantity_html')) {
+    function gastronom_order_item_quantity_html($quantity_html, $item) {
+        return ropl_order_item_quantity_html($quantity_html, $item);
+    }
+}
+
+add_filter('woocommerce_order_item_quantity_html', 'gastronom_order_item_quantity_html', 20, 2);
