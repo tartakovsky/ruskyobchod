@@ -1049,6 +1049,12 @@ function gls_normalize_checkout_order_title_span_html(string $html, string $lang
 }
 
 function gls_normalize_cart_title_shell_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        $html = gls_replace_text_pairs($html, [
+            '>Гастроном</a> <span> Ko&scaron;&iacute;k' => '>Гастроном</a> <span> Корзина',
+        ]);
+    }
+
     $html = (string) preg_replace(
         gls_cart_title_span_pattern($lang),
         gls_cart_title_span_replacement($lang),
