@@ -268,6 +268,11 @@ namespace App\Service;
 			return $response['headers'];
 		}
 
+		private function getResponseStatusCode($response): int
+		{
+			return (int)($response['response']['code'] ?? 0);
+		}
+
 		private function doAuthorizedPatchRequest($url, $body, $etag)
 		{
 			$accessToken = $this->getAccessToken();
@@ -280,7 +285,7 @@ namespace App\Service;
 				],
 				'body' => $body,
 			]);
-            if($response['status'] !== 200) {
+            if($this->getResponseStatusCode($response) !== 200) {
                 wc_get_logger()->debug('Dotypos API [Post] Error: '. json_encode($response, JSON_THROW_ON_ERROR), array('source' => 'dotypos_integration'));
             }
 			//$this->logger->debug(json_encode($response), array('source' => 'dotypos_integration'));
@@ -298,7 +303,7 @@ namespace App\Service;
 				],
 				'body' => $body,
 			]);
-            if($response['status'] !== 200) {
+            if($this->getResponseStatusCode($response) !== 200) {
                 wc_get_logger()->debug('Dotypos API [Post] Error: '. json_encode($response, JSON_THROW_ON_ERROR), array('source' => 'dotypos_integration'));
             }
 			//$this->logger->debug($accessToken, array('source' => 'dotypos_integration'));
@@ -315,7 +320,7 @@ namespace App\Service;
 					'Content-Type' => 'application/json',
 				]
 			]);
-			return $response['status'];
+			return $this->getResponseStatusCode($response);
 		}
 
 		private function doAuthorizedPostRequestWithoutResponse($url, $body)
@@ -329,9 +334,9 @@ namespace App\Service;
 				],
 				'body' => $body
 			]);
-            if($response['status'] !== 200) {
+            if($this->getResponseStatusCode($response) !== 200) {
                 wc_get_logger()->debug('Dotypos API [Post] Error: '. json_encode($response, JSON_THROW_ON_ERROR), array('source' => 'dotypos_integration'));
             }
-			return $response['response']['code'];
+			return $this->getResponseStatusCode($response);
 		}
 	}
