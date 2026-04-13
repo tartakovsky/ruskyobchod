@@ -39,6 +39,22 @@ function gls_is_wp_login_request(): bool {
     return strpos(gls_request_path(), '/wp-login.php') === 0;
 }
 
+function gls_is_logged_in_operator_request(): bool {
+    if (!function_exists('is_user_logged_in') || !is_user_logged_in()) {
+        return false;
+    }
+
+    if (function_exists('current_user_can') && current_user_can('manage_options')) {
+        return true;
+    }
+
+    if (function_exists('current_user_can') && current_user_can('edit_shop_orders')) {
+        return true;
+    }
+
+    return false;
+}
+
 function gls_has_explicit_lang_context(): bool {
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if (gls_is_supported_lang($query_lang)) {
@@ -642,6 +658,10 @@ add_filter('wp_redirect', function($location, $status) {
 
 function gls_is_sensitive_runtime_context(): bool {
     if (gls_is_wp_login_request()) {
+        return true;
+    }
+
+    if (gls_is_logged_in_operator_request()) {
         return true;
     }
 
