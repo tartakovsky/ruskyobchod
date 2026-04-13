@@ -13,6 +13,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function rpn_get_order_item_gross_total(WC_Order_Item_Product $item): float {
+    return (float) $item->get_total() + (float) $item->get_total_tax();
+}
+
 function rpn_send_preorder_created_emails($order): void {
     if (is_numeric($order)) {
         $order = wc_get_order($order);
@@ -114,7 +118,7 @@ function rpn_send_weight_confirmation_email($order): void {
         foreach ($order->get_items('line_item') as $item) {
             $name = gastronom_localize_title(wp_strip_all_tags($item->get_name()), $lang);
             $qty = (int) $item->get_quantity();
-            $line_total = wp_strip_all_tags(wc_price((float) $item->get_total(), ['currency' => $order->get_currency()]));
+            $line_total = wp_strip_all_tags(wc_price(rpn_get_order_item_gross_total($item), ['currency' => $order->get_currency()]));
             $weight_cell = '—';
             if ($item->get_meta('_gastronom_weight_preorder', true) === 'yes') {
                 $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);

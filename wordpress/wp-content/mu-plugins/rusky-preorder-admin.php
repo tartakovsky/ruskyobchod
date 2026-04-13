@@ -13,6 +13,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function rpa_get_order_item_gross_total(WC_Order_Item_Product $item): float {
+    return (float) $item->get_total() + (float) $item->get_total_tax();
+}
+
 function rpa_render_product_preorder_fields(): void {
     echo '<div class="options_group">';
     woocommerce_wp_checkbox([
@@ -188,7 +192,7 @@ function rpa_render_admin_order_item_summary($item_id, $item, $product): void {
     $currency = $order instanceof WC_Order ? $order->get_currency() : get_woocommerce_currency();
     $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
     $price_per_kg = (float) $item->get_meta('_gastronom_price_per_kg', true);
-    $line_total = (float) $item->get_total();
+    $line_total = rpa_get_order_item_gross_total($item);
 
     echo '<div class="gastronom-admin-order-item-summary">';
 
