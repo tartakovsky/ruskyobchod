@@ -36,6 +36,11 @@ Before any rollout:
   - ajax
   - rest
 
+Supporting read-only tools now available:
+
+- `tools/capture-live-active-plugins.sh`
+- `tools/audit-live-mu-parity.sh`
+
 ## required deployment shape
 
 - one file only:
