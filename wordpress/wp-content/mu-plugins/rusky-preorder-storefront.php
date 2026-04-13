@@ -142,12 +142,61 @@ function rpsf_render_cart_notice(): void {
         return;
     }
 
+    if (rpsf_cart_has_preorder_items()) {
+        wc_print_notice(gastronom_t('В корзине есть товары с предварительным расчётом по весу. Итоговая сумма будет уточнена после сборки заказа.', 'V košíku máte tovary s predbežným výpočtom podľa hmotnosti. Konečná suma bude upresnená po príprave objednávky.'), 'notice');
+    }
+}
+
+function rpsf_cart_has_preorder_items(): bool {
+    if (!WC()->cart) {
+        return false;
+    }
+
     foreach (WC()->cart->get_cart() as $item) {
         if (!empty($item['product_id']) && gastronom_weight_preorder_enabled((int) $item['product_id'])) {
-            wc_print_notice(gastronom_t('В корзине есть товары с предварительным расчётом по весу. Итоговая сумма будет уточнена после сборки заказа.', 'V košíku máte tovary s predbežným výpočtom podľa hmotnosti. Konečná suma bude upresnená po príprave objednávky.'), 'notice');
-            break;
+            return true;
         }
     }
+
+    return false;
+}
+
+function rpsf_has_preorder_checkout_cart(): bool {
+    return !is_checkout_pay_page() && rpsf_cart_has_preorder_items();
+}
+
+function rpsf_has_preorder_context(): bool {
+    if (is_checkout_pay_page()) {
+        global $wp;
+        $order_id = isset($wp->query_vars['order-pay']) ? (int) $wp->query_vars['order-pay'] : 0;
+        $order = $order_id > 0 ? wc_get_order($order_id) : null;
+
+        return $order instanceof WC_Order && gastronom_order_has_preorder_weight($order);
+    }
+
+    return rpsf_cart_has_preorder_items();
+}
+
+function rpsf_preorder_checkout_notice_text(): string {
+    return gastronom_t(
+        'В корзине есть товары с уточнением веса. Итоговая сумма будет подтверждена после сборки заказа. Для банковского перевода мы пришлём ссылку на оплату после подтверждения веса.',
+        'V košíku sú tovary s upresnením hmotnosti. Konečná suma bude potvrdená po príprave objednávky. Pri bankovom prevode vám po potvrdení hmotnosti pošleme odkaz na úhradu.'
+    );
+}
+
+function rpsf_preorder_bank_transfer_description(): string {
+    return gastronom_t(
+        'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.',
+        'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.'
+    );
+}
+
+function rpsf_render_checkout_payment_notice(): void {
+    if (!is_checkout() || is_checkout_pay_page() || !rpsf_has_preorder_checkout_cart()) {
+        return;
+    }
+
+    wc_print_notice(rpsf_preorder_checkout_notice_text(), 'notice');
 }
 
 function rpsf_available_payment_gateways($gateways) {
@@ -155,24 +204,7 @@ function rpsf_available_payment_gateways($gateways) {
         return $gateways;
     }
 
-    $has_preorder = false;
-    if (is_checkout_pay_page()) {
-        global $wp;
-        $order_id = isset($wp->query_vars['order-pay']) ? (int) $wp->query_vars['order-pay'] : 0;
-        $order = $order_id > 0 ? wc_get_order($order_id) : null;
-        if ($order instanceof WC_Order) {
-            $has_preorder = gastronom_order_has_preorder_weight($order);
-        }
-    } elseif (WC()->cart) {
-        foreach (WC()->cart->get_cart() as $item) {
-            if (!empty($item['product_id']) && gastronom_weight_preorder_enabled((int) $item['product_id'])) {
-                $has_preorder = true;
-                break;
-            }
-        }
-    }
-
-    if (!$has_preorder) {
+    if (!rpsf_has_preorder_context()) {
         return $gateways;
     }
 
@@ -193,11 +225,8 @@ function rpsf_available_payment_gateways($gateways) {
     }
 
     if (isset($gateways['bacs'])) {
-        $gateways['bacs']->title = gastronom_t('Оплата после подтверждения веса', 'Platba po potvrdení hmotnosti');
-        $gateways['bacs']->description = gastronom_t(
-            'Сумма предварительная. После подтверждения веса мы пришлём письмо со ссылкой на оплату.',
-            'Suma je predbežná. Po potvrdení hmotnosti vám pošleme e-mail s odkazom na platbu.'
-        );
+        $gateways['bacs']->title = gastronom_t('Банковский перевод', 'Bankový prevod');
+        $gateways['bacs']->description = rpsf_preorder_bank_transfer_description();
     }
 
     if (isset($gateways['cod'])) {
@@ -278,6 +307,12 @@ if (!function_exists('gastronom_render_single_product_note')) {
 if (!function_exists('gastronom_render_cart_notice')) {
     function gastronom_render_cart_notice(): void {
         rpsf_render_cart_notice();
+    }
+}
+
+if (!function_exists('gastronom_render_checkout_payment_notice')) {
+    function gastronom_render_checkout_payment_notice(): void {
+        rpsf_render_checkout_payment_notice();
     }
 }
 

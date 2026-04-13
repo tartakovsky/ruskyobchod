@@ -2,11 +2,20 @@
    Gastronom Language Switcher Button v2
    =========================================== */
 .gls-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.gls-switcher.gls-floating {
     position: fixed;
     top: 12px;
     right: 12px;
     z-index: 99999;
-    display: flex;
     gap: 2px;
     background: #fff;
     border-radius: 14px;
@@ -14,7 +23,6 @@
     padding: 2px;
 }
 
-/* When moved into header by JS */
 .gls-switcher.gls-in-header {
     position: static;
     box-shadow: none;
@@ -22,10 +30,17 @@
     border: none;
     padding: 0;
     gap: 4px;
-    justify-content: center;
     align-items: center;
-    margin-top: 6px;
+    justify-content: center;
+    margin: 0;
     z-index: auto;
+}
+
+.header-switcher {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
 }
 
 .gls-btn {
@@ -109,13 +124,15 @@ footer a:hover,
 }
 
 @media (max-width: 768px) {
-    .gls-switcher {
+    .gls-switcher.gls-floating {
         top: auto;
         bottom: 12px;
         right: 12px;
     }
-    .gls-switcher.gls-in-header {
-        position: static;
+
+    .header-switcher {
+        width: 100%;
+        justify-content: center;
     }
 }
 

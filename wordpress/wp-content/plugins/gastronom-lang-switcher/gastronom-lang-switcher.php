@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Gastronom Language Switcher
  * Description: Простой переключатель RU/SK для двуязычных названий товаров + стили сайта
- * Version: 6.24
+ * Version: 6.25
  * Author: Gastronom
  */
 
@@ -256,7 +256,9 @@ function gls_translate_account_checkout_phrase(string $value, string $lang): str
             'Please log in to your account below to continue to the payment form.' => 'Пожалуйста, войдите в свою учётную запись, чтобы перейти к оплате.',
             'Пожалуйста войдите в вашу учетную запись ниже чтобы продожить к платежной форме.' => 'Пожалуйста, войдите в свою учётную запись, чтобы перейти к оплате.',
             'Cart' => 'Корзина',
+            'Košík' => 'Корзина',
             'Checkout' => 'Оформление заказа',
+            'Pokladňa' => 'Оформление заказа',
             'Your cart is currently empty.' => 'Ваша корзина пока пуста.',
             'Return to shop' => 'Вернуться в магазин',
             'Username or email' => 'Имя пользователя или Email',
@@ -676,7 +678,16 @@ add_filter('woocommerce_page_title', function($title) {
         return $title;
     }
 
-    return gls_localize_bilingual_text((string) $title, gls_server_lang());
+    $lang = gls_server_lang();
+
+    if ((function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout()) || (function_exists('is_account_page') && is_account_page())) {
+        $translated = gls_translate_account_checkout_phrase((string) $title, $lang);
+        if ($translated !== (string) $title) {
+            return $translated;
+        }
+    }
+
+    return gls_localize_bilingual_text((string) $title, $lang);
 }, 20);
 
 add_filter('woocommerce_get_breadcrumb', function($crumbs) {
@@ -1360,7 +1371,7 @@ add_action('wp_enqueue_scripts', 'gls_enqueue_wcpay_locale_footer_patch', 999);
 add_filter('woocommerce_currency_symbol', 'gls_filter_woocommerce_currency_symbol', 999, 2);
 
 function gls_asset_version(): string {
-    return '6.24';
+    return '6.25';
 }
 
 function gls_style_handle(): string {
@@ -1438,16 +1449,16 @@ function gls_switcher_container_close_html(): string {
     return '</div>';
 }
 
-function gls_switcher_container_class(): string {
-    return 'gls-switcher';
+function gls_switcher_container_class(bool $in_header = false): string {
+    return $in_header ? 'gls-switcher gls-in-header' : 'gls-switcher gls-floating';
 }
 
 function gls_switcher_container_id(): string {
     return 'gls-switcher';
 }
 
-function gls_switcher_container_attributes(): string {
-    return 'id="' . gls_switcher_container_id() . '" class="' . gls_switcher_container_class() . '"';
+function gls_switcher_container_attributes(bool $in_header = false): string {
+    return 'id="' . gls_switcher_container_id() . '" class="' . gls_switcher_container_class($in_header) . '"';
 }
 
 function gls_enqueue_scripts() {
@@ -1455,37 +1466,39 @@ function gls_enqueue_scripts() {
 }
 add_action('wp_enqueue_scripts', 'gls_enqueue_scripts');
 
-function gls_render_internal_switcher_html(string $current_lang): string {
+function gls_render_internal_switcher_html(string $current_lang, bool $in_header = false): string {
     $langs = gls_switcher_langs();
     $urls = gls_switcher_urls();
     $ru_class = gls_switcher_button_class($langs[0], $current_lang);
     $sk_class = gls_switcher_button_class($langs[1], $current_lang);
 
-    return gls_switcher_container_open_html()
+    return '<div ' . gls_switcher_container_attributes($in_header) . '>'
         . gls_render_internal_switcher_link($langs[0], $urls[$langs[0]], $ru_class)
         . gls_render_internal_switcher_link($langs[1], $urls[$langs[1]], $sk_class)
-        . gls_switcher_container_close_html();
+        . '</div>';
 }
 
-function gls_render_switcher_html(string $current_lang): string {
+function gls_render_switcher_html(string $current_lang, bool $in_header = false): string {
     if (function_exists('rslc_render_switcher')) {
-        return (string) rslc_render_switcher($current_lang);
+        return (string) rslc_render_switcher($current_lang, $in_header);
     }
 
-    return gls_render_internal_switcher_html($current_lang);
+    return gls_render_internal_switcher_html($current_lang, $in_header);
 }
 
-function gls_output_switcher_html(string $current_lang): void {
-    echo gls_render_switcher_html($current_lang);
+function gls_output_switcher_html(string $current_lang, bool $in_header = false): void {
+    echo gls_render_switcher_html($current_lang, $in_header);
 }
 
 function gls_switcher_current_lang(): string {
     return gls_current_lang_code();
 }
 
-function gls_add_switcher() {
+function gls_add_header_switcher() {
     $current_lang = gls_switcher_current_lang();
 
-    gls_output_switcher_html($current_lang);
+    echo '<div class="header-switcher mt-2 mt-lg-0 mt-md-0">';
+    gls_output_switcher_html($current_lang, true);
+    echo '</div>';
 }
-add_action('wp_body_open', 'gls_add_switcher');
+add_action('food_grocery_store_header_tools', 'gls_add_header_switcher', 20);

@@ -335,6 +335,14 @@ add_action('admin_init', 'gastronom_run_stock_fix_repair_once');
 // 6. COD FEE: +2 EUR at checkout when "Platba pri doruceni" selected
 // ============================================================
 if (!function_exists('gastronom_add_cod_fee')) {
+function gastronom_cod_fee_label(): string {
+    if (function_exists('rca_cod_fee_label')) {
+        return rca_cod_fee_label();
+    }
+
+    return gastronom_t('Доплата за наложенный платёж', 'Poplatok za dobierku');
+}
+
 function gastronom_add_cod_fee(): void {
     if (function_exists('rca_add_cod_fee')) {
         rca_add_cod_fee();
@@ -345,7 +353,7 @@ function gastronom_add_cod_fee(): void {
     if (!is_checkout()) return;
     $chosen_payment = WC()->session->get('chosen_payment_method');
     if ($chosen_payment === 'cod') {
-        WC()->cart->add_fee('Poplatok za dobierku', 2.00, false);
+        WC()->cart->add_fee(gastronom_cod_fee_label(), 2.00, false);
     }
 }
 }
@@ -353,6 +361,15 @@ add_action('woocommerce_cart_calculate_fees', 'gastronom_add_cod_fee');
 
 if (!function_exists('gastronom_gateway_description')) {
 function gastronom_gateway_description($description, $id) {
+    if ($id === 'bacs' && function_exists('rpsf_has_preorder_checkout_cart') && rpsf_has_preorder_checkout_cart()) {
+        return function_exists('rpsf_preorder_bank_transfer_description')
+            ? rpsf_preorder_bank_transfer_description()
+            : gastronom_t(
+                'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.',
+                'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.'
+            );
+    }
+
     if (function_exists('rca_current_lang')) {
         if ($id === 'cod') {
             return rca_current_lang() === 'ru'
@@ -1151,6 +1168,30 @@ function gastronom_render_cart_notice(): void {
 }
 add_action('woocommerce_before_cart', 'gastronom_render_cart_notice', 6);
 
+if (!function_exists('gastronom_render_checkout_payment_notice')) {
+function gastronom_render_checkout_payment_notice(): void {
+    if (function_exists('rpsf_render_checkout_payment_notice')) {
+        rpsf_render_checkout_payment_notice();
+        return;
+    }
+
+    if (!function_exists('is_checkout') || !is_checkout() || (function_exists('is_checkout_pay_page') && is_checkout_pay_page()) || !WC()->cart) {
+        return;
+    }
+
+    foreach (WC()->cart->get_cart() as $item) {
+        if (!empty($item['product_id']) && gastronom_weight_preorder_enabled((int) $item['product_id'])) {
+            wc_print_notice(gastronom_t(
+                'В корзине есть товары с уточнением веса. Итоговая сумма будет подтверждена после сборки заказа. Для банковского перевода мы пришлём ссылку на оплату после подтверждения веса.',
+                'V košíku sú tovary s upresnením hmotnosti. Konečná suma bude potvrdená po príprave objednávky. Pri bankovom prevode vám po potvrdení hmotnosti pošleme odkaz na úhradu.'
+            ), 'notice');
+            break;
+        }
+    }
+}
+}
+add_action('woocommerce_review_order_before_payment', 'gastronom_render_checkout_payment_notice', 6);
+
 if (!function_exists('gastronom_available_payment_gateways')) {
 function gastronom_available_payment_gateways($gateways) {
     if (function_exists('rpsf_available_payment_gateways')) {
@@ -1203,13 +1244,15 @@ function gastronom_available_payment_gateways($gateways) {
 
     if (isset($gateways['bacs'])) {
         $gateways['bacs']->title = gastronom_t(
-            'Оплата после подтверждения веса',
-            'Platba po potvrdení hmotnosti'
+            'Банковский перевод',
+            'Bankový prevod'
         );
-        $gateways['bacs']->description = gastronom_t(
-            'Сумма предварительная. После подтверждения веса мы пришлём письмо со ссылкой на оплату.',
-            'Suma je predbežná. Po potvrdení hmotnosti vám pošleme e-mail s odkazom na platbu.'
-        );
+        $gateways['bacs']->description = function_exists('rpsf_preorder_bank_transfer_description')
+            ? rpsf_preorder_bank_transfer_description()
+            : gastronom_t(
+                'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.',
+                'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.'
+            );
     }
 
     if (isset($gateways['cod'])) {

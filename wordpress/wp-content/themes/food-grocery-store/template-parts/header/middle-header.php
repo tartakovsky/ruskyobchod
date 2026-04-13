@@ -73,32 +73,27 @@
       </div>
       <div class="col-lg-3 col-md-3 align-self-center">
         <?php if(class_exists('woocommerce')){ ?>
-          <div class="row">
-            <div class="col-lg-4 col-md-4 col-4">
-              <div class="account mt-2 mt-lg-0">
+          <div class="header-tools d-flex align-items-center justify-content-lg-end justify-content-md-end justify-content-center gap-3 flex-wrap flex-md-nowrap">
+            <div class="account mt-2 mt-lg-0 mt-md-0">
                 <?php if ( is_user_logged_in() ) { ?>
                   <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('My Account','food-grocery-store'); ?>"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_myaccount_icon','fas fa-sign-in-alt')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'My Account','food-grocery-store' );?></span></a>
                 <?php }
                 else { ?>
                   <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('Login / Register','food-grocery-store'); ?>"><i class="fas fa-user"></i><span class="screen-reader-text"><?php esc_html_e( 'Login / Register','food-grocery-store' );?></span></a>
                 <?php } ?>
-              </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-4">
-              <div class="cart_no mt-2 mt-lg-0">
+            <div class="cart_no mt-2 mt-lg-0 mt-md-0">
                 <a href="<?php if(function_exists('wc_get_cart_url')){ echo esc_url(wc_get_cart_url()); } ?>" title="<?php esc_attr_e( 'shopping cart','food-grocery-store' ); ?>"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_shopping_icon','fas fa-shopping-basket')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'shopping cart','food-grocery-store' );?></span></a>
                 <span class="cart-value"> <?php echo esc_html(wp_kses_data( WC()->cart->get_cart_contents_count() ));?></span>
-              </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-4">
-              <div class="wishlist mt-2 mt-lg-0">
+            <div class="wishlist mt-2 mt-lg-0 mt-md-0">
                 <?php if(defined('YITH_WCWL')){ ?>
                   <a class="wishlist_view position-relative" href="<?php echo YITH_WCWL()->get_wishlist_url(); ?>"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_heart_icon','far fa-heart')); ?>"></i>
                   <?php $wishlist_count = YITH_WCWL()->count_products(); ?>
                   <span class="wishlist-counter"><?php echo $wishlist_count; ?></span></a>
                 <?php }?>
-              </div>
             </div>
+            <?php do_action('food_grocery_store_header_tools'); ?>
           </div>
         <?php }?>
       </div>

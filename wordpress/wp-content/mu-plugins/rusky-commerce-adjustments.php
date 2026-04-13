@@ -54,6 +54,38 @@ function rca_localize_label(string $value): string {
     return $value;
 }
 
+function rca_cod_fee_label(): string {
+    return rca_current_lang() === 'ru'
+        ? 'Доплата за наложенный платёж'
+        : 'Poplatok za dobierku';
+}
+
+function rca_gateway_description_text(string $gateway_id, string $description) {
+    $lang = rca_current_lang();
+
+    if ($gateway_id === 'cod') {
+        return $lang === 'ru'
+            ? 'К заказу будет добавлена доплата за наложенный платёж 2,00 €.'
+            : 'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.';
+    }
+
+    if ($gateway_id === 'bacs') {
+        if (function_exists('rpsf_has_preorder_checkout_cart') && rpsf_has_preorder_checkout_cart()) {
+            return function_exists('rpsf_preorder_bank_transfer_description')
+                ? rpsf_preorder_bank_transfer_description()
+                : ($lang === 'ru'
+                    ? 'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.'
+                    : 'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.');
+        }
+
+        return $lang === 'ru'
+            ? 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.'
+            : 'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.';
+    }
+
+    return $description;
+}
+
 function rca_fix_add_to_cart_qty($quantity, $product_id) {
     if (get_post_meta($product_id, '_gls_weighted', true) === 'yes' && isset($_REQUEST['quantity'])) {
         return floatval(wp_unslash($_REQUEST['quantity']));
@@ -161,7 +193,7 @@ function rca_add_cod_fee(): void {
 
     $chosen_payment = WC()->session->get('chosen_payment_method');
     if ($chosen_payment === 'cod') {
-        WC()->cart->add_fee('Poplatok za dobierku', 2.00, false);
+        WC()->cart->add_fee(rca_cod_fee_label(), 2.00, false);
     }
 }
 add_action('woocommerce_cart_calculate_fees', 'rca_add_cod_fee');
@@ -175,21 +207,7 @@ add_filter('woocommerce_gateway_title', function($title, $gateway_id) {
 }, 10, 2);
 
 add_filter('woocommerce_gateway_description', function($description, $gateway_id) {
-    $lang = rca_current_lang();
-
-    if ($gateway_id === 'cod') {
-        return $lang === 'ru'
-            ? 'К заказу будет добавлена доплата за наложенный платёж 2,00 €.'
-            : 'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.';
-    }
-
-    if ($gateway_id === 'bacs') {
-        return $lang === 'ru'
-            ? 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.'
-            : 'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.';
-    }
-
-    return $description;
+    return rca_gateway_description_text((string) $gateway_id, $description);
 }, 20, 2);
 
 function rca_render_checkout_payment_refresh_script(): void {
@@ -214,21 +232,7 @@ if (!function_exists('gastronom_add_cod_fee')) {
 
 if (!function_exists('gastronom_gateway_description')) {
     function gastronom_gateway_description($description, $id) {
-        $lang = rca_current_lang();
-
-        if ($id === 'cod') {
-            return $lang === 'ru'
-                ? 'К заказу будет добавлена доплата за наложенный платёж 2,00 €.'
-                : 'K objednávke bude pripočítaný poplatok za dobierku vo výške 2,00 €.';
-        }
-
-        if ($id === 'bacs') {
-            return $lang === 'ru'
-                ? 'Оплатите заказ прямым банковским переводом на наш счёт. Заказ будет обработан после поступления оплаты.'
-                : 'Zaplaťte priamym prevodom na náš bankový účet. Objednávka bude spracovaná po prijatí platby.';
-        }
-
-        return $description;
+        return rca_gateway_description_text((string) $id, $description);
     }
 }
 
