@@ -258,6 +258,14 @@ Controlled temporary-order proof on live already confirmed:
 - Dotypos sync/restore algorithm through in-memory service stub without real API mutation
 - admin AJAX weight-confirmation path returned live success under controlled conditions
 
+That admin/AJAX proof path is now stronger than the earlier one-off CLI proof:
+
+- `tools/prove-admin-weight-confirmation.sh` now survives AJAX `wp_send_json_*()` termination
+- it returns structured summary for both:
+  - `cod -> on-hold`
+  - `bacs -> pending`
+- it restores stock/cash state and deletes the temporary order through guaranteed cleanup
+
 All temporary proofs were followed by cleanup and then by all six green verification contours.
 
 ### 13. remaining live-vs-repo MU gaps are no longer all equally urgent
