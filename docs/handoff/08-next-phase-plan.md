@@ -77,6 +77,11 @@ Now confirmed:
 - critical preorder owner gaps have been closed on live:
   - `rusky-preorder-notifications.php`
   - `rusky-preorder-admin.php`
+  - `rusky-preorder-storefront.php`
+  - `rusky-order-page-language.php`
+  - `rusky-order-language-helpers.php`
+  - `rusky-stock-normalization.php`
+  - `rusky-stock-policy.php`
 
 ## next practical move
 
@@ -96,9 +101,9 @@ The next block should be one of these, not several:
 1. tighten the admin/AJAX proof harness so cleanup is guaranteed even after `wp_send_json_*()` termination
 2. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
 3. pick the next highest-signal remaining gap from:
-   - `rusky-preorder-storefront.php`
-   - `rusky-order-page-language.php`
-   - `rusky-order-language-helpers.php`
+   - `rusky-language-switcher-lite.php`
+   - `rusky-runtime-shim.php`
+   - `rusky-server-language-core.php`
 
 If option 2 is chosen, it must have:
 

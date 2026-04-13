@@ -207,6 +207,19 @@ Runtime markers now confirmed on live:
 - `rsn_apply_catalog_policy`
 - `rsn_enforce_product_rules`
 
+The stock-policy owner gap was also closed:
+
+- `rusky-stock-policy.php`
+
+Runtime markers now confirmed on live:
+
+- `rsp_setup_decimal_stock_amount`
+- `rsp_disable_stock_notifications`
+- `rsp_disable_stock_email_actions`
+- `rsp_detach_dotypos_product_updated_hook`
+- `rsp_adjust_rest_endpoints_for_decimal_stock`
+- `rsp_run_stock_fix_repair_once`
+
 ### 12. preorder lifecycle proof is now partially positive
 
 Controlled temporary-order proof on live already confirmed:
@@ -238,7 +251,6 @@ Current remaining missing files on live:
 - `rusky-language-switcher-lite.php`
 - `rusky-runtime-shim.php`
 - `rusky-server-language-core.php`
-- `rusky-stock-policy.php`
 
 ## stop line
 
@@ -265,3 +277,7 @@ It should be one of:
 1. explicit mini-plan for the remaining retained residual surface inside `gastronom-lang-switcher.php`
 2. next server-first translation zone outside the already-closed commerce tail
 3. remaining Dotypos/preorder proof and targeted parity cleanup
+4. controlled parity/verification plan for the remaining language-runtime trio:
+   - `rusky-language-switcher-lite.php`
+   - `rusky-runtime-shim.php`
+   - `rusky-server-language-core.php`
