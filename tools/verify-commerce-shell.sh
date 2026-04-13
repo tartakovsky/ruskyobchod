@@ -61,6 +61,7 @@ check_status "$cart_ru" "200" 'commerce cart RU status 200'
 check_status "$checkout_ru" "200" 'commerce checkout RU status 200'
 
 check_contains "$cart_ru" 'Сумма корзины' 'commerce cart totals heading present'
+check_contains "$cart_ru" '<h1 class="vw-page-title">Корзина</h1>' 'commerce cart page title present'
 check_contains "$cart_ru" 'Подытог' 'commerce cart subtotal present'
 check_contains "$cart_ru" 'Самовывоз' 'commerce cart local pickup present'
 check_contains "$cart_ru" 'GLS доставка на адрес' 'commerce cart GLS shipping present'

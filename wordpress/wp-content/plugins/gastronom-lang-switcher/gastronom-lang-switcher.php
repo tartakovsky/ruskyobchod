@@ -991,10 +991,22 @@ function gls_checkout_order_title_h1_replacement(string $lang): string {
         : '<h1 class="vw-page-title">Objednávka</h1>';
 }
 
+function gls_cart_title_h1_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '<h1 class="vw-page-title">Корзина</h1>'
+        : '<h1 class="vw-page-title">Košík</h1>';
+}
+
 function gls_checkout_order_title_span_replacement(string $lang): string {
     return $lang === 'ru'
         ? '$1Оформление заказа$2'
         : '$1Objednávka$3';
+}
+
+function gls_cart_title_span_replacement(string $lang): string {
+    return $lang === 'ru'
+        ? '$1Корзина$2'
+        : '$1Košík$3';
 }
 
 function gls_checkout_order_title_prefix_pairs(): array {
@@ -1015,10 +1027,38 @@ function gls_checkout_order_title_h1_pattern(string $lang): string {
         : '~<h1 class="vw-page-title">\s*(Оформление заказа|Заказ)\s*</h1>~u';
 }
 
+function gls_cart_title_span_pattern(string $lang): string {
+    return $lang === 'ru'
+        ? '~(<div class="bradcrumbs">.*?<span>\s*)(Košík|Cart)(\s*</span>)~su'
+        : '~(<div class="bradcrumbs">.*?<span>\s*)(Корзина|Cart)(\s*</span>)~su';
+}
+
+function gls_cart_title_h1_pattern(string $lang): string {
+    return $lang === 'ru'
+        ? '~<h1 class="vw-page-title">\s*(Košík|Cart)\s*</h1>~u'
+        : '~<h1 class="vw-page-title">\s*(Корзина|Cart)\s*</h1>~u';
+}
+
 function gls_normalize_checkout_order_title_span_html(string $html, string $lang): string {
     return (string) preg_replace(
         gls_checkout_order_title_span_pattern($lang),
         gls_checkout_order_title_span_replacement($lang),
+        $html,
+        1
+    );
+}
+
+function gls_normalize_cart_title_shell_html(string $html, string $lang): string {
+    $html = (string) preg_replace(
+        gls_cart_title_span_pattern($lang),
+        gls_cart_title_span_replacement($lang),
+        $html,
+        1
+    );
+
+    return (string) preg_replace(
+        gls_cart_title_h1_pattern($lang),
+        gls_cart_title_h1_replacement($lang),
         $html,
         1
     );
@@ -1052,6 +1092,7 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
         $value = gls_normalize_footer_brand_heading_tag_html($value, $lang);
         $value = gls_normalize_ok_button_html($value, $lang);
 
+        $value = gls_normalize_cart_title_shell_html($value, $lang);
         $value = gls_normalize_checkout_order_title_shell_html($value, $lang);
 
         if (strpos($value, 'wc-empty-cart-message') === false) {
