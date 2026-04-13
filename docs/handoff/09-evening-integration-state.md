@@ -38,11 +38,18 @@ Real guarded path:
 - admin order screen is green
 - RU/SK order pages are green
 - Dotypos readonly connectivity is green
+- live PHP syntax is green
 - live MU parity has only one deferred local-only file:
   - `rusky-runtime-shim.php`
 - `real-time-find-and-replace` is not active
 - `gastronom-lang-switcher` is active
 - `woocommerce-extension-master/dotypos.php` is active
+
+## known deferred drift
+
+- `rusky-commerce-adjustments.php` on live does not hash-match repo
+- current commerce behavior still works through `gastronom_*` fallback ownership in `gastronom-stock-fix.php`
+- do not parity-deploy this file blindly before the integration window
 
 ## deferred item
 

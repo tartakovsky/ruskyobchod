@@ -16,6 +16,7 @@ run() {
 }
 
 run "tuesday readiness" "$ROOT_DIR/tools/verify-tuesday-readiness.sh"
+run "live php syntax" "$ROOT_DIR/tools/verify-live-php-syntax.sh"
 
 echo "== live mu parity =="
 "$ROOT_DIR/tools/audit-live-mu-parity.sh" | tee "$tmp_mu"

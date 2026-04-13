@@ -36,6 +36,7 @@ compare_file() {
 
 compare_file "product-state.txt"
 compare_file "admin-order-screen.txt"
+compare_file "live-php-syntax.txt"
 compare_file "active-plugins.txt"
 compare_file "mu-parity.txt"
 compare_file "dotypos-readonly.txt"
