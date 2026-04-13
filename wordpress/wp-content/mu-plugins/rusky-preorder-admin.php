@@ -191,26 +191,25 @@ function rpa_render_admin_order_item_summary($item_id, $item, $product): void {
     $order = $item->get_order();
     $currency = $order instanceof WC_Order ? $order->get_currency() : get_woocommerce_currency();
     $actual_weight = (float) $item->get_meta('_gastronom_actual_weight_kg', true);
-    $price_per_kg = (float) $item->get_meta('_gastronom_price_per_kg', true);
     $line_total = rpa_get_order_item_gross_total($item);
+    $quantity = max(1, (int) $item->get_quantity());
+    $unit_total = $line_total / $quantity;
 
-    echo '<div class="gastronom-admin-order-item-summary">';
+    echo '<div class="gastronom-admin-order-item-summary"'
+        . ' data-gastronom-gross-total="' . esc_attr(wc_format_decimal($line_total, wc_get_price_decimals())) . '"'
+        . ' data-gastronom-gross-unit="' . esc_attr(wc_format_decimal($unit_total, wc_get_price_decimals())) . '">';
 
     if ($actual_weight > 0) {
-        echo '<div><strong>Фактический вес:</strong> ' . esc_html(wc_format_localized_decimal($actual_weight, 2)) . ' кг</div>';
+        echo '<div><strong>Фактический вес:</strong> ' . esc_html(wc_format_localized_decimal($actual_weight, 2)) . ' kg</div>';
     } else {
         $min = (float) $item->get_meta('_gastronom_weight_min_kg', true);
         $max = (float) $item->get_meta('_gastronom_weight_max_kg', true);
         if ($min > 0 || $max > 0) {
-            echo '<div><strong>Диапазон веса:</strong> ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
+            echo '<div><strong>Диапазон веса:</strong> ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' kg</div>';
         }
     }
 
-    if ($price_per_kg > 0) {
-        echo '<div><strong>Цена за кг:</strong> ' . wp_kses_post(wc_price($price_per_kg, ['currency' => $currency])) . '</div>';
-    }
-
-    echo '<div><strong>Итог по позиции:</strong> ' . wp_kses_post(wc_price($line_total, ['currency' => $currency])) . '</div>';
+    echo '<div><strong>Итог по позиции:</strong> ' . wp_kses_post(wc_price($line_total, ['currency' => $currency])) . ' <span class="gastronom-admin-order-item-summary__vat">(с НДС)</span></div>';
     echo '</div>';
 }
 
@@ -332,6 +331,15 @@ function rpa_render_order_admin_footer(): void {
     .gastronom-admin-order-item-summary strong {
         color: #1d2327;
     }
+    .gastronom-admin-order-item-summary__vat {
+        color: #50575e;
+    }
+    .woocommerce_order_items.gastronom-preorder-admin-order .item_cost,
+    .woocommerce_order_items.gastronom-preorder-admin-order .line_tax,
+    .woocommerce_order_items.gastronom-preorder-admin-order th.item_cost,
+    .woocommerce_order_items.gastronom-preorder-admin-order th.line_tax {
+        display: none !important;
+    }
     @media (max-width: 960px) {
         .gastronom-weight-item {
             grid-template-columns: 1fr;
@@ -399,13 +407,56 @@ function rpa_render_order_admin_footer(): void {
         });
     }
 
+    function gastronomFormatAdminPrice(value) {
+        return new Intl.NumberFormat('sk-SK', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }).format(value);
+    }
+
+    function gastronomNormalizePreorderOrderTable() {
+        const table = document.querySelector('.woocommerce_order_items');
+        if (!table) return;
+
+        let hasPreorderRows = false;
+
+        table.querySelectorAll('tbody#order_line_items tr.item').forEach(function(row) {
+            const summary = row.querySelector('.gastronom-admin-order-item-summary[data-gastronom-gross-total]');
+            if (!summary) return;
+
+            hasPreorderRows = true;
+
+            const grossTotal = parseFloat(summary.getAttribute('data-gastronom-gross-total') || '');
+            const grossUnit = parseFloat(summary.getAttribute('data-gastronom-gross-unit') || '');
+
+            const unitCell = row.querySelector('td.item_cost .view');
+            const totalCell = row.querySelector('td.line_cost .view');
+
+            if (unitCell && Number.isFinite(grossUnit)) {
+                unitCell.textContent = gastronomFormatAdminPrice(grossUnit);
+            }
+
+            if (totalCell && Number.isFinite(grossTotal)) {
+                totalCell.textContent = gastronomFormatAdminPrice(grossTotal);
+            }
+        });
+
+        table.classList.toggle('gastronom-preorder-admin-order', hasPreorderRows);
+    }
+
     document.addEventListener('DOMContentLoaded', gastronomHideOrderBoxes);
+    document.addEventListener('DOMContentLoaded', gastronomNormalizePreorderOrderTable);
     setTimeout(gastronomHideOrderBoxes, 300);
     setTimeout(gastronomHideOrderBoxes, 1000);
     setTimeout(gastronomHideOrderBoxes, 2500);
+    setTimeout(gastronomNormalizePreorderOrderTable, 300);
+    setTimeout(gastronomNormalizePreorderOrderTable, 1000);
 
     const gastronomAdminObserver = new MutationObserver(function() {
         gastronomHideOrderBoxes();
+        gastronomNormalizePreorderOrderTable();
     });
     document.addEventListener('DOMContentLoaded', function() {
         if (document.body) {
