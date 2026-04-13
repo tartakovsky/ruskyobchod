@@ -24,6 +24,6 @@ if [ "${REALLY_MUTATE_DOTYPOS:-0}" != "1" ]; then
 fi
 
 run "guarded Dotypos roundtrip" "$ROOT_DIR/tools/real-dotypos-roundtrip.sh" "$PRODUCT_ID" "$DELTA"
-run "post-mutation gate" "$ROOT_DIR/tools/verify-evening-integration-gate.sh"
+run "post-roundtrip state" "$ROOT_DIR/tools/verify-post-roundtrip-state.sh" "$PRODUCT_ID"
 
 echo "Evening integration run complete."

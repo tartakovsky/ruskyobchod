@@ -24,6 +24,10 @@ Real guarded path:
 
 - `REALLY_MUTATE_DOTYPOS=1 tools/run-evening-integration.sh 10617 0.01`
 
+## current post-roundtrip verifier
+
+- `tools/verify-post-roundtrip-state.sh 10617`
+
 ## current validated assumptions
 
 - storefront / checkout / account / commerce / preorder paths are green
