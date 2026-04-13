@@ -75,4 +75,6 @@ fi
 echo "OK   only deferred local-only MU gap is rusky-runtime-shim.php"
 
 echo
+echo "OK   admin order screen verification is included via tuesday readiness"
+echo
 echo "Evening integration gate verification complete."

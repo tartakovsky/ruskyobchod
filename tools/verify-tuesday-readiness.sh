@@ -17,6 +17,7 @@ run "account shell" "$ROOT_DIR/tools/verify-account-shell.sh"
 run "commerce shell RU" "$ROOT_DIR/tools/verify-commerce-shell.sh"
 run "commerce shell SK" "$ROOT_DIR/tools/verify-commerce-shell-sk.sh"
 run "preorder shell" "$ROOT_DIR/tools/verify-preorder-shell.sh"
+run "admin order screen" "$ROOT_DIR/tools/verify-admin-order-screen.sh"
 run "order page language" "$ROOT_DIR/tools/verify-order-page-language.sh"
 run "dotypos readonly" "$ROOT_DIR/tools/verify-dotypos-readonly.sh"
 

@@ -21,6 +21,7 @@ Validated repeatedly during the safe phase:
 - `tools/verify-commerce-shell.sh`
 - `tools/verify-commerce-shell-sk.sh`
 - `tools/verify-preorder-shell.sh`
+- `tools/verify-admin-order-screen.sh`
 - `tools/verify-order-page-language.sh`
 
 Latest status at current stop-line:
@@ -31,6 +32,7 @@ Latest status at current stop-line:
 - commerce shell RU green
 - commerce shell SK green
 - preorder shell green
+- admin order screen green
 - order page language green
 
 ## what is complete

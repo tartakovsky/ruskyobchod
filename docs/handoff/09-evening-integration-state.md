@@ -27,6 +27,7 @@ Real guarded path:
 ## current validated assumptions
 
 - storefront / checkout / account / commerce / preorder paths are green
+- admin order screen is green
 - RU/SK order pages are green
 - Dotypos readonly connectivity is green
 - live MU parity has only one deferred local-only file:
