@@ -20,6 +20,8 @@ The following verification contours are green:
 - `tools/verify-commerce-shell.sh`
 - `tools/verify-commerce-shell-sk.sh`
 - `tools/verify-preorder-shell.sh`
+- `tools/verify-order-page-language.sh`
+- `tools/verify-dotypos-readonly.sh`
 
 ### preorder lifecycle
 
@@ -60,6 +62,12 @@ Read-only live proof confirmed:
 This is now backed by:
 
 - `tools/verify-dotypos-readonly.sh`
+
+### one-command readiness run
+
+The combined readiness runner now exists and passes:
+
+- `tools/verify-tuesday-readiness.sh`
 
 ## what was intentionally deferred
 
