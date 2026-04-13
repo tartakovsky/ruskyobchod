@@ -74,7 +74,7 @@ foreach ($products as $productId => $expectedName) {
         exit(1);
     }
 
-    if ((float) $remoteQty !== (float) $localCash) {
+    if (abs((float) $remoteQty - (float) $localCash) > 0.000001) {
         fwrite(STDERR, "FAIL product $productId local cash $localCash != remote $remoteQty\n");
         exit(1);
     }

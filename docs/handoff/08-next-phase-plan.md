@@ -1,5 +1,16 @@
 # next phase plan
 
+## update 2026-04-14 00:xx
+
+The previous customer/order/payment cleanup block is no longer the next target.
+
+Current next phase:
+
+1. do not reopen checkout/order page cleanup without a new reproducible defect
+2. treat current customer flow as stabilized
+3. move to controlled real integration execution with the current green readiness baseline
+4. if a new defect appears during integration, fix only the exact owner-layer that fails
+
 This file starts after:
 
 - the completed safe bounded-refactor phase for `gastronom-lang-switcher.php`

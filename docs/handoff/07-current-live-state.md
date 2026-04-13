@@ -1,5 +1,40 @@
 # current live state
 
+## update 2026-04-14 00:xx
+
+- current repo `HEAD` before next integration window:
+  - live code baseline includes:
+    - `b1d4773b` `Normalize preorder admin gross display`
+    - `34d91a68` `Fix order page footer OR replacement`
+    - `04a0784c` `Fix preorder gross line totals`
+- current readiness result:
+  - `./tools/verify-tuesday-readiness.sh` green
+- weighted stock current authoritative state:
+  - `10310` `cash_kg=1.48`, `_stock=3`
+  - `10617` `cash_kg=2`, `_stock=5`
+  - `10781` `cash_kg=0.966`, `_stock=3`
+- Dotypos remote stock reconciled to the same values
+- deleted test orders:
+  - `11058`
+  - `11061`
+  - `11064`
+  - `11067`
+  - `11080`
+  - `11085`
+  - `11101`
+  - `11102`
+- latest lifecycle proofs:
+  - `cod` confirmation -> `on-hold`, one email, correct Dotypos delta
+  - `woocommerce_payments` confirmation -> `pending`, one email, correct Dotypos delta
+
+## morning status
+
+- customer-facing storefront is stable
+- RU/SK checkout surfaces are stable
+- preorder email/order/pay surfaces are stable
+- local stock and Dotypos remote stock are aligned
+- remaining work before real integration is no longer cleanup of this block, but controlled integration execution
+
 This is the authoritative current-state document.
 
 ## source of truth

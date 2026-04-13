@@ -205,7 +205,7 @@ add_filter('pre_wp_mail', static function ($null, $atts) use (&$mail_calls) {
 $order = wc_create_order();
 $GLOBALS['rusky_ajax_proof_state']['order_id'] = $order->get_id();
 $order->set_payment_method($payment_method);
-$order->set_payment_method_title($payment_method === 'cod' ? 'Оплата при получении' : 'Банковский перевод');
+$order->set_payment_method_title($payment_method === 'cod' ? 'Оплата при получении' : 'Оплата картой');
 $order->set_billing_email('proof@example.com');
 $order->set_currency(get_woocommerce_currency());
 $order->save();
