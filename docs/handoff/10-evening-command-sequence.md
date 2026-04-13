@@ -6,6 +6,10 @@ Run first:
 
 - `tools/collect-evening-integration-evidence.sh 10617 precheck`
 
+Or use the top-level wrapper:
+
+- `tools/run-evening-integration-with-evidence.sh 10617 0.01`
+
 Expected result:
 
 - a new timestamped directory under `artifacts/evening-integration/`
@@ -17,6 +21,8 @@ Expected result:
 Run only if the precheck bundle is green:
 
 - `REALLY_MUTATE_DOTYPOS=1 tools/run-evening-integration.sh 10617 0.01`
+- or:
+  - `REALLY_MUTATE_DOTYPOS=1 tools/run-evening-integration-with-evidence.sh 10617 0.01`
 
 Expected result:
 
