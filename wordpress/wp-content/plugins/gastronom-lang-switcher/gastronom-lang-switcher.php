@@ -1029,7 +1029,7 @@ function gls_checkout_order_title_h1_pattern(string $lang): string {
 
 function gls_cart_title_span_pattern(string $lang): string {
     return $lang === 'ru'
-        ? '~(<div class="bradcrumbs">.*?<span>\s*)(Košík|Cart)(\s*</span>)~su'
+        ? '~(<div class="bradcrumbs">.*?<span>\s*)(Ko(?:šík|&scaron;&iacute;k)|Cart)(\s*</span>)~su'
         : '~(<div class="bradcrumbs">.*?<span>\s*)(Корзина|Cart)(\s*</span>)~su';
 }
 
