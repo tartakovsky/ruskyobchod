@@ -1,0 +1,10 @@
+{
+    "product_id": 10617,
+    "product_name": "Sleď . Vedro",
+    "dotypos_id": "1587755044845615",
+    "warehouse_id": "182869047",
+    "local_stock": 9,
+    "local_cash_stock_kg": 3.64,
+    "remote_stock_quantity_status": 3.64,
+    "remote_matches_local_cash": true
+}

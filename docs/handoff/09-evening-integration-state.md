@@ -28,6 +28,10 @@ Real guarded path:
 
 - `tools/verify-post-roundtrip-state.sh 10617`
 
+## current evidence capture command
+
+- `tools/collect-evening-integration-evidence.sh 10617 precheck`
+
 ## current validated assumptions
 
 - storefront / checkout / account / commerce / preorder paths are green

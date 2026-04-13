@@ -1,0 +1,258 @@
+== tuesday readiness ==
+== storefront baseline ==
+OK   status https://ruskyobchod.sk/ -> 200
+OK   status https://ruskyobchod.sk/wp-login.php -> 200
+OK   status https://ruskyobchod.sk/kategoria-produktu/sneki-snacky/?lang=ru&verify_baseline=1 -> 200
+OK   status https://ruskyobchod.sk/produkt/krekry-kirie-ky-syr-unka-suhariki-kirieshki-syr-vetchina/?lang=ru&verify_baseline=1 -> 200
+OK   home skip-link marker present
+OK   home RU main menu home present
+OK   home RU main menu delivery present
+OK   home RU main menu contacts present
+OK   home RU main menu account present
+OK   home RU mobile menu open label present
+OK   home RU nav aria label present
+OK   home RU mobile menu close label present
+OK   home RU footer aria label present
+OK   home RU scroll up label present
+OK   category RU sorting label present
+OK   category RU add-to-cart present
+OK   product RU stock label present
+OK   product RU quantity label present
+OK   product RU SKU label present
+OK   product RU category label present
+OK   product RU related products heading present
+OK   home RU cookie accept button present
+OK   home RU cookie close aria present
+OK   home RU legal country present
+OK   home RU legal registry line present
+OK   home RU legal company line present
+Baseline verification complete.
+
+== checkout shell ==
+OK   cart RU status 200
+OK   checkout RU redirects
+OK   checkout RU redirects to cart with lang
+OK   cart RU title present
+OK   cart RU empty message present
+OK   cart RU main menu home present
+OK   cart RU main menu account present
+OK   cart RU cookie accept button present
+OK   cart RU cookie close aria present
+Checkout shell verification complete.
+
+== account shell ==
+OK   account RU status 200
+OK   account RU document title present
+OK   account RU header icon title present
+OK   account RU main menu home present
+OK   account RU main menu account present
+OK   account RU page title present
+OK   account RU username label present
+OK   account RU password label present
+OK   account RU remember me present
+OK   account RU login button present
+OK   account RU lost password present
+OK   account RU register heading present
+OK   account RU register button present
+OK   account RU cookie accept button present
+OK   account RU cookie close aria present
+Account shell verification complete.
+
+== commerce shell RU ==
+OK   commerce cart RU status 200
+OK   commerce checkout RU status 200
+OK   commerce cart totals heading present
+OK   commerce cart subtotal present
+OK   commerce cart local pickup present
+OK   commerce cart GLS shipping present
+OK   commerce cart Packeta shipping present
+OK   commerce cart total present
+OK   commerce cart place order link present
+OK   commerce checkout page title present
+OK   commerce checkout order heading present
+OK   commerce checkout first name present
+OK   commerce checkout last name present
+OK   commerce checkout country label present
+OK   commerce checkout postcode label present
+OK   commerce checkout city label present
+OK   commerce checkout ship to different address present
+OK   commerce checkout order note present
+OK   commerce checkout local pickup present
+OK   commerce checkout GLS shipping present
+OK   commerce checkout Packeta shipping present
+OK   commerce checkout COD present
+OK   commerce checkout COD description present
+OK   commerce checkout bank transfer present
+OK   commerce checkout bank transfer description present
+OK   commerce checkout subtotal present
+OK   commerce checkout total present
+OK   commerce checkout terms label present
+Commerce shell verification complete.
+
+== commerce shell SK ==
+OK   commerce cart SK status 200
+OK   commerce checkout SK status 200
+OK   commerce cart SK title present
+OK   commerce cart SK subtotal present
+OK   commerce cart SK local pickup present
+OK   commerce cart SK GLS shipping present
+OK   commerce cart SK Packeta shipping present
+OK   commerce checkout SK page title present
+OK   commerce checkout SK first name present
+OK   commerce checkout SK last name present
+OK   commerce checkout SK country label present
+OK   commerce checkout SK country placeholder present
+OK   commerce checkout SK Austria option present
+OK   commerce checkout SK Slovakia option present
+OK   commerce checkout SK update country present
+OK   commerce checkout SK address label present
+OK   commerce checkout SK address placeholder present
+OK   commerce checkout SK postcode label present
+OK   commerce checkout SK city label present
+OK   commerce checkout SK state label present
+OK   commerce checkout SK optional marker present
+OK   commerce checkout SK phone label present
+OK   commerce checkout SK ship to different address present
+OK   commerce checkout SK order note present
+OK   commerce checkout SK order note placeholder present
+OK   commerce checkout SK local pickup present
+OK   commerce checkout SK GLS shipping present
+OK   commerce checkout SK Packeta shipping present
+OK   commerce checkout SK COD present
+OK   commerce checkout SK COD description present
+OK   commerce checkout SK bank transfer present
+OK   commerce checkout SK bank transfer description present
+OK   commerce checkout SK subtotal present
+OK   commerce checkout SK tax marker present
+OK   commerce checkout SK terms label present
+Commerce shell SK verification complete.
+
+== preorder shell ==
+OK   preorder RU status https://ruskyobchod.sk/produkt/slanina-mercur-salo-mercur/?lang=ru -> 200
+OK   preorder RU note title present for slanina-mercur-salo-mercur
+OK   preorder RU note body present for slanina-mercur-salo-mercur
+OK   preorder RU price unit present for slanina-mercur-salo-mercur
+OK   preorder SK status https://ruskyobchod.sk/produkt/slanina-mercur-salo-mercur/?lang=sk -> 200
+OK   preorder SK note title present for slanina-mercur-salo-mercur
+OK   preorder SK note body present for slanina-mercur-salo-mercur
+OK   preorder SK price unit present for slanina-mercur-salo-mercur
+OK   preorder RU status https://ruskyobchod.sk/produkt/sle-vedro-seld-vedro/?lang=ru -> 200
+OK   preorder RU note title present for sle-vedro-seld-vedro
+OK   preorder RU note body present for sle-vedro-seld-vedro
+OK   preorder RU price unit present for sle-vedro-seld-vedro
+OK   preorder SK status https://ruskyobchod.sk/produkt/sle-vedro-seld-vedro/?lang=sk -> 200
+OK   preorder SK note title present for sle-vedro-seld-vedro
+OK   preorder SK note body present for sle-vedro-seld-vedro
+OK   preorder SK price unit present for sle-vedro-seld-vedro
+OK   preorder RU status https://ruskyobchod.sk/produkt/ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya/?lang=ru -> 200
+OK   preorder RU note title present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+OK   preorder RU note body present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+OK   preorder RU price unit present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+OK   preorder SK status https://ruskyobchod.sk/produkt/ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya/?lang=sk -> 200
+OK   preorder SK note title present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+OK   preorder SK note body present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+OK   preorder SK price unit present for ryba-makrela-den-ho-chladenia-ryba-skumbriya-holodnogo-kopcheniya
+Preorder shell verification complete.
+
+== admin order screen ==
+OK   inline panel class
+OK   panel heading
+OK   nonce field
+OK   order id field
+OK   actual weight field
+OK   confirm button
+OK   await weight status label
+OK   footer ajax action
+OK   footer reload handler
+OK   hidden meta box id present
+Admin order screen verification complete.
+
+== order page language ==
+OK   RU received title
+OK   RU received notice
+OK   RU received order number
+OK   RU received payment label
+OK   RU received bank transfer
+OK   RU received subtotal
+OK   RU received total
+OK   RU pay title
+OK   RU pay payment label
+OK   RU pay bank transfer
+OK   RU pay subtotal
+OK   RU pay total
+OK   SK received title
+OK   SK received notice
+OK   SK received order number
+OK   SK received payment label
+OK   SK received bank transfer
+OK   SK received subtotal
+OK   SK pay title
+OK   SK pay payment label
+OK   SK pay bank transfer
+OK   SK pay subtotal
+OK   SK pay total column
+Order page language verification complete.
+
+== dotypos readonly ==
+OK   product 10781 mapping and remote stock match (0.966)
+OK   product 10617 mapping and remote stock match (3.64)
+OK   product 10310 mapping and remote stock match (1.48)
+Dotypos readonly verification complete.
+
+Tuesday readiness verification complete.
+
+== live mu parity ==
+== local-only ==
+rusky-runtime-shim.php
+
+== remote-only ==
+
+== shared ==
+rusky-commerce-adjustments.php
+rusky-disable-far.php
+rusky-dotypos-maintenance.php
+rusky-dotypos-stock-bridge.php
+rusky-language-switcher-lite.php
+rusky-order-language-helpers.php
+rusky-order-page-language.php
+rusky-preorder-admin.php
+rusky-preorder-notifications.php
+rusky-preorder-storefront.php
+rusky-product-sorting.php
+rusky-server-language-core.php
+rusky-shop-alias.php
+rusky-shop-display.php
+rusky-stock-normalization.php
+rusky-stock-policy.php
+rusky-storefront-messaging.php
+rusky-weight-preorder.php
+
+== active plugins snapshot ==
+all-in-one-wp-migration/all-in-one-wp-migration.php
+cookie-notice/cookie-notice.php
+cyr3lat/cyr-to-lat.php
+elementor-pro/elementor-pro.php
+elementor/elementor.php
+gastronom-lang-switcher/gastronom-lang-switcher.php
+gastronom-stock-fix/gastronom-stock-fix.php
+gls-shipping-for-woocommerce/gls-shipping-for-woocommerce.php
+packeta/packeta.php
+slovenska-posta-epodaci-harok/slovenska-posta-epodaci-harok.php
+so-css/so-css.php
+tinymce-advanced/tinymce-advanced.php
+woocommerce-extension-master/dotypos.php
+woocommerce-legacy-rest-api/woocommerce-legacy-rest-api.php
+woocommerce-payments/woocommerce-payments.php
+woocommerce/woocommerce.php
+wp-pagenavi/wp-pagenavi.php
+wp-super-cache/wp-cache.php
+
+OK   FAR inactive on live
+OK   main language plugin active on live
+OK   Dotypos plugin active on live
+OK   no remote-only MU files
+OK   only deferred local-only MU gap is rusky-runtime-shim.php
+
+OK   admin order screen verification is included via tuesday readiness
+
+Evening integration gate verification complete.

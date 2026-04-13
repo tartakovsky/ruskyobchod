@@ -1,0 +1,4 @@
+OK   product 10781 mapping and remote stock match (0.966)
+OK   product 10617 mapping and remote stock match (3.64)
+OK   product 10310 mapping and remote stock match (1.48)
+Dotypos readonly verification complete.
