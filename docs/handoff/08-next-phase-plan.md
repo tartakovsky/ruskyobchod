@@ -106,6 +106,10 @@ The next block should be one of these, not several:
 3. use the cleanup-safe admin proof harness for any further preorder confirmation verification:
    - `tools/prove-admin-weight-confirmation.sh`
 
+The runtime-shim mini-plan now exists explicitly:
+
+- `.plans/2026-04-13-runtime-shim-mini-plan.md`
+
 If option 2 is chosen, it must have:
 
 - explicit cleanup/rollback
