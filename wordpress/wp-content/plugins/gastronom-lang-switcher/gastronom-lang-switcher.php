@@ -87,6 +87,10 @@ function gls_is_runtime_mutation_blocked_request(): bool {
     return gls_is_logged_in_operator_request();
 }
 
+function gls_is_translation_blocked_request(): bool {
+    return gls_is_render_blocked_request();
+}
+
 function gls_has_explicit_lang_context(): bool {
     $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
     if (gls_is_supported_lang($query_lang)) {
@@ -693,7 +697,7 @@ function gls_is_sensitive_runtime_context(): bool {
 }
 
 function gls_frontend_locale(string $locale): string {
-    if (gls_is_runtime_mutation_blocked_request()) {
+    if (gls_is_translation_blocked_request()) {
         return $locale;
     }
 
@@ -704,7 +708,7 @@ add_filter('locale', 'gls_frontend_locale', 20);
 add_filter('determine_locale', 'gls_frontend_locale', 20);
 
 add_filter('gettext', function($translated, $text, $domain) {
-    if (gls_is_runtime_mutation_blocked_request()) {
+    if (gls_is_translation_blocked_request()) {
         return $translated;
     }
 

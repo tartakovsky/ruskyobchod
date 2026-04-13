@@ -104,7 +104,7 @@ function rpsf_get_item_data($item_data, $cart_item) {
     ];
     $item_data[] = [
         'name'  => gastronom_t('Примерный вес 1 шт.', 'Približná hmotnosť 1 ks'),
-        'value' => wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2) . ' кг',
+        'value' => wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2) . ' kg',
     ];
     $item_data[] = [
         'name'  => gastronom_t('Важно', 'Dôležité'),
@@ -132,7 +132,7 @@ function rpsf_render_single_product_note(): void {
 
     echo '<div class="gastronom-preorder-note" style="margin:16px 0;padding:14px 16px;border:1px solid #d8c38a;border-left:4px solid #c7921b;border-radius:10px;background:#fff8e7;color:#5f4a12;">';
     echo '<strong style="display:block;margin-bottom:6px;">' . esc_html(gastronom_t('Предзаказ по весу', 'Predobjednávka podľa hmotnosti')) . '</strong>';
-    echo '<div style="margin-bottom:6px;">' . esc_html(gastronom_t('Продаётся поштучно. Примерный вес одной штуки:', 'Predáva sa po kusoch. Približná hmotnosť jedného kusa:')) . ' <strong>' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</strong>.</div>';
+    echo '<div style="margin-bottom:6px;">' . esc_html(gastronom_t('Продаётся поштучно. Примерный вес одной штуки:', 'Predáva sa po kusoch. Približná hmotnosť jedného kusa:')) . ' <strong>' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' kg</strong>.</div>';
     echo '<div>' . esc_html($note) . '</div>';
     echo '</div>';
 }
