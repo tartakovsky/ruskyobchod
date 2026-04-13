@@ -184,6 +184,17 @@ Runtime markers now confirmed on live:
 - `ropl_start_order_page_buffer`
 - `ropl_render_order_item_actual_weight`
 
+The order-language helper owner gap was also closed:
+
+- `rusky-order-language-helpers.php`
+
+Runtime markers now confirmed on live:
+
+- `rslh_order_lang`
+- `rslh_localize_order_label`
+- `rslh_with_order_locale`
+- `rslh_localize_title`
+
 ### 12. preorder lifecycle proof is now partially positive
 
 Controlled temporary-order proof on live already confirmed:
@@ -213,7 +224,6 @@ They should not be deployed as a blind parity batch.
 Current remaining missing files on live:
 
 - `rusky-language-switcher-lite.php`
-- `rusky-order-language-helpers.php`
 - `rusky-runtime-shim.php`
 - `rusky-server-language-core.php`
 - `rusky-stock-normalization.php`
