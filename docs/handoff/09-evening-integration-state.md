@@ -32,6 +32,14 @@ Real guarded path:
 
 - `tools/collect-evening-integration-evidence.sh 10617 precheck`
 
+## current summary command
+
+- `tools/print-evening-integration-summary.sh 10617`
+
+## current freeze command
+
+- `tools/freeze-evening-integration-state.sh 10617 precheck`
+
 ## current validated assumptions
 
 - storefront / checkout / account / commerce / preorder paths are green
@@ -74,3 +82,9 @@ Use the exact evening order from:
 Use the go/skip/mutate criteria from:
 
 - `docs/handoff/11-evening-decision-matrix.md`
+
+## operator checklist
+
+Use the short operator checklist from:
+
+- `docs/handoff/12-evening-operator-checklist.md`
