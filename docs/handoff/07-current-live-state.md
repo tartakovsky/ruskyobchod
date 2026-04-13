@@ -5,10 +5,9 @@ This is the authoritative current-state document.
 ## source of truth
 
 - repo: `tartakovsky/ruskyobchod`
-- current live docs marker: `72278352`
 - current completed safe-refactor runtime baseline:
   - stable refactor point: `00d840a7`
-  - current runtime/docs marker after commerce-tail stop-line: `72278352`
+  - later live/runtime progress is tracked by the current repo `HEAD` and the dated worklogs below
 
 ## live state now
 
