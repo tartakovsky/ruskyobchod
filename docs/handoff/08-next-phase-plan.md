@@ -98,6 +98,8 @@ Already proven:
 - confirmation-ready transition for non-COD
 - sync/restore algorithm via in-memory Dotypos stub
 - admin AJAX confirmation path success with controlled cleanup
+- customer-visible RU/SK order-page language through:
+  - `tools/verify-order-page-language.sh`
 - read-only live Dotypos connectivity, warehouse mapping, and product stock parity via:
   - `tools/verify-dotypos-readonly.sh`
 

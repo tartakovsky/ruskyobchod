@@ -21,6 +21,7 @@ Validated repeatedly during the safe phase:
 - `tools/verify-commerce-shell.sh`
 - `tools/verify-commerce-shell-sk.sh`
 - `tools/verify-preorder-shell.sh`
+- `tools/verify-order-page-language.sh`
 
 Latest status at current stop-line:
 
@@ -30,6 +31,7 @@ Latest status at current stop-line:
 - commerce shell RU green
 - commerce shell SK green
 - preorder shell green
+- order page language green
 
 ## what is complete
 
@@ -256,6 +258,9 @@ Controlled temporary-order proof on live already confirmed:
 - `await-weight -> pending` confirmation-ready transition for non-COD
 - Dotypos sync/restore algorithm through in-memory service stub without real API mutation
 - admin AJAX weight-confirmation path returned live success under controlled conditions
+- customer-visible RU/SK order page language on:
+  - `order-received`
+  - `order-pay`
 
 That admin/AJAX proof path is now stronger than the earlier one-off CLI proof:
 
@@ -264,6 +269,17 @@ That admin/AJAX proof path is now stronger than the earlier one-off CLI proof:
   - `cod -> on-hold`
   - `bacs -> pending`
 - it restores stock/cash state and deletes the temporary order through guaranteed cleanup
+
+Customer-visible order language is now also backed by a cleanup-safe verifier:
+
+- `tools/verify-order-page-language.sh`
+
+It creates temporary orders with guaranteed cleanup and verifies:
+
+- RU `order-received`
+- RU `order-pay`
+- SK `order-received`
+- SK `order-pay`
 
 ### 13. read-only Dotypos connectivity and mapping proof is now positive
 
