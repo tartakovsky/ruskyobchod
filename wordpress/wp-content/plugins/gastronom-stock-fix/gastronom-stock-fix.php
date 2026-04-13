@@ -361,15 +361,6 @@ add_action('woocommerce_cart_calculate_fees', 'gastronom_add_cod_fee');
 
 if (!function_exists('gastronom_gateway_description')) {
 function gastronom_gateway_description($description, $id) {
-    if ($id === 'bacs' && function_exists('rpsf_has_preorder_checkout_cart') && rpsf_has_preorder_checkout_cart()) {
-        return function_exists('rpsf_preorder_bank_transfer_description')
-            ? rpsf_preorder_bank_transfer_description()
-            : gastronom_t(
-                'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.',
-                'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.'
-            );
-    }
-
     if (function_exists('rca_current_lang')) {
         if ($id === 'cod') {
             return rca_current_lang() === 'ru'
@@ -1202,6 +1193,8 @@ function gastronom_available_payment_gateways($gateways) {
         return $gateways;
     }
 
+    unset($gateways['bacs']);
+
     $has_preorder = false;
     if (is_checkout_pay_page()) {
         global $wp;
@@ -1221,38 +1214,6 @@ function gastronom_available_payment_gateways($gateways) {
 
     if (!$has_preorder) {
         return $gateways;
-    }
-
-    if (is_checkout_pay_page()) {
-        unset($gateways['cod']);
-
-        if (isset($gateways['bacs'])) {
-            $gateways['bacs']->title = gastronom_t(
-                'Банковский перевод',
-                'Bankový prevod'
-            );
-        }
-
-        return $gateways;
-    }
-
-    foreach ($gateways as $gateway_id => $gateway) {
-        if (!in_array($gateway_id, ['bacs', 'cod'], true)) {
-            unset($gateways[$gateway_id]);
-        }
-    }
-
-    if (isset($gateways['bacs'])) {
-        $gateways['bacs']->title = gastronom_t(
-            'Банковский перевод',
-            'Bankový prevod'
-        );
-        $gateways['bacs']->description = function_exists('rpsf_preorder_bank_transfer_description')
-            ? rpsf_preorder_bank_transfer_description()
-            : gastronom_t(
-                'Сумма заказа предварительная. После подтверждения веса мы отправим ссылку на оплату банковским переводом.',
-                'Suma objednávky je predbežná. Po potvrdení hmotnosti vám pošleme odkaz na úhradu bankovým prevodom.'
-            );
     }
 
     if (isset($gateways['cod'])) {

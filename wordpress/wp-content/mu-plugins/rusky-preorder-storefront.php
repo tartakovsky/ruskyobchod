@@ -179,8 +179,8 @@ function rpsf_has_preorder_context(): bool {
 
 function rpsf_preorder_checkout_notice_text(): string {
     return gastronom_t(
-        'В корзине есть товары с уточнением веса. Итоговая сумма будет подтверждена после сборки заказа. Для банковского перевода мы пришлём ссылку на оплату после подтверждения веса.',
-        'V košíku sú tovary s upresnením hmotnosti. Konečná suma bude potvrdená po príprave objednávky. Pri bankovom prevode vám po potvrdení hmotnosti pošleme odkaz na úhradu.'
+        'В корзине есть товары с уточнением веса. Итоговая сумма будет подтверждена после сборки заказа. После подтверждения веса мы отправим письмо со следующим шагом по выбранному способу оплаты.',
+        'V košíku sú tovary s upresnením hmotnosti. Konečná suma bude potvrdená po príprave objednávky. Po potvrdení hmotnosti vám pošleme e-mail s ďalším krokom podľa zvoleného spôsobu platby.'
     );
 }
 
@@ -204,39 +204,7 @@ function rpsf_available_payment_gateways($gateways) {
         return $gateways;
     }
 
-    if (!rpsf_has_preorder_context()) {
-        return $gateways;
-    }
-
-    if (is_checkout_pay_page()) {
-        foreach ($gateways as $gateway_id => $gateway) {
-            if ($gateway_id !== 'bacs') {
-                unset($gateways[$gateway_id]);
-            }
-        }
-
-        if (isset($gateways['bacs'])) {
-            $gateways['bacs']->title = gastronom_t('Банковский перевод', 'Bankový prevod');
-            $gateways['bacs']->description = rpsf_preorder_bank_transfer_description();
-        }
-
-        return $gateways;
-    }
-
-    foreach ($gateways as $gateway_id => $gateway) {
-        if (!in_array($gateway_id, ['bacs', 'cod'], true)) {
-            unset($gateways[$gateway_id]);
-        }
-    }
-
-    if (isset($gateways['bacs'])) {
-        $gateways['bacs']->title = gastronom_t('Банковский перевод', 'Bankový prevod');
-        $gateways['bacs']->description = rpsf_preorder_bank_transfer_description();
-    }
-
-    if (isset($gateways['cod'])) {
-        $gateways['cod']->title = gastronom_t('Оплата при получении', 'Platba pri doručení');
-    }
+    unset($gateways['bacs']);
 
     return $gateways;
 }

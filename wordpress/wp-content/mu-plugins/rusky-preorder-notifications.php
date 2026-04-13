@@ -145,16 +145,6 @@ function rpn_send_weight_confirmation_email($order): void {
                 ? 'Вы выбрали оплату при получении. Дополнительно оплачивать заказ сейчас не нужно.'
                 : 'Zvolili ste platbu pri prevzatí. Objednávku teraz nemusíte dodatočne platiť.') . '</p>';
             $secondary_action_html = '<p><a href="' . esc_url($view_url) . '" style="display:inline-block;padding:10px 16px;background:#294c7a;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($view_label) . '</a></p>';
-        } elseif ($payment_method === 'bacs') {
-            $bank_label = $lang === 'ru' ? 'Проверить заказ и оплатить' : 'Skontrolovať objednávku a zaplatiť';
-            $bank_text = $lang === 'ru'
-                ? 'Перейдите по ссылке ниже, чтобы открыть заказ, увидеть реквизиты для банковского перевода и завершить оплату переводом.'
-                : 'Prejdite na odkaz nižšie, otvoríte objednávku, zobrazíte platobné údaje pre bankový prevod a dokončíte úhradu prevodom.';
-            $bank_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
-            if (!empty($bank_url)) {
-                $payment_html = '<p>' . esc_html($bank_text) . '</p>'
-                    . '<p><a href="' . esc_url($bank_url) . '" style="display:inline-block;padding:10px 16px;background:#067c36;color:#fff;text-decoration:none;border-radius:6px;">' . esc_html($bank_label) . '</a></p>';
-            }
         } else {
             $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
             $pay_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
@@ -213,7 +203,7 @@ function rpn_mark_weight_confirmed_order_ready($order): void {
         $next_status = $order->get_payment_method() === 'cod' ? 'on-hold' : 'pending';
         $note = $order->get_payment_method() === 'cod'
             ? gastronom_tt($order, 'Фактический вес подтверждён. Ожидание оплаты при получении.', 'Skutočná hmotnosť bola potvrdená. Čaká sa na platbu pri doručení.')
-            : gastronom_tt($order, 'Фактический вес подтверждён. Ожидание онлайн-оплаты.', 'Skutočná hmotnosť bola potvrdená. Čaká sa na online platbu.');
+            : gastronom_tt($order, 'Фактический вес подтверждён. Ожидание оплаты по выбранному способу.', 'Skutočná hmotnosť bola potvrdená. Čaká sa na úhradu podľa zvoleného spôsobu platby.');
         $order->update_status($next_status, $note, true);
     }
 
