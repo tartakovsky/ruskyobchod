@@ -12,6 +12,52 @@ function gls_is_supported_lang(string $lang): bool {
     return $lang === 'ru' || $lang === 'sk';
 }
 
+function gls_request_path(): string {
+    $uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+    return $uri === '' ? '/' : $uri;
+}
+
+function gls_request_script_name(): string {
+    if (!empty($GLOBALS['pagenow']) && is_string($GLOBALS['pagenow'])) {
+        return (string) $GLOBALS['pagenow'];
+    }
+
+    $script = isset($_SERVER['SCRIPT_NAME']) ? (string) wp_unslash($_SERVER['SCRIPT_NAME']) : '';
+    if ($script === '') {
+        return '';
+    }
+
+    $parts = explode('/', $script);
+    return (string) end($parts);
+}
+
+function gls_is_wp_login_request(): bool {
+    if (gls_request_script_name() === 'wp-login.php') {
+        return true;
+    }
+
+    return strpos(gls_request_path(), '/wp-login.php') === 0;
+}
+
+function gls_has_explicit_lang_context(): bool {
+    $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
+    if (gls_is_supported_lang($query_lang)) {
+        return true;
+    }
+
+    $cookie_lang = isset($_COOKIE['gastronom_lang']) ? sanitize_key(wp_unslash($_COOKIE['gastronom_lang'])) : '';
+    return gls_is_supported_lang($cookie_lang);
+}
+
+function gls_redirect_target_is_auth_path(string $location): bool {
+    $path = (string) wp_parse_url($location, PHP_URL_PATH);
+    if ($path === '') {
+        return false;
+    }
+
+    return strpos($path, '/wp-login.php') === 0 || strpos($path, '/wp-admin') === 0;
+}
+
 function gls_current_lang_code() {
     if (function_exists('rslc_current_lang')) {
         return rslc_current_lang();
@@ -549,7 +595,7 @@ function gls_server_lang(): string {
 }
 
 add_action('init', function() {
-    if (is_admin() && !wp_doing_ajax()) {
+    if ((is_admin() && !wp_doing_ajax()) || gls_is_wp_login_request()) {
         return;
     }
 
@@ -567,6 +613,14 @@ add_filter('wp_redirect', function($location, $status) {
         return $location;
     }
 
+    if (gls_is_sensitive_runtime_context()) {
+        return $location;
+    }
+
+    if (!gls_has_explicit_lang_context()) {
+        return $location;
+    }
+
     $lang = gls_server_lang();
     if (!gls_is_supported_lang($lang)) {
         return $location;
@@ -579,10 +633,18 @@ add_filter('wp_redirect', function($location, $status) {
         return $location;
     }
 
+    if (gls_redirect_target_is_auth_path($location)) {
+        return $location;
+    }
+
     return add_query_arg('lang', $lang, $location);
 }, 20, 2);
 
 function gls_is_sensitive_runtime_context(): bool {
+    if (gls_is_wp_login_request()) {
+        return true;
+    }
+
     if (is_admin() && !wp_doing_ajax()) {
         return true;
     }
