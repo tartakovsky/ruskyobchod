@@ -48,6 +48,7 @@ Then compare the two bundles:
 Expected result:
 
 - `product-state.txt` matches
+- `admin-order-screen.txt` matches
 - `active-plugins.txt` matches
 - `mu-parity.txt` matches
 - `dotypos-readonly.txt` matches
