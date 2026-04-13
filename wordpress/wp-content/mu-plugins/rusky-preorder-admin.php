@@ -110,7 +110,9 @@ function rpa_render_weight_confirmation_box($order_or_post): void {
 
     echo '<div class="gastronom-weight-box__actions">';
     echo '<div class="gastronom-weight-box__hint">Подтверждение применяется ко всем товарам с указанным фактическим весом в этом заказе.</div>';
+    echo '<div class="gastronom-weight-box__button-row">';
     echo '<button type="button" class="button button-primary gastronom-confirm-weight-button">Подтвердить вес по заказу</button>';
+    echo '</div>';
     echo '</div>';
 }
 
@@ -138,7 +140,7 @@ function rpa_add_weight_confirmation_meta_box(): void {
         add_meta_box(
             'gastronom-weight-confirmation',
             'Подтверждение фактического веса',
-            'gastronom_render_weight_confirmation_box',
+            'gastronom_render_weight_confirmation_metabox',
             $screen_id,
             'normal',
             'high'
@@ -223,26 +225,32 @@ function rpa_render_order_admin_footer(): void {
     }
     .gastronom-weight-box__actions {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: stretch;
         gap: 12px;
         margin-top: 12px;
         padding-top: 12px;
         border-top: 1px solid #dcdcde;
     }
     .gastronom-weight-box__hint {
-        max-width: 70%;
+        max-width: none;
+    }
+    .gastronom-weight-box__button-row {
+        display: flex;
+        justify-content: flex-end;
     }
     @media (max-width: 960px) {
         .gastronom-weight-item {
             grid-template-columns: 1fr;
         }
         .gastronom-weight-box__actions {
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
         }
-        .gastronom-weight-box__hint {
-            max-width: none;
+        .gastronom-weight-box__button-row {
+            justify-content: stretch;
+        }
+        .gastronom-weight-box__button-row .gastronom-confirm-weight-button {
+            width: 100%;
         }
     }
     </style>
@@ -456,6 +464,18 @@ function rpa_render_inline_weight_panel($order): void {
     echo '</div>';
 }
 
+function rpa_render_weight_confirmation_metabox($order_or_post): void {
+    $order = $order_or_post instanceof WP_Post ? wc_get_order($order_or_post->ID) : $order_or_post;
+    if (!$order instanceof WC_Order || !gastronom_order_requires_weight_confirmation($order)) {
+        echo '<p>В этом заказе нет товаров с предзаказом по весу.</p>';
+        return;
+    }
+
+    echo '<div class="gastronom-inline-weight-box gastronom-weight-metabox">';
+    rpa_render_weight_confirmation_box($order);
+    echo '</div>';
+}
+
 function rpa_register_admin_weight_panel(): void {
     remove_action('woocommerce_admin_order_data_after_order_details', 'gastronom_render_inline_weight_panel');
     add_action('add_meta_boxes', 'rpa_add_weight_confirmation_meta_box', 50);
@@ -506,6 +526,12 @@ if (!function_exists('gastronom_remove_hidden_meta_boxes')) {
 if (!function_exists('gastronom_render_inline_weight_panel')) {
     function gastronom_render_inline_weight_panel($order): void {
         rpa_render_inline_weight_panel($order);
+    }
+}
+
+if (!function_exists('gastronom_render_weight_confirmation_metabox')) {
+    function gastronom_render_weight_confirmation_metabox($order_or_post): void {
+        rpa_render_weight_confirmation_metabox($order_or_post);
     }
 }
 
