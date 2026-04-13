@@ -132,3 +132,7 @@ The dry-run orchestration path is now also proven:
 - gate first
 - no mutation by default
 - explicit stop on the guard
+
+The exact product-state verifier for the default candidate is also ready:
+
+- `tools/verify-dotypos-product-state.sh 10617`
