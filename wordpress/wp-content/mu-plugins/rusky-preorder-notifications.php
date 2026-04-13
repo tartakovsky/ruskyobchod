@@ -53,6 +53,9 @@ function rpn_send_weight_confirmation_email($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if ($order->get_meta('_gastronom_weight_confirmation_email_sent_at', true) !== '') {
+        return;
+    }
 
     $to = sanitize_email((string) $order->get_billing_email());
     if ($to === '') {
@@ -130,7 +133,7 @@ function rpn_send_weight_confirmation_email($order): void {
 
         $total_label = $lang === 'ru' ? 'Новая сумма заказа' : 'Nová suma objednávky';
         $view_label = $lang === 'ru' ? 'Посмотреть заказ' : 'Zobraziť objednávku';
-        $view_url = $order->get_view_order_url();
+        $view_url = add_query_arg('lang', $lang, $order->get_view_order_url());
         $pay_label = $lang === 'ru' ? 'Оплатить заказ' : 'Zaplatiť objednávku';
         $payment_html = '';
 
@@ -139,7 +142,7 @@ function rpn_send_weight_confirmation_email($order): void {
                 ? 'Вы выбрали оплату при получении. Дополнительно оплачивать заказ сейчас не нужно.'
                 : 'Zvolili ste platbu pri prevzatí. Objednávku teraz nemusíte dodatočne platiť.') . '</p>';
         } else {
-            $pay_url = $order->get_checkout_payment_url();
+            $pay_url = add_query_arg('lang', $lang, $order->get_checkout_payment_url());
             if (!empty($pay_url)) {
                 $payment_html = '<p>' . esc_html($lang === 'ru'
                     ? 'Перейдите по ссылке ниже, чтобы оплатить заказ по обновлённой сумме.'
@@ -176,6 +179,9 @@ function rpn_mark_weight_confirmed_order_ready($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if ($order->get_meta('_gastronom_weight_confirmation_processed_at', true) !== '') {
+        return;
+    }
 
     gastronom_normalize_preorder_order_state($order);
 
@@ -184,6 +190,7 @@ function rpn_mark_weight_confirmed_order_ready($order): void {
     }
 
     $order->update_meta_data('_gastronom_requires_weight_confirmation', 'no');
+    $order->update_meta_data('_gastronom_weight_confirmation_processed_at', current_time('mysql'));
     $order->save();
 
     if ($order->get_status() === 'await-weight') {

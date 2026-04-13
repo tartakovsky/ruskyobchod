@@ -92,7 +92,6 @@ function rpa_render_weight_confirmation_box($order_or_post): void {
         echo '<div style="margin-bottom:8px;color:#50575e;">' . esc_html((string) $qty) . ' шт. · ' . esc_html(wc_format_localized_decimal($min, 2) . '–' . wc_format_localized_decimal($max, 2)) . ' кг</div>';
         echo '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">';
         echo '<input type="number" step="0.01" min="0" placeholder="0.37 кг" name="gastronom_actual_weight[' . esc_attr((string) $item_id) . ']" value="' . esc_attr($actual > 0 ? (string) $actual : '') . '" style="width:120px;">';
-        echo '<button type="button" class="button button-primary gastronom-confirm-weight-button">Подтвердить вес</button>';
         echo '</div>';
         echo '<div style="margin-top:8px;color:#50575e;">Статус: <strong>' . esc_html($status_label) . '</strong></div>';
         if ($confirmed) {
@@ -103,7 +102,13 @@ function rpa_render_weight_confirmation_box($order_or_post): void {
 
     if (!$has_items) {
         echo '<p>В этом заказе нет товаров с предзаказом по весу.</p>';
+        return;
     }
+
+    echo '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid #dcdcde;">';
+    echo '<div style="color:#50575e;">Подтверждение применяется ко всем товарам с указанным фактическим весом в этом заказе.</div>';
+    echo '<button type="button" class="button button-primary gastronom-confirm-weight-button">Подтвердить вес по заказу</button>';
+    echo '</div>';
 }
 
 function rpa_order_screen_ids(): array {

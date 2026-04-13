@@ -199,6 +199,10 @@ function ropl_maybe_redirect_context_order_lang(): void {
     if (is_admin()) {
         return;
     }
+    if ((function_exists('is_checkout_pay_page') && is_checkout_pay_page())
+        || (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('view-order'))) {
+        return;
+    }
 
     $order = ropl_context_order();
     if (!$order instanceof WC_Order) {
