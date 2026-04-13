@@ -450,7 +450,7 @@ function rpa_render_inline_weight_panel($order): void {
         return;
     }
 
-    echo '<div class="gastronom-weight-metabox">';
+    echo '<div class="gastronom-inline-weight-box gastronom-weight-metabox">';
     echo '<h3>Подтверждение фактического веса</h3>';
     rpa_render_weight_confirmation_box($order);
     echo '</div>';
