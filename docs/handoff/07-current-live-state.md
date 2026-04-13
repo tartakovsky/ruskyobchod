@@ -13,6 +13,18 @@ This is the authoritative current-state document.
 
 The live site is currently stable on the tracked `gastronom-lang-switcher.php` path.
 
+Latest GLS block result:
+
+- `a2fec5c4` split `GLS` into:
+  - render-blocked requests
+  - runtime-mutation-blocked requests
+- this removed the logged-in frontend `503` path without disabling frontend HTML normalization
+- verified on live for:
+  - public homepage RU/SK
+  - logged-in homepage RU/SK
+  - logged-in account/cart
+  - `wp-login.php`
+
 Validated repeatedly during the safe phase:
 
 - `tools/verify-storefront-baseline.sh`

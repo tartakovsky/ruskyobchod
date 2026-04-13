@@ -9,6 +9,15 @@ This file starts after:
 
 Do not continue random helper extraction inside the same file just because a few lines are still extractable.
 
+Do not re-open the `GLS` boundary problem as scattered symptom-fixing.
+
+The `GLS` runtime split is now an explicit completed block:
+
+- render-blocked requests
+- runtime-mutation-blocked requests
+
+Any future work inside `GLS` must preserve that split unless there is a documented replacement architecture.
+
 That phase is finished.
 
 Do not touch:
