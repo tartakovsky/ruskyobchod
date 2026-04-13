@@ -100,3 +100,14 @@ For Tuesday morning, the site should now be treated as:
 - verified on key customer and preorder paths
 
 Further work should continue, but from controlled mini-plans, not from emergency cleanup instinct.
+
+## prepared next controlled step
+
+If an evening real Dotypos mutation proof is still required, the guarded harness and plan now exist:
+
+- `.plans/2026-04-13-real-dotypos-roundtrip-mini-plan.md`
+- `tools/real-dotypos-roundtrip.sh`
+
+The script refuses to run unless:
+
+- `REALLY_MUTATE_DOTYPOS=1`
