@@ -83,6 +83,10 @@ It is intentionally deferred because:
 
 So it is not a default Tuesday blocker, and forcing parity would add risk without proven immediate value.
 
+An explicit read-only parity audit now confirms it is the only remaining local-only `rusky-*.php` file:
+
+- `tools/audit-live-mu-parity.sh`
+
 See:
 
 - `.plans/2026-04-13-runtime-shim-mini-plan.md`
