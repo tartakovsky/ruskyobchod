@@ -172,6 +172,18 @@ Runtime markers now confirmed on live:
 - `rpsf_render_single_product_note`
 - `rpsf_checkout_create_order_line_item`
 
+The order-page language owner gap was also closed:
+
+- `rusky-order-page-language.php`
+
+Runtime markers now confirmed on live:
+
+- `ropl_localize_order_item_name`
+- `ropl_render_forced_order_lang_marker`
+- `ropl_maybe_redirect_context_order_lang`
+- `ropl_start_order_page_buffer`
+- `ropl_render_order_item_actual_weight`
+
 ### 12. preorder lifecycle proof is now partially positive
 
 Controlled temporary-order proof on live already confirmed:
@@ -202,7 +214,6 @@ Current remaining missing files on live:
 
 - `rusky-language-switcher-lite.php`
 - `rusky-order-language-helpers.php`
-- `rusky-order-page-language.php`
 - `rusky-runtime-shim.php`
 - `rusky-server-language-core.php`
 - `rusky-stock-normalization.php`
