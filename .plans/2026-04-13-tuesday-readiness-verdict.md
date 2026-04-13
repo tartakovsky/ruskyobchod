@@ -121,7 +121,14 @@ If an evening real Dotypos mutation proof is still required, the guarded harness
 
 - `.plans/2026-04-13-real-dotypos-roundtrip-mini-plan.md`
 - `tools/real-dotypos-roundtrip.sh`
+- `tools/run-evening-integration.sh`
 
 The script refuses to run unless:
 
 - `REALLY_MUTATE_DOTYPOS=1`
+
+The dry-run orchestration path is now also proven:
+
+- gate first
+- no mutation by default
+- explicit stop on the guard
