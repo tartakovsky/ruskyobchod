@@ -13,6 +13,50 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function ropl_request_uri(): string {
+    return isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+}
+
+function ropl_has_wp_logged_in_cookie(): bool {
+    foreach ($_COOKIE as $name => $value) {
+        if (strpos((string) $name, 'wordpress_logged_in_') === 0 && $value !== '') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function ropl_is_order_page_request_by_uri(): bool {
+    $uri = ropl_request_uri();
+
+    if ($uri === '') {
+        return false;
+    }
+
+    if (strpos($uri, '/checkout/order-pay/') !== false) {
+        return true;
+    }
+
+    if (strpos($uri, '/checkout/order-received/') !== false) {
+        return true;
+    }
+
+    if (strpos($uri, '/my-account/view-order/') !== false) {
+        return true;
+    }
+
+    return isset($_GET['order-pay']) || isset($_GET['order-received']);
+}
+
+function ropl_trimmed_plugins_for_logged_in_order_pages(): array {
+    return [
+        'gastronom-lang-switcher/gastronom-lang-switcher.php',
+        'wp-super-cache/wp-cache.php',
+        'google-analytics-dashboard-for-wp/gadwp.php',
+    ];
+}
+
 function ropl_context_order() {
     if (is_admin() || !function_exists('wc_get_order')) {
         return null;
@@ -302,6 +346,81 @@ function ropl_start_order_page_buffer(): void {
     });
 }
 
+function ropl_is_logged_in_operator_frontend(): bool {
+    if (!function_exists('is_user_logged_in') || !is_user_logged_in()) {
+        return false;
+    }
+
+    if (function_exists('current_user_can') && current_user_can('manage_options')) {
+        return true;
+    }
+
+    return function_exists('current_user_can') && current_user_can('edit_shop_orders');
+}
+
+function ropl_disable_operator_admin_overlays_on_order_pages(): void {
+    if (is_admin()) {
+        return;
+    }
+
+    $order = ropl_context_order();
+    if (!$order instanceof WC_Order) {
+        return;
+    }
+
+    if (!ropl_is_logged_in_operator_frontend()) {
+        return;
+    }
+
+    add_filter('show_admin_bar', '__return_false', 1000);
+
+    if (function_exists('exactmetrics_add_admin_bar_menu')) {
+        remove_action('admin_bar_menu', 'exactmetrics_add_admin_bar_menu', 999);
+    }
+
+    if (function_exists('exactmetrics_frontend_admin_bar_scripts')) {
+        remove_action('wp_enqueue_scripts', 'exactmetrics_frontend_admin_bar_scripts');
+    }
+
+    if (function_exists('wpsc_admin_bar_render')) {
+        remove_action('admin_bar_menu', 'wpsc_admin_bar_render', 99);
+    }
+}
+
+function ropl_disable_operator_frontend_plugins_on_order_pages(): void {
+    if (is_admin() || !ropl_is_order_page_request_by_uri()) {
+        return;
+    }
+
+    if (!ropl_is_logged_in_operator_frontend()) {
+        return;
+    }
+
+    if (function_exists('exactmetrics_add_admin_bar_menu')) {
+        remove_action('admin_bar_menu', 'exactmetrics_add_admin_bar_menu', 999);
+    }
+
+    if (function_exists('exactmetrics_frontend_admin_bar_scripts')) {
+        remove_action('wp_enqueue_scripts', 'exactmetrics_frontend_admin_bar_scripts');
+    }
+
+    if (function_exists('wpsc_admin_bar_render')) {
+        remove_action('admin_bar_menu', 'wpsc_admin_bar_render', 99);
+    }
+}
+
+add_filter('option_active_plugins', function($plugins) {
+    if (!is_array($plugins) || !ropl_is_order_page_request_by_uri() || !ropl_has_wp_logged_in_cookie()) {
+        return $plugins;
+    }
+
+    $blocked = ropl_trimmed_plugins_for_logged_in_order_pages();
+
+    return array_values(array_filter($plugins, static function($plugin) use ($blocked) {
+        return !in_array($plugin, $blocked, true);
+    }));
+}, 1);
+
 function ropl_render_order_item_actual_weight($item_id, $item, $order, $plain_text): void {
     if ($plain_text) {
         return;
@@ -386,6 +505,12 @@ if (!function_exists('gastronom_start_order_page_buffer')) {
     }
 }
 
+if (!function_exists('gastronom_disable_operator_admin_overlays_on_order_pages')) {
+    function gastronom_disable_operator_admin_overlays_on_order_pages(): void {
+        ropl_disable_operator_admin_overlays_on_order_pages();
+    }
+}
+
 if (!function_exists('gastronom_render_order_item_actual_weight')) {
     function gastronom_render_order_item_actual_weight($item_id, $item, $order, $plain_text): void {
         ropl_render_order_item_actual_weight($item_id, $item, $order, $plain_text);
@@ -399,3 +524,12 @@ if (!function_exists('gastronom_order_item_quantity_html')) {
 }
 
 add_filter('woocommerce_order_item_quantity_html', 'gastronom_order_item_quantity_html', 20, 2);
+add_action('template_redirect', 'gastronom_disable_operator_admin_overlays_on_order_pages', 0);
+add_action('plugins_loaded', 'ropl_disable_operator_frontend_plugins_on_order_pages', 1000);
+add_filter('show_admin_bar', function($show) {
+    if (ropl_is_order_page_request_by_uri() && ropl_is_logged_in_operator_frontend()) {
+        return false;
+    }
+
+    return $show;
+}, 1000);

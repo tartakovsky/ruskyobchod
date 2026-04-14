@@ -1,13 +1,13 @@
 # next phase plan
 
-## update 2026-04-14 00:xx
+## update 2026-04-14 13:05
 
-The previous customer/order/payment cleanup block is no longer the next target.
+The previous customer/order/payment cleanup block is closed again at a stronger stop-line.
 
 Current next phase:
 
 1. do not reopen checkout/order page cleanup without a new reproducible defect
-2. treat current customer flow as stabilized
+2. treat current customer flow as stabilized for both anonymous and logged-in operator browser profiles
 3. move to controlled real integration execution with the current green readiness baseline
 4. if a new defect appears during integration, fix only the exact owner-layer that fails
 
@@ -71,7 +71,7 @@ After the residual map exists, choose one of these, not several:
 
 The highest-signal next block is now:
 
-1. freeze the current commerce-tail result as complete
+1. freeze the current order-page/customer-flow result as complete
 2. treat Dotypos parity as complete:
    - `gastronom-stock-fix.php` parity done
    - owner-file parity done

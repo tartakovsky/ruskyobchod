@@ -1,6 +1,20 @@
 # current live state
 
-## update 2026-04-14 00:xx
+## update 2026-04-14 13:05
+
+- new live stop-line:
+  - `logged-in + email button` `503` on customer order pages is removed
+  - order-page runtime ownership is now fully isolated from `GLS` and from logged-in frontend plugin overlays
+- exact confirmed orders after the fix:
+  - `11124` -> `on-hold`, `cod`, `18.20`, `lang=ru`, `requires=no`
+  - `11126` -> `on-hold`, `cod`, `20.60`, `lang=sk`, `requires=no`
+- fresh server logs for the current path show no new fatal/critical entries
+- current live code baseline additionally includes:
+  - `43e79d11` `Fix logged-in SK cart owner boundary`
+  - uncommitted-but-live order-page owner split in:
+    - `wordpress/wp-content/plugins/gastronom-lang-switcher/gastronom-lang-switcher.php`
+    - `wordpress/wp-content/mu-plugins/rusky-order-page-language.php`
+    - `wordpress/wp-content/mu-plugins/rusky-preorder-admin.php`
 
 - current repo `HEAD` before next integration window:
   - live code baseline includes:

@@ -356,57 +356,6 @@ function rpa_render_order_admin_footer(): void {
     }
     </style>
     <script>
-    function gastronomHideClosestContainer(node) {
-        if (!node) return;
-        const selectors = [
-            '.postbox',
-            '.components-panel__body',
-            '.components-card',
-            '.wc-orders__order-preview',
-            '.wc-orders__order-panel',
-            '.woocommerce-layout__main section',
-            '.woocommerce-layout__main .components-flex',
-            '.woocommerce-layout__main .components-card',
-            '.woocommerce-layout__main .components-panel__body',
-            '.misc-pub-section'
-        ];
-        const container = node.closest(selectors.join(', '));
-        if (container) {
-            container.style.display = 'none';
-        }
-    }
-
-    function gastronomHideOrderBoxes() {
-        const titlesToHide = [
-            'Доступные действия',
-            'Order actions',
-            'Actions',
-            'ePodaci',
-            'GLS shipping info',
-            'Order notes',
-            'Заметки к заказу',
-            'Poznámky k objednávke'
-        ];
-
-        document.querySelectorAll('.postbox, .components-panel__body, .components-card, .woocommerce-layout__main *').forEach(function(box) {
-            const heading = box.querySelector && box.querySelector('.hndle, .postbox-header h2, .postbox-header, h1, h2, h3, h4, button, summary, .components-panel__body-title, .components-card__header');
-            if (!heading) return;
-            const text = (heading.textContent || '').trim();
-            if (!text) return;
-            if (titlesToHide.some(function(title) { return text === title || text.indexOf(title) !== -1; })) {
-                gastronomHideClosestContainer(heading);
-            }
-        });
-
-        document.querySelectorAll('h1, h2, h3, h4, button, summary, span, div').forEach(function(el) {
-            const text = (el.textContent || '').trim();
-            if (!text) return;
-            if (titlesToHide.some(function(title) { return text === title || text.indexOf(title) !== -1; })) {
-                gastronomHideClosestContainer(el);
-            }
-        });
-    }
-
     function gastronomFormatAdminPrice(value) {
         return new Intl.NumberFormat('sk-SK', {
             style: 'currency',
@@ -446,23 +395,9 @@ function rpa_render_order_admin_footer(): void {
         table.classList.toggle('gastronom-preorder-admin-order', hasPreorderRows);
     }
 
-    document.addEventListener('DOMContentLoaded', gastronomHideOrderBoxes);
     document.addEventListener('DOMContentLoaded', gastronomNormalizePreorderOrderTable);
-    setTimeout(gastronomHideOrderBoxes, 300);
-    setTimeout(gastronomHideOrderBoxes, 1000);
-    setTimeout(gastronomHideOrderBoxes, 2500);
     setTimeout(gastronomNormalizePreorderOrderTable, 300);
     setTimeout(gastronomNormalizePreorderOrderTable, 1000);
-
-    const gastronomAdminObserver = new MutationObserver(function() {
-        gastronomHideOrderBoxes();
-        gastronomNormalizePreorderOrderTable();
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        if (document.body) {
-            gastronomAdminObserver.observe(document.body, {childList: true, subtree: true});
-        }
-    });
 
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.gastronom-confirm-weight-button');

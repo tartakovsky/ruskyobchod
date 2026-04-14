@@ -88,7 +88,11 @@ function gls_is_runtime_mutation_blocked_request(): bool {
 }
 
 function gls_is_translation_blocked_request(): bool {
-    return gls_is_render_blocked_request();
+    if (gls_is_render_blocked_request()) {
+        return true;
+    }
+
+    return gls_is_order_page_runtime_owned_elsewhere();
 }
 
 function gls_has_explicit_lang_context(): bool {
@@ -161,6 +165,28 @@ function gls_is_server_rendered_language_page(): bool {
         if (is_wc_endpoint_url('view-order') || is_wc_endpoint_url('order-received')) {
             return true;
         }
+    }
+
+    return false;
+}
+
+function gls_is_order_page_runtime_owned_elsewhere(): bool {
+    if (is_admin()) {
+        return false;
+    }
+
+    if (function_exists('is_checkout_pay_page') && is_checkout_pay_page()) {
+        return true;
+    }
+
+    if (function_exists('is_wc_endpoint_url')) {
+        if (is_wc_endpoint_url('view-order') || is_wc_endpoint_url('order-received')) {
+            return true;
+        }
+    }
+
+    if (isset($_GET['order-pay']) || isset($_GET['order-received'])) {
+        return true;
     }
 
     return false;
@@ -1485,6 +1511,10 @@ function gls_filter_template_output_html(string $html): string {
 
 function gls_start_template_output_buffer(): void {
     if (gls_is_render_blocked_request()) {
+        return;
+    }
+
+    if (gls_is_order_page_runtime_owned_elsewhere()) {
         return;
     }
 
