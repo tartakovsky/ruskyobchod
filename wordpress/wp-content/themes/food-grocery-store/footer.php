@@ -40,7 +40,7 @@
                         }
                     ?>
                     <div class="row wow bounceInUp center delay-1000" data-wow-duration="2s">
-                        <div class="<?php echo !is_active_sidebar('footer-1') ? 'footer_hide' : esc_attr($food_grocery_store_colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
+                        <div class="<?php echo !is_active_sidebar('footer-1') ? 'footer_hide' : esc_attr($colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
                             <?php if (is_active_sidebar('footer-1')) : ?>
                                 <?php dynamic_sidebar('footer-1'); ?>
                             <?php else : ?>
@@ -50,7 +50,7 @@
                                 </aside>
                             <?php endif; ?>
                         </div>
-                        <div class="<?php echo !is_active_sidebar('footer-2') ? 'footer_hide' : esc_attr($food_grocery_store_colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block pe-2">
+                        <div class="<?php echo !is_active_sidebar('footer-2') ? 'footer_hide' : esc_attr($colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block pe-2">
                             <?php if (is_active_sidebar('footer-2')) : ?>
                                 <?php dynamic_sidebar('footer-2'); ?>
                             <?php else : ?>
@@ -62,7 +62,7 @@
                                 </aside>
                             <?php endif; ?>
                         </div>  
-                        <div class="<?php echo !is_active_sidebar('footer-3') ? 'footer_hide' : esc_attr($food_grocery_store_colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
+                        <div class="<?php echo !is_active_sidebar('footer-3') ? 'footer_hide' : esc_attr($colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
                             <?php if (is_active_sidebar('footer-3')) : ?>
                                 <?php dynamic_sidebar('footer-3'); ?>
                             <?php else : ?>
@@ -76,7 +76,7 @@
                                 </aside>
                             <?php endif; ?>
                         </div>
-                        <div class="<?php echo !is_active_sidebar('footer-4') ? 'footer_hide' : esc_attr($food_grocery_store_colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
+                        <div class="<?php echo !is_active_sidebar('footer-4') ? 'footer_hide' : esc_attr($colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
                             <?php if (is_active_sidebar('footer-4')) : ?>
                                 <?php dynamic_sidebar('footer-4'); ?>
                             <?php else : ?>
