@@ -377,14 +377,13 @@ They should not be deployed as a blind parity batch.
 
 Current remaining missing files on live:
 
-- `rusky-runtime-shim.php`
+- none
 
 Current classification of the final remaining gap:
 
-- `rusky-runtime-shim.php` is still missing on live
+- `rusky-runtime-shim.php` was removed after it caused frontend `503` and direct frontend PHP `segfault`
 - read-only proof confirmed `real-time-find-and-replace/real-time-find-and-replace.php` is not active on live
-- because of that, `rusky-runtime-shim.php` is no longer a Tuesday blocker by default
-- it should only be deployed under an explicit mini-plan, not as a blind final parity step
+- because of that, `rusky-runtime-shim.php` is no longer a deferred parity target and must not be reintroduced blindly
 
 ## stop line
 

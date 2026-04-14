@@ -27,7 +27,7 @@ echo "== active plugins snapshot =="
 echo
 
 if grep -q '^real-time-find-and-replace/real-time-find-and-replace\.php$' "$tmp_plugins"; then
-    echo "FAIL FAR is active on live; runtime-shim defer assumption is no longer valid" >&2
+    echo "FAIL FAR is active on live" >&2
     exit 1
 fi
 echo "OK   FAR inactive on live"
@@ -68,12 +68,12 @@ if [ -n "$remote_only" ]; then
 fi
 echo "OK   no remote-only MU files"
 
-if [ "$local_only" != "rusky-runtime-shim.php" ]; then
+if [ -n "$local_only" ]; then
     echo "FAIL unexpected local-only MU drift:" >&2
     printf '%s\n' "$local_only" >&2
     exit 1
 fi
-echo "OK   only deferred local-only MU gap is rusky-runtime-shim.php"
+echo "OK   no local-only MU drift"
 
 echo
 echo "OK   admin order screen verification is included via tuesday readiness"

@@ -760,6 +760,14 @@ footer p:last-child {
     font-size: 0.8rem;
     border-top: 1px solid rgba(255,255,255,0.1);
     margin-top: 15px;
+    overflow-wrap: normal;
+    word-break: normal;
+    text-wrap: balance;
+}
+
+.gls-footer-credit__brand,
+.gls-footer-credit__sep {
+    white-space: nowrap;
 }
 
 /* --- Hide broken image on Contact page --- */

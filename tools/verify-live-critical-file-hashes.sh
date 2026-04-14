@@ -55,9 +55,6 @@ ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "find '$REMOTE_ROOT/wp-content/mu-plugins' 
 
 while read -r base; do
     [ -n "$base" ] || continue
-    if [ "$base" = "rusky-runtime-shim.php" ]; then
-        continue
-    fi
     local_file="$ROOT_DIR/wordpress/wp-content/mu-plugins/$base"
     remote_file="$REMOTE_ROOT/wp-content/mu-plugins/$base"
     if [ ! -f "$local_file" ]; then

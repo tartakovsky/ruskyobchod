@@ -125,27 +125,16 @@ Already proven:
 
 The next block should be one of these, not several:
 
-1. classify the remaining live-vs-repo MU gaps by criticality and parity only what is required before Tuesday morning
-2. if runtime filtering becomes necessary again, take `rusky-runtime-shim.php` only under an explicit mini-plan with exact before/after active-plugin proof
-3. use the cleanup-safe admin proof harness for any further preorder confirmation verification:
+1. keep live-vs-repo MU parity clean; do not reintroduce `rusky-runtime-shim.php`
+2. use the cleanup-safe admin proof harness for any further preorder confirmation verification:
    - `tools/prove-admin-weight-confirmation.sh`
-4. keep using the read-only Dotypos verifier before any real external-stock mutation step:
+3. keep using the read-only Dotypos verifier before any real external-stock mutation step:
    - `tools/verify-dotypos-readonly.sh`
-
-The runtime-shim mini-plan now exists explicitly:
-
-- `.plans/2026-04-13-runtime-shim-mini-plan.md`
-
-If option 2 is chosen, it must have:
-
-- explicit cleanup/rollback
-- exact expected state transitions
-- verification before and after
 
 Current read-only conclusion:
 
-- `rusky-runtime-shim.php` is the only remaining live-vs-repo MU gap
+- there is no remaining `runtime-shim` parity task
 - `real-time-find-and-replace/real-time-find-and-replace.php` is currently not active on live
-- because of that, forcing runtime-shim parity tonight would add risk without clear Tuesday-morning value
+- because of that, `runtime-shim` should stay removed and out of future parity batches
 
 That preserves the progress already achieved and avoids re-entering the same file blindly.

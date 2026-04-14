@@ -70,10 +70,18 @@ function rsm_frozen_delivery_notice() {
 add_action('woocommerce_before_shop_loop', 'rsm_frozen_delivery_notice', 6);
 
 function rsm_footer_credit() {
-    $message = rsm_current_lang() === 'ru'
-        ? '&copy; ' . date('Y') . ' Гастроном — русский магазин продуктов'
-        : '&copy; ' . date('Y') . ' Gastronom — Ruský obchod s potravinami';
+    if (rsm_current_lang() === 'ru') {
+        $brand = '&copy; ' . date('Y') . ' Гастроном';
+        $descriptor = 'русский магазин продуктов';
+    } else {
+        $brand = '&copy; ' . date('Y') . ' Gastronom';
+        $descriptor = 'Ruský obchod s potravinami';
+    }
 
-    echo '<div class="gls-footer-credit">' . wp_kses_post($message) . '</div>';
+    echo '<div class="gls-footer-credit">'
+        . '<span class="gls-footer-credit__brand">' . wp_kses_post($brand) . '</span>'
+        . '<span class="gls-footer-credit__sep">&nbsp;&mdash;&nbsp;</span>'
+        . '<span class="gls-footer-credit__descriptor">' . esc_html($descriptor) . '</span>'
+        . '</div>';
 }
 add_action('wp_footer', 'rsm_footer_credit');

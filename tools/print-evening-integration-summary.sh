@@ -38,7 +38,7 @@ echo "local_stock=$local_stock"
 echo "local_cash_stock_kg=$local_cash"
 echo "remote_stock_quantity_status=$remote_stock"
 echo "remote_matches_local_cash=$remote_match"
-echo "deferred_local_only_mu=rusky-runtime-shim.php"
+echo "deferred_local_only_mu=none"
 echo "deferred_live_drift=rusky-commerce-adjustments.php"
 
 if [ "$gate_status" = "green" ]; then
