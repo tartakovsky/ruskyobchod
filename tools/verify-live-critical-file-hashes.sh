@@ -51,6 +51,11 @@ check_pair \
     "$REMOTE_ROOT/wp-content/plugins/gastronom-stock-fix/gastronom-stock-fix.php" \
     "gastronom-stock-fix.php"
 
+check_pair \
+    "$ROOT_DIR/wordpress/wp-content/themes/food-grocery-store/footer.php" \
+    "$REMOTE_ROOT/wp-content/themes/food-grocery-store/footer.php" \
+    "food-grocery-store/footer.php"
+
 ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "find '$REMOTE_ROOT/wp-content/mu-plugins' -maxdepth 1 -type f -name 'rusky-*.php' -exec basename {} \\; | sort" >"$tmp_remote"
 
 while read -r base; do
