@@ -72,7 +72,7 @@ check_contains "$product_ru" 'Похожие товары' 'product RU related p
 check_contains "$home_ru" 'id="cn-accept-cookie"[^>]*>Ок<' 'home RU cookie accept button present'
 check_contains "$home_ru" 'id="cn-close-notice"[^>]*aria-label="Нет"' 'home RU cookie close aria present'
 check_contains "$home_ru" 'Словацкая Республика' 'home RU legal country present'
-check_contains "$home_ru" 'Зарегистрирована в торговом реестре окружного суда Братислава I,' 'home RU legal registry line present'
+check_contains "$home_ru" 'Зарегистрирована в торговом реестре окружного суда Братислава( | )I,' 'home RU legal registry line present'
 check_contains "$home_ru" 'Раздел s\.r\.o\., № записи 182562/B' 'home RU legal company line present'
 
 if [ "$failures" -gt 0 ]; then

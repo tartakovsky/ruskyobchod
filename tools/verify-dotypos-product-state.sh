@@ -49,6 +49,7 @@ if (empty($dotypos_id)) {
     exit(1);
 }
 
+$is_weight_preorder = get_post_meta($product_id, '_gastronom_weight_preorder', true) === 'yes';
 $local_cash = (float) get_post_meta($product_id, '_gastronom_cash_stock_kg', true);
 $local_stock = (float) get_post_meta($product_id, '_stock', true);
 $remote = $dotypos->dotyposService->getProductOnWarehouse($warehouse_id, $dotypos_id);
@@ -59,21 +60,26 @@ if ($remote_qty < 0) {
     exit(1);
 }
 
-$match = abs($remote_qty - $local_cash) < 0.000001;
+$expected_source = $is_weight_preorder ? 'local_cash_stock_kg' : 'local_stock';
+$expected_qty = $is_weight_preorder ? $local_cash : $local_stock;
+$match = abs($remote_qty - $expected_qty) < 0.000001;
 
 echo wp_json_encode([
     'product_id' => $product_id,
     'product_name' => $product->get_name(),
     'dotypos_id' => $dotypos_id,
     'warehouse_id' => $warehouse_id,
+    'is_weight_preorder' => $is_weight_preorder,
+    'expected_source' => $expected_source,
+    'expected_quantity' => $expected_qty,
     'local_stock' => $local_stock,
     'local_cash_stock_kg' => $local_cash,
     'remote_stock_quantity_status' => $remote_qty,
-    'remote_matches_local_cash' => $match,
+    'remote_matches_expected_quantity' => $match,
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL;
 
 if (!$match) {
-    fwrite(STDERR, "FAIL remote stock does not match local cash stock\n");
+    fwrite(STDERR, "FAIL remote stock does not match expected quantity source\n");
     exit(1);
 }
 PHP

@@ -8,6 +8,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function rdm_write_tools_enabled(): bool {
+    return defined('RUSKY_DOTYPOS_MAINTENANCE_WRITE') && RUSKY_DOTYPOS_MAINTENANCE_WRITE;
+}
+
 function rdm_can_manage_dotypos_tools(): bool {
     return current_user_can('manage_options');
 }
@@ -39,6 +43,14 @@ function rdm_read_dotypos_diag() {
 }
 
 function rdm_apply_dotypos_fix(WP_REST_Request $request) {
+    if (!rdm_write_tools_enabled()) {
+        return new WP_Error(
+            'rdm_write_tools_disabled',
+            'Dotypos maintenance write tools are disabled in live runtime.',
+            ['status' => 403]
+        );
+    }
+
     global $wpdb;
 
     $results = [];
@@ -176,7 +188,9 @@ function rdm_register_rest_routes(): void {
     register_rest_route('gls/v1', '/dotypos-fix', [
         'methods' => 'POST',
         'callback' => 'rdm_apply_dotypos_fix',
-        'permission_callback' => 'rdm_can_manage_dotypos_tools',
+        'permission_callback' => static function (): bool {
+            return rdm_can_manage_dotypos_tools() && rdm_write_tools_enabled();
+        },
     ]);
 }
 
@@ -187,3 +201,71 @@ if (!function_exists('gastronom_register_dotypos_maintenance_routes')) {
         rdm_register_rest_routes();
     }
 }
+
+function rdm_has_logged_in_cookie(): bool {
+    foreach (array_keys($_COOKIE) as $name) {
+        if (strpos($name, 'wordpress_logged_in_') === 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function rdm_is_dotypos_frontend_boundary_request(): bool {
+    if (is_admin()) {
+        return false;
+    }
+
+    if (function_exists('wp_doing_ajax') && wp_doing_ajax()) {
+        return false;
+    }
+
+    if (defined('REST_REQUEST') && REST_REQUEST) {
+        return false;
+    }
+
+    if (defined('DOING_CRON') && DOING_CRON) {
+        return false;
+    }
+
+    $method = strtoupper((string) ($_SERVER['REQUEST_METHOD'] ?? 'GET'));
+    if (!in_array($method, ['GET', 'HEAD'], true)) {
+        return false;
+    }
+
+    $uri = (string) ($_SERVER['REQUEST_URI'] ?? '');
+    if ($uri === '') {
+        return false;
+    }
+
+    // REST requests are not reliably identified by REST_REQUEST at this phase.
+    // Keep Dotypos loaded for all wp-json / rest_route requests so its routes exist.
+    if (
+        strpos($uri, '/wp-json') === 0 ||
+        strpos($uri, '/wp-json/') === 0 ||
+        strpos($uri, 'rest_route=') !== false
+    ) {
+        return false;
+    }
+
+    if (strpos($uri, '/dotypos-webhook-') !== false) {
+        return false;
+    }
+
+    return true;
+}
+
+add_filter('option_active_plugins', function($plugins) {
+    if (!is_array($plugins)) {
+        return $plugins;
+    }
+
+    if (!rdm_is_dotypos_frontend_boundary_request() || !rdm_has_logged_in_cookie()) {
+        return $plugins;
+    }
+
+    return array_values(array_filter($plugins, static function($plugin) {
+        return $plugin !== 'woocommerce-extension-master/dotypos.php';
+    }));
+}, 1);
