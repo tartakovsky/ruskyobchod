@@ -50,6 +50,30 @@ import { setLocaleData, __ } from '@wordpress/i18n';
 const rootUrl = dotyposGlobals.rootUrl;
 const restApiUrl = dotyposGlobals.restRootUrl;
 
+function dotyposRestHeaders( extraHeaders = {} ) {
+	const headers = {
+		Accept: 'application/json',
+		...extraHeaders,
+	};
+
+	if (
+		typeof window !== 'undefined' &&
+		window.wpApiSettings &&
+		window.wpApiSettings.nonce
+	) {
+		headers[ 'X-WP-Nonce' ] = window.wpApiSettings.nonce;
+	}
+
+	return headers;
+}
+
+function dotyposFetch( url, options = {} ) {
+	return fetch( url, {
+		...options,
+		headers: dotyposRestHeaders( options.headers || {} ),
+	} );
+}
+
 const DotyposSettings = withState( {
 	actualStep: 'first',
 	actualStepMovements: 'first',
@@ -225,7 +249,7 @@ const DotyposSettings = withState( {
 		}
 
 		function setConnectSettings() {
-			fetch( settingsUrl )
+			dotyposFetch( settingsUrl )
 				.then( function ( res ) {
 					return res.json();
 				} )
@@ -259,7 +283,7 @@ const DotyposSettings = withState( {
 		}
 
 		function loadSettings( callback = null ) {
-			fetch( settingsUrl )
+			dotyposFetch( settingsUrl )
 				.then( function ( res ) {
 					return res.json();
 				} )
@@ -297,7 +321,7 @@ const DotyposSettings = withState( {
 						licenceVerified: isLicenceVerified,
 						licenceExpired: isLicenceExpired,
 					} ) );
-					fetch( pairingKeysUrl )
+					dotyposFetch( pairingKeysUrl )
 						.then( function ( res ) {
 							return res.json();
 						} )
@@ -316,7 +340,7 @@ const DotyposSettings = withState( {
 		}
 
 		function loadWarehouses() {
-			fetch( warehousesUrl )
+			dotyposFetch( warehousesUrl )
 				.then( function ( res ) {
 					return res.json();
 				} )
@@ -329,10 +353,9 @@ const DotyposSettings = withState( {
 		}
 
 		function createJob( hook, args, callback = null ) {
-			fetch( jobsUrl, {
+			dotyposFetch( jobsUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify( {
@@ -352,10 +375,9 @@ const DotyposSettings = withState( {
 		}
 
 		function createWebhookMovement( callback = null ) {
-			fetch( webhookMovementUrl, {
+			dotyposFetch( webhookMovementUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 			} )
@@ -370,10 +392,9 @@ const DotyposSettings = withState( {
 		}
 
 		function createWebhookProduct( callback = null ) {
-			fetch( webhookProductUrl, {
+			dotyposFetch( webhookProductUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 			} )
@@ -388,10 +409,9 @@ const DotyposSettings = withState( {
 		}
 
 		async function saveSettings( callback = null ) {
-			const response = await fetch( settingsUrl, {
+			const response = await dotyposFetch( settingsUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify( settings ),
@@ -755,10 +775,9 @@ const DotyposSettings = withState( {
 		};
 
 		function registerLicence( callback = null ) {
-			fetch( registerUrl, {
+			dotyposFetch( registerUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 			} )
@@ -1290,10 +1309,9 @@ const DotyposSettings = withState( {
 		};
 
 		const importProductsFromWizard = () => {
-			fetch( productsImportUrl, {
+			dotyposFetch( productsImportUrl, {
 				method: 'POST',
 				headers: {
-					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify( dotyposWizardProducts ),
@@ -2383,10 +2401,9 @@ const DotyposConnectPage = withState( {
 					connected: true,
 					token: getQueryVariable( 'token' ),
 				} ) );
-				fetch( connectUrl, {
+				dotyposFetch( connectUrl, {
 					method: 'POST',
 					headers: {
-						Accept: 'application/json',
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify( {

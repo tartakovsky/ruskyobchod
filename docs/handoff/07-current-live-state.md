@@ -415,3 +415,14 @@ It should be one of:
    - `rusky-language-switcher-lite.php`
    - `rusky-runtime-shim.php`
    - `rusky-server-language-core.php`
+## 2026-04-14 Dotypos Admin UI
+
+- `Dotypos` plugin is active and stock-only integration is enabled on live.
+- The admin UI was previously misleading because `dotypos/v1/settings` failed under logged-in admin REST.
+- This is now fixed at the plugin owner layer by sending `X-WP-Nonce` on Dotypos REST calls.
+- Verified in admin UI:
+  - products sync enabled
+  - movements `WooCommerce -> Dotypos` enabled
+  - movements `Dotypos -> WooCommerce` enabled
+  - title/price/vat/category/EAN/note sync disabled
+  - categories sync disabled
