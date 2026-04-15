@@ -62,6 +62,7 @@ check_contains "$home_ru" 'aria-label="Верхнее меню"' 'home RU nav ar
 check_contains "$home_ru" 'screen-reader-text">Кнопка Закрыть<' 'home RU mobile menu close label present'
 check_contains "$home_ru" 'aria-label="Подвал"' 'home RU footer aria label present'
 check_contains "$home_ru" 'screen-reader-text">Прокрутить вверх<' 'home RU scroll up label present'
+check_contains "$home_ru" 'placeholder="Поиск по товарам…"' 'home RU search placeholder present'
 check_contains "$category_ru" 'По алфавиту' 'category RU sorting label present'
 check_contains "$category_ru" 'Добавить в корзину' 'category RU add-to-cart present'
 check_contains "$product_ru" 'В наличии' 'product RU stock label present'
@@ -74,6 +75,7 @@ check_contains "$home_ru" 'id="cn-close-notice"[^>]*aria-label="Нет"' 'home R
 check_contains "$home_ru" 'Словацкая Республика' 'home RU legal country present'
 check_contains "$home_ru" 'Зарегистрирована в торговом реестре окружного суда Братислава( | )I,' 'home RU legal registry line present'
 check_contains "$home_ru" 'Раздел s\.r\.o\., № записи 182562/B' 'home RU legal company line present'
+check_contains "$BASE_URL/?lang=sk&verify_baseline=1" 'placeholder="Hľadať produkty…"' 'home SK search placeholder present'
 
 if [ "$failures" -gt 0 ]; then
     echo "Baseline verification complete with failures: $failures"

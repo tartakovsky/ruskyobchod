@@ -903,6 +903,22 @@ add_filter('ngettext', function($translation, $single, $plural, $number, $domain
     return rtcl_translate_phrase($source, $lang);
 }, 120, 5);
 
+add_filter('get_product_search_form', function($form) {
+    if (is_admin() || !is_string($form) || $form === '') {
+        return $form;
+    }
+
+    $lang = rtcl_current_lang();
+    $placeholder = $lang === 'ru' ? 'Поиск по товарам…' : 'Hľadať produkty…';
+
+    return preg_replace(
+        '/(<input\b[^>]*\bclass="[^"]*\bsearch-field\b[^"]*"[^>]*\bplaceholder=")[^"]*(")/u',
+        '$1' . esc_attr($placeholder) . '$2',
+        $form,
+        1
+    ) ?: $form;
+}, 120);
+
 add_filter('woocommerce_form_field_args', function($args, $key, $value) {
     if (is_admin()) {
         return $args;
