@@ -156,6 +156,7 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
         $html = str_replace('>Мой Аккаунт<', '>Мой аккаунт<', $html);
         $html = str_replace('>Моя учётная запись<', '>Мой аккаунт<', $html);
         $html = str_replace('>Все рубрики<', '>Категории<', $html);
+        $html = str_replace('Братислава • Palisády', 'Братислава • Палисады', $html);
     } else {
         $map = [
             '>Главная<' => '>Domov<',
@@ -173,6 +174,7 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
             '>корзина<' => '>košík<',
             'title="Вход / Регистрация"' => 'title="Prihlásenie / Registrácia"',
             '>Моя учётная запись<' => '>Môj účet<',
+            'Братислава • Палисады' => 'Bratislava • Palisády',
         ];
 
         $html = strtr($html, $map);
