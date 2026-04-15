@@ -129,7 +129,7 @@
         width: 20px !important;
         height: 20px !important;
         line-height: 20px !important;
-        top: -6px !important;
+        top: -2px !important;
         right: -8px !important;
         margin: 0 !important;
         padding: 0 !important;
@@ -190,5 +190,11 @@
 
     .home-page-header {
         padding-bottom: 8px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    span.cart-value {
+        bottom: -8px !important;
     }
 }
