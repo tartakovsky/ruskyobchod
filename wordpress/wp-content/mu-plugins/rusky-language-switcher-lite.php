@@ -157,6 +157,9 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
         $html = str_replace('>Моя учётная запись<', '>Мой аккаунт<', $html);
         $html = str_replace('>Все рубрики<', '>Категории<', $html);
         $html = str_replace('Братислава • Palisády', 'Братислава • Палисады', $html);
+        $html = str_replace('aria-label="Top Menu"', 'aria-label="Верхнее меню"', $html);
+        $html = str_replace('aria-label="Footer"', 'aria-label="Подвал"', $html);
+        $html = str_replace('>Scroll Up<', '>Прокрутить вверх<', $html);
     } else {
         $map = [
             '>Главная<' => '>Domov<',
@@ -169,12 +172,17 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
             '>Кнопка Открыть<' => '>Tlačidlo Otvoriť<',
             '>Кнопка Закрыть<' => '>Tlačidlo Zavrieť<',
             '>Перейти к содержимому<' => '>Preskočiť na obsah<',
+            'aria-label="Top Menu"' => 'aria-label="Horné menu"',
             'aria-label="Верхнее меню"' => 'aria-label="Horné menu"',
+            'aria-label="Footer"' => 'aria-label="Päta stránky"',
+            'aria-label="Подвал"' => 'aria-label="Päta stránky"',
             'title="корзина"' => 'title="košík"',
             '>корзина<' => '>košík<',
             'title="Вход / Регистрация"' => 'title="Prihlásenie / Registrácia"',
             '>Моя учётная запись<' => '>Môj účet<',
             'Братислава • Палисады' => 'Bratislava • Palisády',
+            '>Scroll Up<' => '>Späť hore<',
+            '>Прокрутить вверх<' => '>Späť hore<',
         ];
 
         $html = strtr($html, $map);

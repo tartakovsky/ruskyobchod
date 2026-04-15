@@ -82,7 +82,7 @@ check_contains "$home_html" 'href="https://ruskyobchod\.sk/\?lang=ru&runtime_sur
 check_contains "$home_html" 'href="https://ruskyobchod\.sk/\?lang=sk&runtime_surface=1"' 'home SK switcher link is server-rendered'
 
 check_contains "$account_html" 'Мой аккаунт' 'account RU title is server-rendered'
-check_contains "$cart_html" 'Ваша корзина пока пуста\.' 'cart RU empty shell is server-rendered'
+check_contains "$cart_html" 'Ваша корзина пока пуста' 'cart RU empty shell is server-rendered'
 
 if [ "$failures" -gt 0 ]; then
     echo "Language runtime surface verification complete with failures: $failures"

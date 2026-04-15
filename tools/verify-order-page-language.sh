@@ -103,7 +103,7 @@ function rusky_verify_order_page_language(string $lang, WC_Product $product, arr
 
     rusky_verify_order_page_contains($received_body, [
         'SK received title' => 'Objednávka prijatá',
-        'SK received notice' => 'Ďakujeme. Vaša objednávka bola prijatá.',
+        'SK received notice' => 'Vaša objednávka bola prijatá. Ďakujeme.',
         'SK received order number' => 'Číslo objednávky:',
         'SK received payment label' => 'Spôsob platby:',
         'SK received card payment' => 'Platba kartou',

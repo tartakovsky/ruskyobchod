@@ -41,11 +41,18 @@ function rfpl_normalize_front_page_block(string $html): string {
         return strtr($html, [
             'Братислава • Palisády' => 'Братислава • Палисады',
             'Bratislava • Palisády' => 'Братислава • Палисады',
+            'aria-label="Top Menu"' => 'aria-label="Верхнее меню"',
+            'aria-label="Footer"' => 'aria-label="Подвал"',
+            '>Scroll Up<' => '>Прокрутить вверх<',
         ]);
     }
 
     return strtr($html, [
         'Братислава • Палисады' => 'Bratislava • Palisády',
+        'aria-label="Top Menu"' => 'aria-label="Horné menu"',
+        'aria-label="Footer"' => 'aria-label="Päta stránky"',
+        '>Scroll Up<' => '>Späť hore<',
+        '>Прокрутить вверх<' => '>Späť hore<',
     ]);
 }
 
