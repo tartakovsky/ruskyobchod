@@ -13,6 +13,16 @@ function rtcl_current_lang(): string {
         return gls_server_lang() === 'ru' ? 'ru' : 'sk';
     }
 
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '';
+    if ($request_uri !== '') {
+        if (preg_match('~^/ru(?:/|$)~', $request_uri)) {
+            return 'ru';
+        }
+        if (preg_match('~^/sk(?:/|$)~', $request_uri)) {
+            return 'sk';
+        }
+    }
+
     if (isset($_GET['lang'])) {
         $lang = sanitize_key(wp_unslash($_GET['lang']));
         if ($lang === 'ru' || $lang === 'sk') {
@@ -96,6 +106,12 @@ function rtcl_phrase_map(string $lang): array {
             'Order number' => 'Номер заказа',
             'Date' => 'Дата',
             'Pay for order' => 'Оплатить заказ',
+            'View cart' => 'Посмотреть корзину',
+            'Remove item' => 'Удалить товар',
+            'Thumbnail image' => 'Миниатюра',
+            'Update cart' => 'Обновить корзину',
+            'Place order' => 'Оформить заказ',
+            'Enter your address to view shipping options.' => 'Введите адрес, чтобы увидеть варианты доставки.',
         ];
     }
 
@@ -216,6 +232,18 @@ function rtcl_phrase_map(string $lang): array {
         'Дата' => 'Dátum',
         'Pay for order' => 'Zaplatiť objednávku',
         'Оплатить заказ' => 'Zaplatiť objednávku',
+        'View cart' => 'Zobraziť košík',
+        'Посмотреть корзину' => 'Zobraziť košík',
+        'Remove item' => 'Odstrániť položku',
+        'Удалить товар' => 'Odstrániť položku',
+        'Thumbnail image' => 'Náhľad obrázka',
+        'Миниатюра' => 'Náhľad obrázka',
+        'Update cart' => 'Aktualizovať košík',
+        'Обновить корзину' => 'Aktualizovať košík',
+        'Place order' => 'Odoslať objednávku',
+        'Оформить заказ' => 'Odoslať objednávku',
+        'Enter your address to view shipping options.' => 'Zadajte adresu, aby sa zobrazili možnosti dopravy.',
+        'Введите адрес, чтобы увидеть варианты доставки.' => 'Zadajte adresu, aby sa zobrazili možnosti dopravy.',
         'Select a country / region…' => 'Vyberte krajinu / región…',
         'Austria' => 'Rakúsko',
         'Slovakia' => 'Slovensko',
@@ -277,8 +305,16 @@ function rtcl_translate_storefront_text(string $value, string $lang): string {
             return sprintf('Zobrazených %d%s%d z %d', (int) $matches[1], $matches[2], (int) $matches[3], (int) $matches[4]);
         }
 
+        if (preg_match('/^Zobrazených (\d+)([–-])(\d+) z (\d+) výsledkovSorted by .+$/u', $value, $matches)) {
+            return sprintf('Zobrazených %d%s%d z %d výsledkov', (int) $matches[1], $matches[2], (int) $matches[3], (int) $matches[4]);
+        }
+
         if (preg_match('/^Showing (\d+)([–-])(\d+) of (\d+) results$/u', $value, $matches)) {
             return sprintf('Zobrazených %d%s%d z %d', (int) $matches[1], $matches[2], (int) $matches[3], (int) $matches[4]);
+        }
+
+        if (preg_match('/^(.+) has been added to your cart\.$/u', $value, $matches)) {
+            return sprintf('%s bol pridaný do košíka.', $matches[1]);
         }
 
         if (preg_match('/^\(includes (.+) VAT\)$/u', $value, $matches)) {
@@ -306,6 +342,14 @@ function rtcl_translate_storefront_text(string $value, string $lang): string {
         if (preg_match('/^Zobrazených (\d+)([–-])(\d+) z (\d+)$/u', $value, $matches)) {
             return sprintf('Отображение %d%s%d из %d', (int) $matches[1], $matches[2], (int) $matches[3], (int) $matches[4]);
         }
+
+        if (preg_match('/^Отображение (\d+)([–-])(\d+) из (\d+)Sorted by .+$/u', $value, $matches)) {
+            return sprintf('Отображение %d%s%d из %d', (int) $matches[1], $matches[2], (int) $matches[3], (int) $matches[4]);
+        }
+
+        if (preg_match('/^(.+) has been added to your cart\.$/u', $value, $matches)) {
+            return sprintf('%s добавлен в корзину.', $matches[1]);
+        }
     }
 
     return $value;
@@ -331,7 +375,8 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
         strpos($html, 'cart_totals') === false &&
         strpos($html, 'woocommerce-checkout-review-order-table') === false &&
         strpos($html, 'woocommerce-billing-fields') === false &&
-        strpos($html, 'woocommerce-order-overview') === false
+        strpos($html, 'woocommerce-order-overview') === false &&
+        strpos($html, 'woocommerce-message') === false
     ) {
         return $html;
     }
@@ -485,6 +530,12 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
         }
     }
 
+    foreach ($xpath->query('//table[contains(concat(" ", normalize-space(@class), " "), " cart ")]//a[contains(concat(" ", normalize-space(@class), " "), " remove ")]') ?: [] as $node) {
+        if ($node instanceof DOMElement && $node->hasAttribute('aria-label')) {
+            $node->setAttribute('aria-label', rtcl_translate_storefront_text($node->getAttribute('aria-label'), $lang));
+        }
+    }
+
     foreach ($xpath->query('//form[contains(@class, "checkout")]//label') ?: [] as $node) {
         if ($node instanceof DOMElement && $node->firstChild instanceof DOMText) {
             $prefix = trim($node->firstChild->nodeValue);
@@ -517,6 +568,21 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
     foreach ($xpath->query('//div[contains(concat(" ", normalize-space(@class), " "), " wc-proceed-to-checkout ")]//a[contains(concat(" ", normalize-space(@class), " "), " button ")]') ?: [] as $node) {
         if ($node instanceof DOMElement) {
             $node->nodeValue = rtcl_translate_storefront_text(trim($node->textContent), $lang);
+        }
+    }
+
+    foreach ($xpath->query('//div[contains(concat(" ", normalize-space(@class), " "), " woocommerce-message ")]') ?: [] as $node) {
+        if ($node instanceof DOMElement) {
+            if ($node->firstChild instanceof DOMText) {
+                $text = trim($node->firstChild->nodeValue);
+                if ($text !== '') {
+                    $node->firstChild->nodeValue = rtcl_translate_storefront_text($text, $lang) . ' ';
+                }
+            }
+
+            foreach ($node->getElementsByTagName('a') as $link) {
+                $link->nodeValue = rtcl_translate_storefront_text(trim($link->textContent), $lang);
+            }
         }
     }
 
@@ -597,6 +663,28 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
                 if ($node->lastChild instanceof DOMText) {
                     $node->lastChild->nodeValue = ' НДС)';
                 }
+            }
+        }
+    }
+
+    foreach ($xpath->query('//*[@id="place_order"] | //button[@name="update_cart"]') ?: [] as $node) {
+        if ($node instanceof DOMElement) {
+            $translated = rtcl_translate_storefront_text(trim($node->textContent), $lang);
+            $node->nodeValue = $translated;
+            if ($node->hasAttribute('value')) {
+                $node->setAttribute('value', $translated);
+            }
+            if ($node->hasAttribute('data-value')) {
+                $node->setAttribute('data-value', $translated);
+            }
+        }
+    }
+
+    foreach ($xpath->query('//table[contains(concat(" ", normalize-space(@class), " "), " woocommerce-checkout-review-order-table ")]//td | //tr[contains(concat(" ", normalize-space(@class), " "), " shipping ")]//p | //tr[contains(concat(" ", normalize-space(@class), " "), " shipping ")]//span') ?: [] as $node) {
+        if ($node instanceof DOMElement && $node->childNodes->length === 1 && $node->firstChild instanceof DOMText) {
+            $text = trim($node->textContent);
+            if ($text !== '') {
+                $node->nodeValue = rtcl_translate_storefront_text($text, $lang);
             }
         }
     }
