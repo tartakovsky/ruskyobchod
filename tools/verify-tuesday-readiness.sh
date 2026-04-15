@@ -22,5 +22,6 @@ run "order page language" "$ROOT_DIR/tools/verify-order-page-language.sh"
 run "language runtime surface" "$ROOT_DIR/tools/verify-language-runtime-surface.sh"
 run "dotypos readonly" "$ROOT_DIR/tools/verify-dotypos-readonly.sh"
 run "dotypos action scheduler" "$ROOT_DIR/tools/verify-dotypos-action-scheduler.sh"
+run "elementor pro readonly" "$ROOT_DIR/tools/verify-elementor-pro-readonly.sh"
 
 echo "Tuesday readiness verification complete."
