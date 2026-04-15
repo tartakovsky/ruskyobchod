@@ -62,6 +62,7 @@ check_status "$checkout_sk" "200" 'commerce checkout SK status 200'
 
 check_contains "$cart_sk" 'Košík' 'commerce cart SK title present'
 check_contains "$cart_sk" 'Medzisúčet' 'commerce cart SK subtotal present'
+check_contains "$cart_sk" 'Doprava' 'commerce cart SK shipping label present'
 check_contains "$cart_sk" 'Osobne vyzdvihnutie' 'commerce cart SK local pickup present'
 check_contains "$cart_sk" 'GLS doručenie na adresu' 'commerce cart SK GLS shipping present'
 check_contains "$cart_sk" 'SK Packeta Pick-up Point \(Z-Point, Z-Box\)' 'commerce cart SK Packeta shipping present'

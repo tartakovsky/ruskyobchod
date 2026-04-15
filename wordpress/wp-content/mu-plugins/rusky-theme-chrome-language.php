@@ -86,6 +86,7 @@ function rtcl_phrase_map(string $lang): array {
             'Cart totals' => 'Сумма корзины',
             'Subtotal' => 'Подытог',
             'Total' => 'Итого',
+            'Shipping' => 'Доставка',
             'Proceed to checkout' => 'Оформить заказ',
             'Your order' => 'Ваш заказ',
             'First name' => 'Имя',
@@ -124,6 +125,8 @@ function rtcl_phrase_map(string $lang): array {
             'Shipping options will be updated during checkout.' => 'Варианты доставки будут обновлены при оформлении заказа.',
             'Save payment information to my account for future purchases.' => 'Сохранить платёжные данные в моём аккаунте для будущих покупок.',
             'I have read and agree to the website' => 'Я прочитал(а) и соглашаюсь с документом',
+            'Shipping to ' => 'Доставка по адресу ',
+            'Shipping to %s.' => 'Доставка по адресу %s.',
         ];
     }
 
@@ -204,6 +207,8 @@ function rtcl_phrase_map(string $lang): array {
         'Подытог' => 'Medzisúčet',
         'Total' => 'Spolu',
         'Итого' => 'Spolu',
+        'Shipping' => 'Doprava',
+        'Доставка' => 'Doprava',
         'Proceed to checkout' => 'Pokračovať k pokladni',
         'Оформить заказ' => 'Pokračovať k pokladni',
         'Your order' => 'Vaša objednávka',
@@ -287,6 +292,10 @@ function rtcl_phrase_map(string $lang): array {
         'Notes about your order, e.g. special notes for delivery.' => 'Poznámka k objednávke, napr. upresnenie pre doručenie.',
         'Shipping options will be updated during checkout.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
         'Варианты доставки будут обновлены при оформлении заказа.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
+        'Shipping to ' => 'Doručenie na adresu ',
+        'Доставка по адресу ' => 'Doručenie na adresu ',
+        'Shipping to %s.' => 'Doručenie na adresu %s.',
+        'Доставка по адресу %s.' => 'Doručenie na adresu %s.',
     ];
 }
 
@@ -834,6 +843,14 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
             'I have read and agree to the website ' => rtcl_translate_storefront_text('I have read and agree to the website', $lang) . ' ',
             '(includes ' => $lang === 'ru' ? '(включая ' : '(vrátane ',
             ' VAT)' => $lang === 'ru' ? ' НДС)' : ' DPH)',
+        ]);
+    }
+
+    if ((function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout())) {
+        $result = strtr((string) $result, [
+            'Shipping to ' => rtcl_translate_storefront_text('Shipping to ', $lang),
+            'Shipping to' => rtrim(rtcl_translate_storefront_text('Shipping to ', $lang)),
+            '>Shipping<' => '>' . rtcl_translate_storefront_text('Shipping', $lang) . '<',
         ]);
     }
 
