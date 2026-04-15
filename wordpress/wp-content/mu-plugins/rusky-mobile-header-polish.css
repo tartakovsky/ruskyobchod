@@ -1,0 +1,178 @@
+@media (max-width: 767px) {
+    #middle-header {
+        padding-top: 12px !important;
+        padding-bottom: 10px !important;
+    }
+
+    #middle-header .container-fluid,
+    .main-header #header {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    #middle-header .row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 14px !important;
+    }
+
+    #middle-header .row > [class*="col-"],
+    .main-header #header .row > [class*="col-"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #middle-header .logo,
+    #middle-header .logo.p-lg-0,
+    #middle-header .site-logo,
+    #middle-header .custom-logo-link {
+        background: transparent !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #middle-header .custom-logo,
+    #middle-header .site-logo img,
+    #middle-header .custom-logo-link img {
+        max-width: 86px !important;
+        max-height: 86px !important;
+    }
+
+    #middle-header .search-box {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    #middle-header form.search-form,
+    #middle-header form.woocommerce-product-search {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    #middle-header .search-field,
+    #middle-header input[type="search"] {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    #middle-header .header-tools {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 18px !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    #middle-header .header-tools > div {
+        margin: 0 !important;
+    }
+
+    #middle-header .account,
+    #middle-header .cart_no,
+    #middle-header .header-switcher {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    #middle-header .account a,
+    #middle-header .cart_no a {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 12px !important;
+        background: #f4f7fb !important;
+    }
+
+    #middle-header .cart_no {
+        position: relative !important;
+    }
+
+    #middle-header .cart_no a {
+        position: relative !important;
+    }
+
+    #middle-header .cart_no .cart-value {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 20px !important;
+        width: 20px !important;
+        height: 20px !important;
+        line-height: 20px !important;
+        top: -6px !important;
+        right: -8px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+    }
+
+    #middle-header .header-switcher {
+        width: auto !important;
+        flex: 0 0 auto !important;
+    }
+
+    #middle-header .gls-switcher.gls-in-header {
+        gap: 8px !important;
+    }
+
+    #middle-header .gls-btn {
+        padding: 10px 12px !important;
+    }
+
+    .main-header,
+    .main-header #header {
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    .main-header #header .container {
+        max-width: none !important;
+        padding: 0 !important;
+    }
+
+    .main-header #header .row {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .main-header .toggle-nav {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    .main-header .responsivetoggle,
+    .main-header button.responsivetoggle {
+        margin: 0 auto !important;
+    }
+
+    .main-header .responsivetoggle i {
+        background: transparent !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .main-header .phone_no {
+        display: none !important;
+    }
+
+    .home-page-header {
+        padding-bottom: 8px !important;
+    }
+}
