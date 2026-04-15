@@ -112,6 +112,18 @@ function rtcl_phrase_map(string $lang): array {
             'Update cart' => 'Обновить корзину',
             'Place order' => 'Оформить заказ',
             'Enter your address to view shipping options.' => 'Введите адрес, чтобы увидеть варианты доставки.',
+            'Select a country / region…' => 'Выберите страну / регион…',
+            'Update country / region' => 'Обновите страну / регион',
+            'Street address' => 'Улица',
+            'House number and street name' => 'Название улицы и номер дома',
+            'State / County' => 'Штат / регион',
+            'Phone' => 'Телефон',
+            'Email' => 'Эл. почта',
+            '(optional)' => '(необязательно)',
+            'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.' => 'Нет доступных вариантов доставки. Проверьте правильность введённого адреса или свяжитесь с нами, если нужна помощь.',
+            'Shipping options will be updated during checkout.' => 'Варианты доставки будут обновлены при оформлении заказа.',
+            'Save payment information to my account for future purchases.' => 'Сохранить платёжные данные в моём аккаунте для будущих покупок.',
+            'I have read and agree to the website' => 'Я прочитал(а) и соглашаюсь с документом',
         ];
     }
 
@@ -244,15 +256,37 @@ function rtcl_phrase_map(string $lang): array {
         'Оформить заказ' => 'Odoslať objednávku',
         'Enter your address to view shipping options.' => 'Zadajte adresu, aby sa zobrazili možnosti dopravy.',
         'Введите адрес, чтобы увидеть варианты доставки.' => 'Zadajte adresu, aby sa zobrazili možnosti dopravy.',
+        'Street address' => 'Ulica',
+        'Улица' => 'Ulica',
+        'House number and street name' => 'Názov ulice a číslo domu',
+        'Название улицы и номер дома' => 'Názov ulice a číslo domu',
+        'State / County' => 'Štát / kraj',
+        'Штат / регион' => 'Štát / kraj',
+        'Phone' => 'Telefón',
+        'Телефон' => 'Telefón',
+        'Email' => 'E-mail',
+        'Эл. почта' => 'E-mail',
+        '(optional)' => '(voliteľné)',
+        '(необязательно)' => '(voliteľné)',
+        'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.' => 'Nie sú dostupné žiadne možnosti dopravy. Skontrolujte správnosť zadanej adresy alebo nás kontaktujte, ak potrebujete pomoc.',
+        'Нет доступных вариантов доставки. Проверьте правильность введённого адреса или свяжитесь с нами, если нужна помощь.' => 'Nie sú dostupné žiadne možnosti dopravy. Skontrolujte správnosť zadanej adresy alebo nás kontaktujte, ak potrebujete pomoc.',
+        'Save payment information to my account for future purchases.' => 'Uložiť platobné údaje do môjho účtu pre budúce nákupy.',
+        'Сохранить платёжные данные в моём аккаунте для будущих покупок.' => 'Uložiť platobné údaje do môjho účtu pre budúce nákupy.',
+        'I have read and agree to the website' => 'Prečítal/a som si dokument',
+        'Я прочитал(а) и соглашаюсь с документом' => 'Prečítal/a som si dokument',
         'Select a country / region…' => 'Vyberte krajinu / región…',
+        'Выберите страну / регион…' => 'Vyberte krajinu / región…',
         'Austria' => 'Rakúsko',
         'Slovakia' => 'Slovensko',
         'Update country / region' => 'Aktualizujte krajinu / región',
+        'Обновите страну / регион' => 'Aktualizujte krajinu / región',
         'Street address' => 'Ulica',
         'House number and street name' => 'Názov ulice a číslo domu',
         'State / County' => 'Štát / kraj',
         '(optional)' => '(voliteľné)',
         'Notes about your order, e.g. special notes for delivery.' => 'Poznámka k objednávke, napr. upresnenie pre doručenie.',
+        'Shipping options will be updated during checkout.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
+        'Варианты доставки будут обновлены при оформлении заказа.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
     ];
 }
 
@@ -349,6 +383,10 @@ function rtcl_translate_storefront_text(string $value, string $lang): string {
 
         if (preg_match('/^(.+) has been added to your cart\.$/u', $value, $matches)) {
             return sprintf('%s добавлен в корзину.', $matches[1]);
+        }
+
+        if (preg_match('/^\(includes (.+) VAT\)$/u', $value, $matches)) {
+            return sprintf('(включая %s НДС)', $matches[1]);
         }
     }
 
@@ -559,6 +597,15 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
         }
     }
 
+    foreach ($xpath->query('//form[contains(@class, "checkout")]//*[contains(concat(" ", normalize-space(@class), " "), " select2-selection__placeholder ")] | //form[contains(@class, "checkout")]//*[contains(concat(" ", normalize-space(@class), " "), " select2-selection__rendered ")]') ?: [] as $node) {
+        if ($node instanceof DOMElement) {
+            $text = trim($node->textContent);
+            if ($text !== '') {
+                $node->nodeValue = rtcl_translate_storefront_text($text, $lang);
+            }
+        }
+    }
+
     foreach ($xpath->query('//form[contains(@class, "checkout")]//span[contains(concat(" ", normalize-space(@class), " "), " optional ")]') ?: [] as $node) {
         if ($node instanceof DOMElement) {
             $node->nodeValue = rtcl_translate_storefront_text(trim($node->textContent), $lang);
@@ -604,13 +651,13 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
 
     foreach ($xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " woocommerce-terms-and-conditions-checkbox-text ")]') ?: [] as $node) {
         if ($node instanceof DOMElement) {
-            if ($lang === 'sk') {
-                $template_link = null;
-                foreach ($node->getElementsByTagName('a') as $link) {
-                    $template_link = $link;
-                    break;
-                }
+            $template_link = null;
+            foreach ($node->getElementsByTagName('a') as $link) {
+                $template_link = $link;
+                break;
+            }
 
+            if ($lang === 'sk') {
                 while ($node->firstChild) {
                     $node->removeChild($node->firstChild);
                 }
@@ -630,12 +677,23 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
                 continue;
             }
 
-            if ($node->firstChild instanceof DOMText) {
-                $prefix = trim($node->firstChild->nodeValue);
-                if ($prefix !== '') {
-                    $translated = $lang === 'ru' ? 'Я прочитал(а) и соглашаюсь с' : 'Prečítal/a som si';
-                    $node->firstChild->nodeValue = $translated . ' ';
+            if ($lang === 'ru') {
+                while ($node->firstChild) {
+                    $node->removeChild($node->firstChild);
                 }
+
+                $node->appendChild($dom->createTextNode('Я прочитал(а) и соглашаюсь с '));
+
+                $link = $dom->createElement('a', 'правилами и условиями');
+                if ($template_link instanceof DOMElement) {
+                    foreach (['href', 'class', 'target'] as $attr) {
+                        if ($template_link->hasAttribute($attr)) {
+                            $link->setAttribute($attr, $template_link->getAttribute($attr));
+                        }
+                    }
+                }
+                $node->appendChild($link);
+                continue;
             }
 
             foreach ($node->getElementsByTagName('a') as $link) {
@@ -650,19 +708,31 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
     foreach ($xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " includes_tax ")]') ?: [] as $node) {
         if ($node instanceof DOMElement) {
             if ($lang === 'sk') {
-                if ($node->firstChild instanceof DOMText) {
-                    $node->firstChild->nodeValue = '(vrátane ';
+                $amount_html = '';
+                foreach ($node->childNodes as $child) {
+                    if ($child instanceof DOMElement) {
+                        $amount_html .= $dom->saveHTML($child);
+                    }
                 }
-                if ($node->lastChild instanceof DOMText) {
-                    $node->lastChild->nodeValue = ' DPH)';
+                while ($node->firstChild) {
+                    $node->removeChild($node->firstChild);
                 }
+                $fragment = $dom->createDocumentFragment();
+                $fragment->appendXML('(vrátane ' . $amount_html . ' DPH)');
+                $node->appendChild($fragment);
             } elseif ($lang === 'ru') {
-                if ($node->firstChild instanceof DOMText) {
-                    $node->firstChild->nodeValue = '(включая ';
+                $amount_html = '';
+                foreach ($node->childNodes as $child) {
+                    if ($child instanceof DOMElement) {
+                        $amount_html .= $dom->saveHTML($child);
+                    }
                 }
-                if ($node->lastChild instanceof DOMText) {
-                    $node->lastChild->nodeValue = ' НДС)';
+                while ($node->firstChild) {
+                    $node->removeChild($node->firstChild);
                 }
+                $fragment = $dom->createDocumentFragment();
+                $fragment->appendXML('(включая ' . $amount_html . ' НДС)');
+                $node->appendChild($fragment);
             }
         }
     }
@@ -757,10 +827,34 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
         }
     }
 
+    if (function_exists('is_checkout') && is_checkout()) {
+        $result = strtr((string) $result, [
+            'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.' => rtcl_translate_storefront_text('There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.', $lang),
+            'Save payment information to my account for future purchases.' => rtcl_translate_storefront_text('Save payment information to my account for future purchases.', $lang),
+            'I have read and agree to the website ' => rtcl_translate_storefront_text('I have read and agree to the website', $lang) . ' ',
+            '(includes ' => $lang === 'ru' ? '(включая ' : '(vrátane ',
+            ' VAT)' => $lang === 'ru' ? ' НДС)' : ' DPH)',
+        ]);
+    }
+
     libxml_clear_errors();
     libxml_use_internal_errors($internal_errors);
 
     return (string) $result;
+}
+
+function rtcl_translate_tax_suffix_html(string $html, string $lang): string {
+    if ($html === '') {
+        return $html;
+    }
+
+    $prefix = $lang === 'ru' ? '(включая ' : '(vrátane ';
+    $suffix = $lang === 'ru' ? ' НДС)' : ' DPH)';
+
+    return strtr($html, [
+        '(includes ' => $prefix,
+        ' VAT)' => $suffix,
+    ]);
 }
 
 add_filter('gettext', function($translation, $text, $domain) {
@@ -791,6 +885,60 @@ add_filter('ngettext', function($translation, $single, $plural, $number, $domain
     $source = $number === 1 ? (string) $single : (string) $plural;
     return rtcl_translate_phrase($source, $lang);
 }, 120, 5);
+
+add_filter('woocommerce_form_field_args', function($args, $key, $value) {
+    if (is_admin()) {
+        return $args;
+    }
+
+    if (!function_exists('is_checkout') || !is_checkout()) {
+        return $args;
+    }
+
+    $lang = rtcl_current_lang();
+
+    foreach (['label', 'placeholder'] as $field_key) {
+        if (!empty($args[$field_key]) && is_string($args[$field_key])) {
+            $args[$field_key] = rtcl_translate_storefront_text($args[$field_key], $lang);
+        }
+    }
+
+    if (!empty($args['custom_attributes']['data-placeholder']) && is_string($args['custom_attributes']['data-placeholder'])) {
+        $args['custom_attributes']['data-placeholder'] = rtcl_translate_storefront_text($args['custom_attributes']['data-placeholder'], $lang);
+    }
+
+    return $args;
+}, 120, 3);
+
+add_filter('woocommerce_get_terms_and_conditions_checkbox_text', function($text) {
+    if (is_admin()) {
+        return $text;
+    }
+
+    $lang = rtcl_current_lang();
+
+    if ($lang === 'ru') {
+        return 'Я прочитал(а) и соглашаюсь с [terms]';
+    }
+
+    return 'Prečítal/a som si [terms] a súhlasím s nimi';
+}, 120);
+
+add_filter('woocommerce_cart_totals_order_total_html', function($html) {
+    if (is_admin()) {
+        return $html;
+    }
+
+    return rtcl_translate_tax_suffix_html((string) $html, rtcl_current_lang());
+}, 120);
+
+add_filter('woocommerce_no_shipping_available_html', function($html) {
+    if (is_admin()) {
+        return $html;
+    }
+
+    return rtcl_translate_storefront_text(wp_strip_all_tags((string) $html), rtcl_current_lang());
+}, 120);
 
 add_action('template_redirect', function() {
     if (is_admin() || wp_doing_ajax()) {
