@@ -65,6 +65,16 @@
         min-width: 0 !important;
     }
 
+    #middle-header .search-submit,
+    #middle-header .search-box button,
+    #middle-header form.search-form input[type="submit"],
+    #middle-header form.woocommerce-product-search button[type="submit"] {
+        border-top: 1px solid #d71920 !important;
+        border-right: 1px solid #d71920 !important;
+        border-bottom: 1px solid #d71920 !important;
+        border-left: 0 !important;
+    }
+
     #middle-header .header-tools {
         display: flex !important;
         align-items: center !important;
