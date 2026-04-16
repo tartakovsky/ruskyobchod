@@ -92,6 +92,10 @@ function gls_is_translation_blocked_request(): bool {
         return true;
     }
 
+    if (gls_is_logged_in_operator_request()) {
+        return true;
+    }
+
     return gls_is_order_page_runtime_owned_elsewhere();
 }
 
@@ -972,8 +976,18 @@ function gls_normalize_skip_link_html(string $html, string $lang): string {
 function gls_normalize_legal_company_text_html(string $html, string $lang): string {
     if ($lang === 'ru') {
         return strtr($html, [
+            'Gastronom' => 'Гастроном',
+            'Палисьады' => 'Палисады',
+            'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+            'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
             'Slovenská republika' => 'Словацкая Республика',
-            'Zapísaná v OR OS Bratislava I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава I,',
+            'Братислава I,' => 'Братислава&nbsp;I,',
+            'Bratislava I,' => 'Братислава&nbsp;I,',
+            'Zapísaná v OR OS Bratislava I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава&nbsp;I,',
+            'Зарегистрирована в торговом реестре окружного суда Братислава I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава&nbsp;I,',
+            'Записана в торговом реестре окружного суда Bratislava I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава&nbsp;I,',
+            'Записана в торговом реестре окружного суда Bratislava&nbsp;I,' => 'Зарегистрирована в торговом реестре окружного суда Братислава&nbsp;I,',
+            "Записана в торговом реестре окружного суда Bratislava I," => 'Зарегистрирована в торговом реестре окружного суда Братислава&nbsp;I,',
             'Oddiel: Sro, Vložka č. 182562/B' => 'Раздел s.r.o., № записи 182562/B',
         ]);
     }
@@ -1238,11 +1252,15 @@ function gls_normalize_server_rendered_html(string $html, string $lang): string 
     if ($lang === 'ru') {
         return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
             'Card <img' => 'Оплата картой <img',
+            'Мой Аккаунт' => 'Мой аккаунт',
+            'Моя учётная запись' => 'Мой аккаунт',
         ]), $lang));
     }
 
     return $normalize_empty_cart_shell(gls_normalize_legal_company_text_html(strtr($html, [
         'Контакты' => 'Kontakt',
+        'Мой Аккаунт' => 'Môj účet',
+        'Моя учётная запись' => 'Môj účet',
         'Забыли свой пароль?' => 'Zabudli ste heslo?',
         'Кнопка Открыть' => 'Tlačidlo Otvoriť',
         'Кнопка Закрыть' => 'Tlačidlo Zavrieť',
@@ -1282,10 +1300,30 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
         $html
     );
 
+    if ($lang === 'ru') {
+        $html = gls_replace_text_pairs($html, [
+            'Палисьады' => 'Палисады',
+            'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+            'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+        ]);
+    }
+
     return $html;
 }
 
 function gls_normalize_storefront_chrome_html(string $html, string $lang): string {
+    if ($lang === 'ru') {
+        $html = gls_replace_text_pairs($html, [
+            '>Мой Аккаунт<' => '>Мой аккаунт<',
+            '>Моя учётная запись<' => '>Мой аккаунт<',
+        ]);
+    } else {
+        $html = gls_replace_text_pairs($html, [
+            '>Мой Аккаунт<' => '>Môj účet<',
+            '>Моя учётная запись<' => '>Môj účet<',
+        ]);
+    }
+
     $html = gls_localize_html_text_pattern(
         $html,
         '~(<li class="drp_dwn_menu[^"]*"[^>]*>\s*<a [^>]*>\s*)([^<]+)(\s*</a>)~su',
@@ -1549,7 +1587,7 @@ add_action('wp_enqueue_scripts', 'gls_enqueue_wcpay_locale_footer_patch', 999);
 add_filter('woocommerce_currency_symbol', 'gls_filter_woocommerce_currency_symbol', 999, 2);
 
 function gls_asset_version(): string {
-    return '6.25';
+    return '6.26';
 }
 
 function gls_style_handle(): string {

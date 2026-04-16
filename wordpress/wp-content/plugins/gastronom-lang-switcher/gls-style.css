@@ -123,6 +123,12 @@ footer a:hover,
     color: #ffd27a !important;
 }
 
+.gls-footer-address-line {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
 @media (max-width: 768px) {
     .gls-switcher.gls-floating {
         top: auto;

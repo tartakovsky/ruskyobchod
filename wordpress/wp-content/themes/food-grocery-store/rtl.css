@@ -604,6 +604,7 @@ table.shop_table.cart.wishlist_table.wishlist_view.traditional.responsive{
   color: #2c2b2b;
   font-size: 12px;
   font-weight: 600;
+  text-transform: none;
 }
 .main-navigation a:hover {
   color: #d51c22;
