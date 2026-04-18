@@ -494,3 +494,21 @@ It should be one of:
   - shows a one-time admin notice explaining the forced deactivation
 - purpose:
   - prevent another `/wp-admin/` fatal from accidental reactivation of the old Pro package
+
+## 2026-04-18 production lockdown stop-line
+
+- added runtime lockdown in:
+  - `wordpress/wp-content/mu-plugins/rusky-production-lockdown.php`
+- purpose:
+  - prevent new live drift through wp-admin update/editor paths
+- enforced behavior:
+  - WordPress automatic updater disabled
+  - core/plugin/theme/translation auto-updates disabled
+  - WooCommerce DB auto-update disabled
+  - direct file modifications blocked for update/install/delete/editor contexts
+  - plugin/theme editor screens blocked
+  - repo-first warning notice shown on update/editor related admin screens
+- this stop-line complements the existing rules:
+  - repo first
+  - smallest possible deploy surface
+  - no live editing through dashboard tools
