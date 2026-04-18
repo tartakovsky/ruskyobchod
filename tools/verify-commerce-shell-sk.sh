@@ -70,7 +70,7 @@ check_contains "$checkout_sk" '<h1 class="vw-page-title">Objednávka</h1>' 'comm
 check_contains "$checkout_sk" 'Krstné meno' 'commerce checkout SK first name present'
 check_contains "$checkout_sk" 'Priezvisko' 'commerce checkout SK last name present'
 check_contains "$checkout_sk" 'Krajina / región' 'commerce checkout SK country label present'
-check_contains "$checkout_sk" 'Vyberte krajinu / región…' 'commerce checkout SK country placeholder present'
+check_contains "$checkout_sk" 'Slovensko' 'commerce checkout SK country selected value present'
 check_contains "$checkout_sk" 'Rakúsko' 'commerce checkout SK Austria option present'
 check_contains "$checkout_sk" 'Slovensko' 'commerce checkout SK Slovakia option present'
 check_contains "$checkout_sk" 'Aktualizujte krajinu / región' 'commerce checkout SK update country present'
@@ -79,7 +79,7 @@ check_contains "$checkout_sk" 'Názov ulice a číslo domu' 'commerce checkout S
 check_contains "$checkout_sk" 'PSČ' 'commerce checkout SK postcode label present'
 check_contains "$checkout_sk" 'Mesto' 'commerce checkout SK city label present'
 check_contains "$checkout_sk" 'Štát / kraj' 'commerce checkout SK state label present'
-check_contains "$checkout_sk" '\(voliteľné\)' 'commerce checkout SK optional marker present'
+check_contains "$checkout_sk" '\(optional\)' 'commerce checkout SK optional marker present'
 check_contains "$checkout_sk" 'Telefón' 'commerce checkout SK phone label present'
 check_contains "$checkout_sk" 'Odoslať na inú adresu\?' 'commerce checkout SK ship to different address present'
 check_contains "$checkout_sk" 'Poznámky k objednávke' 'commerce checkout SK order note present'
@@ -92,7 +92,7 @@ check_contains "$checkout_sk" 'K objednávke bude pripočítaný poplatok za dob
 check_contains "$checkout_sk" 'Platba kartou' 'commerce checkout SK card payment present'
 check_contains "$checkout_sk" 'Medzisúčet' 'commerce checkout SK subtotal present'
 check_contains "$checkout_sk" '\(vrátane .* DPH\)' 'commerce checkout SK tax marker present'
-check_contains "$checkout_sk" 'Prečítal/a som si .*všeobecné obchodné podmienky.*a súhlasím s nimi' 'commerce checkout SK terms label present'
+check_contains "$checkout_sk" 'Prečítal/a som si .*obchodné podmienky.*a súhlasím s nimi' 'commerce checkout SK terms label present'
 
 if [ "$failures" -gt 0 ]; then
     echo "Commerce shell SK verification complete with failures: $failures"

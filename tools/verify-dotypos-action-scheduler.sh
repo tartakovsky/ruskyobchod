@@ -23,11 +23,13 @@ if (!$exists) {
     exit(1);
 }
 
-$pending = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table} WHERE hook LIKE '%dotypos%' AND status IN ('pending','in-progress')");
+$overdue = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table} WHERE hook LIKE '%dotypos%' AND ((status = 'pending' AND scheduled_date_gmt <= UTC_TIMESTAMP()) OR status = 'in-progress')");
+$future_pending = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table} WHERE hook LIKE '%dotypos%' AND status = 'pending' AND scheduled_date_gmt > UTC_TIMESTAMP()");
 $failed_recent = (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table} WHERE hook LIKE '%dotypos%' AND status = 'failed' AND scheduled_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 3 DAY)");
 $latest = $wpdb->get_results("SELECT action_id, hook, status, scheduled_date_gmt, last_attempt_gmt FROM {$table} WHERE hook LIKE '%dotypos%' ORDER BY action_id DESC LIMIT 10", ARRAY_A);
 
-echo 'pending=' . $pending . PHP_EOL;
+echo 'overdue=' . $overdue . PHP_EOL;
+echo 'future_pending=' . $future_pending . PHP_EOL;
 echo 'failed_recent=' . $failed_recent . PHP_EOL;
 
 foreach ($latest as $row) {
@@ -45,16 +47,21 @@ EOF
 
 printf '%s\n' "$output"
 
-pending="$(printf '%s\n' "$output" | awk -F= '/^pending=/{print $2}')"
+overdue="$(printf '%s\n' "$output" | awk -F= '/^overdue=/{print $2}')"
+future_pending="$(printf '%s\n' "$output" | awk -F= '/^future_pending=/{print $2}')"
 failed_recent="$(printf '%s\n' "$output" | awk -F= '/^failed_recent=/{print $2}')"
 
 failures=0
 
-if [ "${pending:-1}" -ne 0 ]; then
-    echo "FAIL dotypos action scheduler has pending/in-progress actions" >&2
+if [ "${overdue:-1}" -ne 0 ]; then
+    echo "FAIL dotypos action scheduler has overdue/in-progress actions" >&2
     failures=$((failures + 1))
 else
-    echo "OK   dotypos action scheduler has no pending/in-progress actions"
+    echo "OK   dotypos action scheduler has no overdue/in-progress actions"
+fi
+
+if [ "${future_pending:-0}" -ne 0 ]; then
+    echo "OK   dotypos action scheduler has future pending actions (${future_pending})"
 fi
 
 if [ "${failed_recent:-1}" -ne 0 ]; then

@@ -459,3 +459,23 @@ It should be one of:
   - movements `Dotypos -> WooCommerce` enabled
   - title/price/vat/category/EAN/note sync disabled
   - categories sync disabled
+
+## 2026-04-18 Dotypos sales-sync verification hardening
+
+- today's cash-register comparison initially showed 2 apparent mismatches, but they were not the same class of problem:
+  - one normal product (`10608`) was transient drift and then matched again through the existing reconcile path
+  - one weight-preorder product (`10617`) was a false mismatch caused by comparing Woo `_stock` pieces against Dotypos kilogram stock
+- live-proof result for `2026-04-18` after correcting the quantity source:
+  - unique sold products from Dotypos today: `21`
+  - matched Woo/Dotypos products: `21`
+  - mismatched products: `0`
+- new operator tool:
+  - `tools/report-todays-dotypos-sales-sync.sh`
+  - uses Dotypos `order-items` for the requested day
+  - maps Dotypos products back to Woo by `dotypos_product_id`
+  - compares:
+    - `_stock` for normal products
+    - `_gastronom_cash_stock_kg` for weight-preorder products
+- action-scheduler verification rule was tightened:
+  - future scheduled Dotypos actions are normal
+  - only overdue `pending` or `in-progress` actions should fail the check
