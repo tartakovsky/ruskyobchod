@@ -24,6 +24,5 @@ run "live bootstrap surface" "$ROOT_DIR/tools/verify-live-bootstrap-surface.sh"
 run "elementor pair compat" "$ROOT_DIR/tools/verify-elementor-pair-compat.sh"
 run "dotypos readonly" "$ROOT_DIR/tools/verify-dotypos-readonly.sh"
 run "dotypos action scheduler" "$ROOT_DIR/tools/verify-dotypos-action-scheduler.sh"
-run "elementor pro readonly" "$ROOT_DIR/tools/verify-elementor-pro-readonly.sh"
 
 echo "Tuesday readiness verification complete."

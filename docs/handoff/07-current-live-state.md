@@ -29,6 +29,10 @@
 - new repo guard:
   - `tools/verify-elementor-pair-compat.sh`
   - wired into `tools/verify-tuesday-readiness.sh`
+- current necessity verdict:
+  - current non-revision live Elementor documents with Pro signals: `0`
+  - current Elementor library footprint: default kit only
+  - current public live site does not show evidence that it requires Elementor Pro to render active content
 
 ## update 2026-04-14 13:05
 
