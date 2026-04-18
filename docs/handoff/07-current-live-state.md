@@ -479,3 +479,18 @@ It should be one of:
 - action-scheduler verification rule was tightened:
   - future scheduled Dotypos actions are normal
   - only overdue `pending` or `in-progress` actions should fail the check
+
+## 2026-04-18 Elementor stop-line guard
+
+- stable live stop-line still requires:
+  - `Elementor 4.0.2` active
+  - `Elementor Pro 3.18.3` installed but inactive
+- added runtime guard in:
+  - `wordpress/wp-content/mu-plugins/rusky-elementor-stopline.php`
+- guard behavior:
+  - blocks the known-bad pair `Elementor 4.x` + `Elementor Pro non-4.x`
+  - removes incompatible `elementor-pro/elementor-pro.php` from `active_plugins` before normal plugins load
+  - persists the safe plugin set
+  - shows a one-time admin notice explaining the forced deactivation
+- purpose:
+  - prevent another `/wp-admin/` fatal from accidental reactivation of the old Pro package
