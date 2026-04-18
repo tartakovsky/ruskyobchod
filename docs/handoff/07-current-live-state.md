@@ -16,6 +16,20 @@
   - `tools/verify-live-bootstrap-surface.sh`
   - wired into `tools/verify-tuesday-readiness.sh`
 
+## update 2026-04-18 11:31
+
+- `wp-admin/` still had a separate post-recovery fatal after core/bootstrap recovery
+- exact admin fatal source:
+  - `Elementor 4.0.2`
+  - `Elementor Pro 3.18.3`
+  - incompatible admin menu class signature on the Pro side
+- stable stop-line:
+  - keep `Elementor` active
+  - keep `Elementor Pro` installed but deactivated until a compatible Pro package is available
+- new repo guard:
+  - `tools/verify-elementor-pair-compat.sh`
+  - wired into `tools/verify-tuesday-readiness.sh`
+
 ## update 2026-04-14 13:05
 
 - new live stop-line:
