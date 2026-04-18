@@ -1,5 +1,21 @@
 # current live state
 
+## update 2026-04-18 11:12
+
+- live outage on 2026-04-18 was a full bootstrap failure, not a `wp-content` regression
+- exact recovery chain:
+  - switched live handler from `PHP 7.4.33` to `PHP 8.2`
+  - restored missing live `wp-config.php` from `/home/u595644545/backups/ruskyobchod-2026-04-09-093435/wp-config.php`
+  - restored the official WordPress `6.9.4` core for `wp-admin/`, `wp-includes/`, and root core files
+- post-recovery checks:
+  - homepage returns `200`
+  - `wp-login.php` returns `200`
+- new rule:
+  - live bootstrap surface must now be verified explicitly, not inferred from `wp-content` parity alone
+- new repo guard:
+  - `tools/verify-live-bootstrap-surface.sh`
+  - wired into `tools/verify-tuesday-readiness.sh`
+
 ## update 2026-04-14 13:05
 
 - new live stop-line:
