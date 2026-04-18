@@ -512,3 +512,18 @@ It should be one of:
   - repo first
   - smallest possible deploy surface
   - no live editing through dashboard tools
+
+## 2026-04-18 lightweight visit counter
+
+- direct access logs and reliable visit analytics were not available from the current live access surface
+- added repo-owned fallback in:
+  - `wordpress/wp-content/mu-plugins/rusky-visit-counter.php`
+- behavior:
+  - counts daily unique frontend visits with first-party cookie `rusky_visit_day`
+  - stores aggregates in option `rusky_daily_visit_counts`
+  - ignores admin/ajax/cron/rest/xmlrpc/feed/robots requests
+  - retains 60 days of daily counts
+- reporting helper:
+  - `tools/report-daily-visits.sh`
+- limitation:
+  - this counter is not retroactive; it only answers visit questions from deployment time forward
