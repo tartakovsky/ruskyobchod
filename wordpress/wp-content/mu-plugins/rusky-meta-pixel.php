@@ -22,9 +22,10 @@ function rusky_meta_pixel_print_base(): void {
 	!function(f,n){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 	n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
-	(function(f,d,s,u){function l(){if(f.fbq.loadedScript)return;f.fbq.loadedScript=!0;
-	var e=d.createElement(s);e.async=!0;e.src=u;d.getElementsByTagName(s)[0].parentNode.insertBefore(e,d.getElementsByTagName(s)[0])}
-	if('requestIdleCallback' in f){f.requestIdleCallback(l,{timeout:2500})}else{f.addEventListener('load',function(){setTimeout(l,1200)})}
+	(function(f,d,s,u){var loaded=false;function l(){if(loaded||f.fbq.loadedScript)return;loaded=true;f.fbq.loadedScript=true;
+	var e=d.createElement(s);e.async=true;e.src=u;d.getElementsByTagName(s)[0].parentNode.insertBefore(e,d.getElementsByTagName(s)[0])}
+	['pointerdown','keydown','touchstart','scroll'].forEach(function(eventName){f.addEventListener(eventName,l,{once:true,passive:true})});
+	f.addEventListener('load',function(){setTimeout(l,7000)});
 	})(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 	fbq('init', '<?php echo esc_js( RUSKY_META_PIXEL_ID ); ?>');
 	fbq('track', 'PageView');
