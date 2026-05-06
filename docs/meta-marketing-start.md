@@ -9,11 +9,23 @@ Goal:
 ## Current state
 
 - Facebook page and Instagram are connected in Meta Business Suite, confirmed by operator.
-- Public site HTML does not currently include Meta Pixel signals:
-  - no `fbq`
-  - no `fbevents.js`
-  - no `connect.facebook.net`
-- Installed plugin directories do not include the official `facebook-for-woocommerce` plugin.
+- Meta Events Manager dataset created:
+  - `Gastronom Website`
+  - Dataset / Pixel ID: `988003717119707`
+- Existing Meta catalog found during setup:
+  - `Gastronom Catalogue`
+  - Catalog ID: `4415105648766131`
+- Existing Meta ad account seen in Events Manager:
+  - `Gastronom Ad Account`
+  - Ad account ID: `1880568885862975`
+- Official `Facebook for WooCommerce` plugin was installed and activated on the live site.
+- The official WooCommerce OAuth flow currently blocks on `Select your ad account`: the OAuth dialog shows no selectable ad account even though Events Manager lists one.
+- A source-controlled MU plugin now sends base Meta Pixel events while the official OAuth/catalog connection is unresolved:
+  - `PageView`
+  - `ViewContent`
+  - `AddToCart`
+  - `InitiateCheckout`
+  - `Purchase`
 
 ## Priority 1: Facebook and Instagram posting
 
@@ -101,7 +113,8 @@ https://ruskyobchod.sk/
 ```
 
 Technical next step:
-- After Pixel/Dataset ID is known, connect through the official WooCommerce integration or install/configure the official plugin.
+- Verify `PageView`, `ViewContent`, and `AddToCart` in Meta Events Manager.
+- Resolve the official WooCommerce OAuth ad-account selection issue before relying on catalog sync / Advantage+ catalog ads.
 - Do not run conversion/sales campaigns before `Purchase` and `AddToCart` events are visible in Events Manager.
 
 ## First paid test, after Pixel works
