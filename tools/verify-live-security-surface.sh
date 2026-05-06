@@ -27,8 +27,10 @@ check_ok 'Googlebot does not see known cloaked Japanese spam' sh -c "! printf '%
 check_ok 'root moon.php is not public' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "test ! -f '$REMOTE_ROOT/moon.php'"
 check_ok 'view-source shell is not public' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "test ! -e '$REMOTE_ROOT/wp-content/plugins/view-source/moon.php'"
 check_ok 'file manager plugins are not active' sh -c "! printf '%s' \"\$1\" | grep -Eq 'file-manager-advanced|wp-file-manager'" _ "$active_plugins"
+check_ok 'security guard mu-plugin is present' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "test -f '$REMOTE_ROOT/wp-content/mu-plugins/rusky-security-guard.php'"
 check_ok 'wp-config disables file editor' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "grep -q \"DISALLOW_FILE_EDIT.*true\" '$REMOTE_ROOT/wp-config.php'"
 check_ok 'uploads blocks PHP execution' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "grep -q 'Rusky security: block PHP execution' '$REMOTE_ROOT/wp-content/uploads/.htaccess'"
+check_ok 'known suspicious admins are not administrators' ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php -r '\$_SERVER[\"HTTP_HOST\"]=\"ruskyobchod.sk\"; \$_SERVER[\"REQUEST_METHOD\"]=\"GET\"; \$_SERVER[\"REQUEST_URI\"]=\"/\"; require \"$REMOTE_ROOT/wp-load.php\"; foreach ([\"osdibijl\", \"xevnijso\"] as \$login) { \$user = get_user_by(\"login\", \$login); if (\$user && in_array(\"administrator\", (array) \$user->roles, true)) { exit(1); } }'"
 
 if [ "$failures" -gt 0 ]; then
     echo "Security surface verification complete with failures: $failures"
