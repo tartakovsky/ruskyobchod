@@ -19,14 +19,13 @@ function rusky_meta_pixel_print_base(): void {
 	?>
 	<!-- Meta Pixel Code -->
 	<script>
-	!function(f,b,e,v,n,t,s)
-	{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+	!function(f,n){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 	n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-	n.queue=[];t=b.createElement(e);t.async=!0;
-	t.src=v;s=b.getElementsByTagName(e)[0];
-	s.parentNode.insertBefore(t,s)}(window, document,'script',
-	'https://connect.facebook.net/en_US/fbevents.js');
+	if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[]}(window);
+	(function(f,d,s,u){function l(){if(f.fbq.loadedScript)return;f.fbq.loadedScript=!0;
+	var e=d.createElement(s);e.async=!0;e.src=u;d.getElementsByTagName(s)[0].parentNode.insertBefore(e,d.getElementsByTagName(s)[0])}
+	if('requestIdleCallback' in f){f.requestIdleCallback(l,{timeout:2500})}else{f.addEventListener('load',function(){setTimeout(l,1200)})}
+	})(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 	fbq('init', '<?php echo esc_js( RUSKY_META_PIXEL_ID ); ?>');
 	fbq('track', 'PageView');
 	</script>
