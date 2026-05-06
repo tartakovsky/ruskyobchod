@@ -11,6 +11,7 @@ Findings:
 Change:
 - Added source-controlled `wordpress/robots.txt` pointing only to the current WordPress sitemap index.
 - Added `.htaccess` cleanup for non-existing `.htm` spam URLs to return `410 Gone`.
+- Extended `.htaccess` cleanup to cover Search Console examples in the form `/?123456789.htm`.
 
 Live traffic snapshot:
 - May 6 diagnosed visits still dominated by bots: 28,461 bot-like vs 31 probably human.
@@ -26,6 +27,7 @@ Verification:
 - Live `robots.txt` points to `https://ruskyobchod.sk/wp-sitemap.xml`.
 - `wp-sitemap.xml` returns 200.
 - Test spam `.htm` URL returns 410.
+- Test query-string spam `/?10672456763928.htm` returns 410.
 - Homepage returns 200.
 - Google verification `.html` returns 200.
 - Security surface verifier passes.

@@ -13,8 +13,10 @@ RewriteRule ^ https://ruskyobchod.sk%{REQUEST_URI} [R=301,L]
 # BEGIN Spam URL cleanup
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteCond %{QUERY_STRING} (^|&)[^=&]*\.htm($|&) [NC]
+RewriteRule ^ - [G,L]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule \.htm$ - [G,L]
+RewriteRule \.htm$ - [G,L,NC]
 </IfModule>
 # END Spam URL cleanup
 
