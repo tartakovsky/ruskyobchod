@@ -54,6 +54,12 @@ function rsne_add_shipping_notice_metabox(): void {
         );
     }
 }
+add_action('add_meta_boxes', 'rsne_add_shipping_notice_metabox', 60);
+
+function rsne_keep_shipping_notice_metabox_visible(array $hidden): array {
+    return array_values(array_diff($hidden, ['rusky-shipping-notice-email']));
+}
+add_filter('hidden_meta_boxes', 'rsne_keep_shipping_notice_metabox_visible');
 
 function rsne_get_order_shipping_company(WC_Order $order): string {
     foreach ($order->get_shipping_methods() as $shipping_method) {
@@ -167,7 +173,14 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
         echo '<p><strong>Tracking:</strong><br>' . esc_html(implode(', ', $tracking_numbers)) . '</p>';
     }
     if ($last_sent_at !== '') {
-        echo '<p style="color:#646970;"><strong>Последняя отправка:</strong><br>' . esc_html($last_sent_at) . '</p>';
+        $last_sent_to = (string) $order->get_meta('_rusky_shipping_notice_sent_to', true);
+        echo '<div style="border-left:4px solid #00a32a;background:#f0f6ee;padding:8px 10px;margin:10px 0;">';
+        echo '<strong>Письмо клиенту отправлено.</strong><br>';
+        echo esc_html($last_sent_at);
+        if ($last_sent_to !== '') {
+            echo '<br>' . esc_html($last_sent_to);
+        }
+        echo '</div>';
     }
 
     $send_url = wp_nonce_url(
@@ -204,69 +217,6 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
         })();
     </script>';
 }
-
-function rsne_render_shipping_notice_order_action($order_id): void {
-    $order = wc_get_order($order_id);
-    if (!$order instanceof WC_Order) {
-        return;
-    }
-
-    $email = sanitize_email((string) $order->get_billing_email());
-    if ($email === '') {
-        return;
-    }
-
-    $carrier = rsne_get_order_shipping_company($order);
-    $tracking_numbers = rsne_get_order_tracking_numbers($order);
-    $last_sent_at = (string) $order->get_meta('_rusky_shipping_notice_sent_at', true);
-    $last_sent_date = (string) $order->get_meta('_rusky_shipping_notice_dispatch_date', true);
-    $dispatch_date = $last_sent_date !== '' ? $last_sent_date : rsne_default_dispatch_date($carrier);
-    $field_id = 'rusky_shipping_notice_dispatch_date_' . $order->get_id();
-    $button_id = 'rusky_shipping_notice_send_' . $order->get_id();
-
-    $send_url = wp_nonce_url(
-        add_query_arg(
-            [
-                'action' => 'rusky_send_shipping_notice',
-                'order_id' => $order->get_id(),
-            ],
-            admin_url('admin-post.php')
-        ),
-        'rusky_send_shipping_notice_' . $order->get_id(),
-        'rusky_shipping_notice_nonce'
-    );
-
-    echo '<li class="wide rusky-shipping-notice-action" style="border-top:1px solid #dcdcde;margin-top:10px;padding-top:10px;">';
-    echo '<strong>Уведомление об отправке</strong>';
-    echo '<p style="margin:8px 0 6px;color:#50575e;">' . esc_html($carrier) . ' / ' . esc_html($email) . '</p>';
-    if (!empty($tracking_numbers)) {
-        echo '<p style="margin:0 0 8px;color:#50575e;">Tracking: ' . esc_html(implode(', ', $tracking_numbers)) . '</p>';
-    }
-    if ($last_sent_at !== '') {
-        echo '<p style="margin:0 0 8px;color:#646970;">Последняя отправка: ' . esc_html($last_sent_at) . '</p>';
-    }
-    echo '<label for="' . esc_attr($field_id) . '">Дата передачи курьеру</label>';
-    echo '<input type="date" id="' . esc_attr($field_id) . '" value="' . esc_attr($dispatch_date) . '" style="width:100%;margin:4px 0 8px;">';
-    echo '<a href="' . esc_url(add_query_arg('dispatch_date', $dispatch_date, $send_url)) . '" class="button button-primary" id="' . esc_attr($button_id) . '" data-base-url="' . esc_url($send_url) . '" style="width:100%;text-align:center;">Отправить клиенту</a>';
-    echo '<script>
-        (function() {
-            var dateInput = document.getElementById("' . esc_js($field_id) . '");
-            var sendButton = document.getElementById("' . esc_js($button_id) . '");
-            if (!dateInput || !sendButton) {
-                return;
-            }
-            var updateHref = function() {
-                var baseUrl = sendButton.getAttribute("data-base-url");
-                var separator = baseUrl.indexOf("?") === -1 ? "?" : "&";
-                sendButton.href = baseUrl + separator + "dispatch_date=" + encodeURIComponent(dateInput.value || "");
-            };
-            dateInput.addEventListener("change", updateHref);
-            updateHref();
-        })();
-    </script>';
-    echo '</li>';
-}
-add_action('woocommerce_order_actions_end', 'rsne_render_shipping_notice_order_action', 20);
 
 function rsne_format_display_date(string $date): string {
     $timestamp = strtotime($date . ' 00:00:00');

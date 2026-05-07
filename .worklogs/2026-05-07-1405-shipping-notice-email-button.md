@@ -32,3 +32,4 @@ The store needs a manual order-page action for notifying a customer about the pl
 - Sent a corrected test email to `gastronom@trtk.me`; no customer email was sent.
 - Replaced the nested metabox form with a nonce-protected admin-post link button. The WooCommerce order edit screen already contains a form, so the nested form could redirect to the wrong admin section instead of sending the notice.
 - Moved the visible control into the existing WooCommerce order actions box and render the last-sent status next to the button, because the separate metabox can be hidden by the user's order-screen layout.
+- Restored the separate `Уведомление об отправке` block and replaced the subtle last-sent text with a visible green confirmation panel inside the block.
