@@ -598,7 +598,7 @@ class GLS_Shipping_Pickup
                 'street' => $selected_address['street'] ?? '',
                 'house_number' => $selected_address['house_number'] ?? '',
                 'city' => $selected_address['city'] ?? '',
-                'zip_code' => $selected_address['postcode'] ?? '',
+                'zip_code' => preg_replace('/\s+/', '', $selected_address['postcode'] ?? ''),
                 'country_code' => $selected_address['country'] ?? 'HR'
             );
 
