@@ -148,7 +148,16 @@ private function convert_date_to_dotnet_format($date_string)
         $response_code = wp_remote_retrieve_response_code($response);
 
         if ($response_code !== 200) {
-            throw new Exception(esc_html('GLS API returned error code: ' . $response_code));
+            $raw_body = wp_remote_retrieve_body($response);
+            $response_message = trim(wp_strip_all_tags((string) $raw_body));
+            if (strlen($response_message) > 500) {
+                $response_message = substr($response_message, 0, 500) . '...';
+            }
+
+            throw new Exception(esc_html(
+                'GLS API returned error code: ' . $response_code .
+                (!empty($response_message) ? '. Response: ' . $response_message : '')
+            ));
         }
 
         // Check for API errors
