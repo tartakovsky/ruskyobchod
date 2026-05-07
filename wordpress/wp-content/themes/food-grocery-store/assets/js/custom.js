@@ -9,11 +9,13 @@ function food_grocery_store_menu_close_nav() {
 
 jQuery(function($){
  	"use strict";
+	if ($.fn.superfish && jQuery('.main-menu > ul').find('ul, .sf-mega').length) {
    	jQuery('.main-menu > ul').superfish({
-		delay:       500,
-		animation:   {opacity:'show',height:'show'},  
-		speed:       'fast'
+			delay:       500,
+			animation:   {opacity:'show',height:'show'},
+			speed:       'fast'
    	});
+	}
 });
 
 jQuery(document).ready(function () {

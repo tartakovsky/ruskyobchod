@@ -46,7 +46,7 @@
             <?php get_product_search_form(); ?>
           </div>       
           <div class="product-cat-box">
-            <button class="product-btn mt-3 mt-lg-0 mt-md-0"><?php esc_html_e('All Categories','food-grocery-store'); ?><i class="fas fa-chevron-down ms-2"></i></button>
+            <button class="product-btn mt-3 mt-lg-0 mt-md-0"><?php esc_html_e('All Categories','food-grocery-store'); ?><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('chevron-down', 'ms-2'); } else { ?><i class="fas fa-chevron-down ms-2"></i><?php } ?></button>
             <div class="product-cat">
               <?php
                 $args = array(
@@ -76,14 +76,14 @@
           <div class="header-tools d-flex align-items-center justify-content-lg-end justify-content-md-end justify-content-center gap-3 flex-wrap flex-md-nowrap">
             <div class="account mt-2 mt-lg-0 mt-md-0">
                 <?php if ( is_user_logged_in() ) { ?>
-                  <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('My Account','food-grocery-store'); ?>"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_myaccount_icon','fas fa-sign-in-alt')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'My Account','food-grocery-store' );?></span></a>
+                  <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('My Account','food-grocery-store'); ?>"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('user'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_myaccount_icon','fas fa-sign-in-alt')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'My Account','food-grocery-store' );?></span></a>
                 <?php }
                 else { ?>
-                  <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('Login / Register','food-grocery-store'); ?>"><i class="fas fa-user"></i><span class="screen-reader-text"><?php esc_html_e( 'Login / Register','food-grocery-store' );?></span></a>
+                  <a href="<?php echo esc_url( get_permalink( get_option('woocommerce_myaccount_page_id') ) ); ?>" title="<?php esc_attr_e('Login / Register','food-grocery-store'); ?>"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('user'); } else { ?><i class="fas fa-user"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'Login / Register','food-grocery-store' );?></span></a>
                 <?php } ?>
             </div>
             <div class="cart_no mt-2 mt-lg-0 mt-md-0">
-                <a href="<?php if(function_exists('wc_get_cart_url')){ echo esc_url(wc_get_cart_url()); } ?>" title="<?php esc_attr_e( 'shopping cart','food-grocery-store' ); ?>"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_shopping_icon','fas fa-shopping-basket')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'shopping cart','food-grocery-store' );?></span></a>
+                <a href="<?php if(function_exists('wc_get_cart_url')){ echo esc_url(wc_get_cart_url()); } ?>" title="<?php esc_attr_e( 'shopping cart','food-grocery-store' ); ?>"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('cart'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_shopping_icon','fas fa-shopping-basket')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'shopping cart','food-grocery-store' );?></span></a>
                 <span class="cart-value"> <?php echo esc_html(wp_kses_data( WC()->cart->get_cart_contents_count() ));?></span>
             </div>
             <div class="wishlist mt-2 mt-lg-0 mt-md-0">

@@ -14,7 +14,7 @@
         <div class="col-lg-9 col-md-3 col-3 align-self-center">
           <?php ?>
             <div class="toggle-nav mobile-menu">
-              <button role="tab" onclick="food_grocery_store_menu_open_nav()" class="responsivetoggle"><i class="p-3 <?php echo esc_attr(get_theme_mod('food_grocery_store_res_open_menu_icon','fas fa-bars')); ?>"></i><span class="screen-reader-text"><?php esc_html_e('Open Button','food-grocery-store'); ?></span></button>
+              <button type="button" onclick="food_grocery_store_menu_open_nav()" class="responsivetoggle" aria-controls="site-navigation" aria-expanded="false"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('bars', 'p-3'); } else { ?><i class="p-3 <?php echo esc_attr(get_theme_mod('food_grocery_store_res_open_menu_icon','fas fa-bars')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e('Open Button','food-grocery-store'); ?></span></button>
             </div>
           <?php  ?>
           <div id="mySidenav" class="nav sidenav">
@@ -28,7 +28,7 @@
                   'fallback_cb' => 'wp_page_menu',
                 ) ); 
               ?>
-              <a href="javascript:void(0)" class="closebtn mobile-menu" onclick="food_grocery_store_menu_close_nav()"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_res_close_menus_icon','fas fa-times')); ?>"></i><span class="screen-reader-text"><?php esc_html_e('Close Button','food-grocery-store'); ?></span></a>
+              <a href="#site-navigation" class="closebtn mobile-menu" onclick="food_grocery_store_menu_close_nav()"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('times'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_res_close_menus_icon','fas fa-times')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e('Close Button','food-grocery-store'); ?></span></a>
             </nav>
           </div>
         </div>
@@ -40,4 +40,4 @@
       </div>
     </div>
   </div>
-</div>  
+</div>

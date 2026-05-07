@@ -103,11 +103,11 @@
                         <?php if( get_theme_mod( 'food_grocery_store_footer_scroll',true) == 1 || get_theme_mod( 'food_grocery_store_resp_scroll_top_hide_show',true) == 1) { ?>
                             <?php $food_grocery_store_theme_lay = get_theme_mod( 'food_grocery_store_scroll_top_alignment','Right');
                             if($food_grocery_store_theme_lay == 'Left'){ ?>
-                                <a href="#" class="scrollup left"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
+                                <a href="#header" class="scrollup left"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('arrow-up'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
                             <?php }else if($food_grocery_store_theme_lay == 'Center'){ ?>
-                                <a href="#" class="scrollup center"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
+                                <a href="#header" class="scrollup center"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('arrow-up'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
                             <?php }else{ ?>
-                                <a href="#" class="scrollup"><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
+                                <a href="#header" class="scrollup"><?php if (function_exists('rfpt_homepage_icon_svg') && is_front_page()) { echo rfpt_homepage_icon_svg('arrow-up'); } else { ?><i class="<?php echo esc_attr(get_theme_mod('food_grocery_store_scroll_to_top_icon','fas fa-long-arrow-alt-up')); ?>"></i><?php } ?><span class="screen-reader-text"><?php esc_html_e( 'Scroll Up', 'food-grocery-store' ); ?></span></a>
                             <?php }?>
                         <?php }?>
                   	</div>
