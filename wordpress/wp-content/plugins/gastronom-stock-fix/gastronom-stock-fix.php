@@ -1741,7 +1741,6 @@ function gastronom_remove_hidden_meta_boxes(): void {
             'tsseph_meta_box',
             'woocommerce-order-actions',
             'woocommerce-order-notes',
-            'gls_shipping_info_meta_box',
             'gastronom-weight-confirmation',
         ];
 

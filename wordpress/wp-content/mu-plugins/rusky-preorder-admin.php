@@ -134,7 +134,6 @@ function rpa_hidden_meta_box_ids(): array {
         'tsseph_meta_box',
         'woocommerce-order-actions',
         'woocommerce-order-notes',
-        'gls_shipping_info_meta_box',
         'gastronom-weight-confirmation',
     ];
 }
