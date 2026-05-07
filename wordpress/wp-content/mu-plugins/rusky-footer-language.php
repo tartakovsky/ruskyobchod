@@ -8,6 +8,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+function rfl_runtime_should_stand_down(): bool {
+    return function_exists('rslc_main_runtime_is_available')
+        ? rslc_main_runtime_is_available()
+        : (function_exists('gls_server_lang') || function_exists('gls_add_switcher'));
+}
+
 function rfl_current_lang(): string {
     if (function_exists('gls_server_lang')) {
         return gls_server_lang() === 'ru' ? 'ru' : 'sk';
@@ -74,10 +80,20 @@ function rfl_normalize_footer_html(string $html): string {
     return strtr($html, rfl_footer_replacements(rfl_current_lang()));
 }
 
-add_filter('render_block', function($block_content, $block = []) {
-    if (!is_string($block_content) || $block_content === '' || is_admin()) {
+function rfl_filter_render_block($block_content, $block = []) {
+    if (!is_string($block_content) || $block_content === '' || is_admin() || rfl_runtime_should_stand_down()) {
         return $block_content;
     }
 
     return rfl_normalize_footer_html($block_content);
-}, 120, 2);
+}
+
+add_filter('render_block', 'rfl_filter_render_block', 120, 2);
+
+add_action('plugins_loaded', function() {
+    if (!rfl_runtime_should_stand_down()) {
+        return;
+    }
+
+    remove_filter('render_block', 'rfl_filter_render_block', 120);
+}, 30);

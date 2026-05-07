@@ -208,7 +208,7 @@ function rsll_normalize_front_page_html(string $html, string $lang): string {
     return $html;
 }
 
-add_action('init', function() {
+function rsll_handle_init_cookie() {
     if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
         return;
     }
@@ -220,9 +220,9 @@ add_action('init', function() {
 
     setcookie('gastronom_lang', $query_lang, time() + YEAR_IN_SECONDS, COOKIEPATH ?: '/', COOKIE_DOMAIN, is_ssl(), false);
     $_COOKIE['gastronom_lang'] = $query_lang;
-}, 1);
+}
 
-add_action('wp_enqueue_scripts', function() {
+function rsll_enqueue_assets() {
     if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
         return;
     }
@@ -248,9 +248,9 @@ add_action('wp_enqueue_scripts', function() {
     }
 
     wp_add_inline_style('rsll-gls-style', $inline_css);
-}, 20);
+}
 
-add_action('wp_body_open', function() {
+function rsll_output_switcher() {
     if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
         return;
     }
@@ -268,9 +268,9 @@ add_action('wp_body_open', function() {
         . '<a class="gls-btn gls-btn-ru' . esc_attr($ru_class) . '" data-lang="ru" href="' . esc_url(rsll_switcher_url('ru')) . '" title="Русский">RU</a>'
         . '<a class="gls-btn gls-btn-sk' . esc_attr($sk_class) . '" data-lang="sk" href="' . esc_url(rsll_switcher_url('sk')) . '" title="Slovenčina">SK</a>'
         . '</div>';
-}, 20);
+}
 
-add_action('template_redirect', function() {
+function rsll_start_template_output_buffer() {
     if (function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down()) {
         return;
     }
@@ -286,4 +286,20 @@ add_action('template_redirect', function() {
 
         return rsll_normalize_front_page_html($html, rsll_current_lang());
     });
-}, 1);
+}
+
+add_action('init', 'rsll_handle_init_cookie', 1);
+add_action('wp_enqueue_scripts', 'rsll_enqueue_assets', 20);
+add_action('wp_body_open', 'rsll_output_switcher', 20);
+add_action('template_redirect', 'rsll_start_template_output_buffer', 1);
+
+add_action('plugins_loaded', function() {
+    if (!(function_exists('rslc_lite_runtime_should_stand_down') && rslc_lite_runtime_should_stand_down())) {
+        return;
+    }
+
+    remove_action('init', 'rsll_handle_init_cookie', 1);
+    remove_action('wp_enqueue_scripts', 'rsll_enqueue_assets', 20);
+    remove_action('wp_body_open', 'rsll_output_switcher', 20);
+    remove_action('template_redirect', 'rsll_start_template_output_buffer', 1);
+}, 30);

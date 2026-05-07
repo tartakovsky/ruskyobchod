@@ -103,6 +103,7 @@ function rtcl_phrase_map(string $lang): array {
             'Quantity' => 'Количество',
             'Returning customer?' => 'Уже покупали у нас?',
             'Click here to login' => 'Нажмите здесь, чтобы войти',
+            'If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing section.' => 'Если вы уже покупали у нас, введите свои данные ниже. Если вы новый покупатель, перейдите к разделу платёжных данных.',
             'Checkout' => 'Оформление заказа',
             'Order number' => 'Номер заказа',
             'Date' => 'Дата',
@@ -120,11 +121,21 @@ function rtcl_phrase_map(string $lang): array {
             'State / County' => 'Штат / регион',
             'Phone' => 'Телефон',
             'Email' => 'Эл. почта',
+            'Required' => 'Обязательно',
             '(optional)' => '(необязательно)',
             'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.' => 'Нет доступных вариантов доставки. Проверьте правильность введённого адреса или свяжитесь с нами, если нужна помощь.',
             'Shipping options will be updated during checkout.' => 'Варианты доставки будут обновлены при оформлении заказа.',
             'Save payment information to my account for future purchases.' => 'Сохранить платёжные данные в моём аккаунте для будущих покупок.',
             'I have read and agree to the website' => 'Я прочитал(а) и соглашаюсь с документом',
+            'Create an account?' => 'Создать аккаунт?',
+            'Create account password' => 'Пароль для аккаунта',
+            'Login' => 'Войти',
+            '— OR —' => '— ИЛИ —',
+            '&mdash; OR &mdash;' => '&mdash; ИЛИ &mdash;',
+            'Update totals' => 'Обновить итог',
+            'Since your browser does not support JavaScript, or it is disabled, please ensure you click the Update Totals button before placing your order. You may be charged more than the amount stated above if you fail to do so.' => 'Если ваш браузер не поддерживает JavaScript или он отключён, перед оформлением заказа обязательно нажмите кнопку «Обновить итог». Иначе сумма может отличаться от указанной выше.',
+            'Austria' => 'Австрия',
+            'Slovakia' => 'Словакия',
             'Shipping to ' => 'Доставка по адресу ',
             'Shipping to %s.' => 'Доставка по адресу %s.',
         ];
@@ -241,6 +252,7 @@ function rtcl_phrase_map(string $lang): array {
         'Уже покупали у нас?' => 'Už ste u nás nakupovali?',
         'Click here to login' => 'Kliknite sem pre prihlásenie',
         'Нажмите здесь, чтобы войти' => 'Kliknite sem pre prihlásenie',
+        'If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing section.' => 'Ak ste u nás už nakupovali, zadajte nižšie svoje údaje. Ak ste nový zákazník, pokračujte do sekcie fakturačných údajov.',
         'Checkout' => 'Objednávka',
         'Оформление заказа' => 'Objednávka',
         'Order number' => 'Číslo objednávky',
@@ -271,6 +283,7 @@ function rtcl_phrase_map(string $lang): array {
         'Телефон' => 'Telefón',
         'Email' => 'E-mail',
         'Эл. почта' => 'E-mail',
+        'Required' => 'Povinné',
         '(optional)' => '(voliteľné)',
         '(необязательно)' => '(voliteľné)',
         'There are no shipping options available. Please ensure that your address has been entered correctly, or contact us if you need any help.' => 'Nie sú dostupné žiadne možnosti dopravy. Skontrolujte správnosť zadanej adresy alebo nás kontaktujte, ak potrebujete pomoc.',
@@ -292,6 +305,18 @@ function rtcl_phrase_map(string $lang): array {
         'Notes about your order, e.g. special notes for delivery.' => 'Poznámka k objednávke, napr. upresnenie pre doručenie.',
         'Shipping options will be updated during checkout.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
         'Варианты доставки будут обновлены при оформлении заказа.' => 'Možnosti dopravy sa aktualizujú pri objednávke.',
+        'Create an account?' => 'Vytvoriť účet?',
+        'Создать аккаунт?' => 'Vytvoriť účet?',
+        'Create account password' => 'Heslo účtu',
+        'Login' => 'Prihlásiť sa',
+        '— OR —' => '— ALEBO —',
+        '&mdash; OR &mdash;' => '&mdash; ALEBO &mdash;',
+        'Update totals' => 'Aktualizovať sumu',
+        'Since your browser does not support JavaScript, or it is disabled, please ensure you click the Update Totals button before placing your order. You may be charged more than the amount stated above if you fail to do so.' => 'Ak váš prehliadač nepodporuje JavaScript alebo je vypnutý, pred odoslaním objednávky kliknite na tlačidlo „Aktualizovať sumu“. Inak môže byť účtovaná iná suma, než je uvedená vyššie.',
+        'Austria' => 'Rakúsko',
+        'Австрия' => 'Rakúsko',
+        'Slovakia' => 'Slovensko',
+        'Словакия' => 'Slovensko',
         'Shipping to ' => 'Doručenie na adresu ',
         'Доставка по адресу ' => 'Doručenie na adresu ',
         'Shipping to %s.' => 'Doručenie na adresu %s.',
@@ -600,8 +625,19 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
                 }
             }
 
-            if (trim($node->textContent) !== '') {
+            // Never rewrite the text content of a <select> element directly.
+            // Doing so collapses its nested <option> nodes into plain text.
+            if ($node->tagName !== 'select' && trim($node->textContent) !== '') {
                 $node->nodeValue = rtcl_translate_storefront_text(trim($node->textContent), $lang);
+            }
+        }
+    }
+
+    foreach ($xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " wcpay-express-checkout-wrapper ")]//p') ?: [] as $node) {
+        if ($node instanceof DOMElement) {
+            $text = trim($node->textContent);
+            if ($text !== '') {
+                $node->nodeValue = rtcl_translate_storefront_text($text, $lang);
             }
         }
     }

@@ -977,6 +977,9 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
     if ($lang === 'ru') {
         return strtr($html, [
             'Gastronom' => 'Гастроном',
+            'Zámocká 5, 811 01 Bratislava' => 'Замоцка 5, 811 01 Братислава',
+            'Zámocká 5' => 'Замоцка 5',
+            'Bratislava' => 'Братислава',
             'Палисьады' => 'Палисады',
             'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
             'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
@@ -993,6 +996,11 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
     }
 
     return strtr($html, [
+        'Замоцка 5, 811 01 Братислава' => 'Zámocká 5, 811 01 Bratislava',
+        'Замоцка 5' => 'Zámocká 5',
+        'Братислава' => 'Bratislava',
+        'Вход со&nbsp;стороны улицы&nbsp;Палисады' => 'Vchod z ulice Palisády',
+        'Вход со стороны улицы Палисады' => 'Vchod z ulice Palisády',
         'Словацкая Республика' => 'Slovenská republika',
         'Зарегистрирована в торговом реестре окружного суда Братислава I,' => 'Zapísaná v OR OS Bratislava I,',
         'Раздел s.r.o., № записи 182562/B' => 'Oddiel: Sro, Vložka č. 182562/B',
@@ -1040,7 +1048,15 @@ function gls_footer_block_needs_brand_normalization(string $content): bool {
 }
 
 function gls_footer_block_needs_legal_normalization(string $content): bool {
-    return strpos($content, 'Slovenská republika') !== false
+    return strpos($content, 'Zámocká 5, 811 01 Bratislava') !== false
+        || strpos($content, 'Замоцка 5, 811 01 Братислава') !== false
+        || strpos($content, 'Zámocká 5') !== false
+        || strpos($content, 'Замоцка 5') !== false
+        || strpos($content, 'Palisády') !== false
+        || strpos($content, 'Палисады') !== false
+        || strpos($content, 'Bratislava') !== false
+        || strpos($content, 'Братислава') !== false
+        || strpos($content, 'Slovenská republika') !== false
         || strpos($content, 'Словацкая Республика') !== false
         || strpos($content, 'Zapísaná v OR OS Bratislava I,') !== false
         || strpos($content, 'Зарегистрирована в торговом реестре окружного суда Братислава I,') !== false
@@ -1302,9 +1318,26 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
 
     if ($lang === 'ru') {
         $html = gls_replace_text_pairs($html, [
+            'Братислава • Palisády' => 'Братислава • Палисады',
+            'Братислава • Palis&aacute;dy' => 'Братислава • Палисады',
+            'Bratislava • Palisády' => 'Братислава • Палисады',
+            'Bratislava • Palis&aacute;dy' => 'Братислава • Палисады',
+            'aria-label="Top Menu"' => 'aria-label="Верхнее меню"',
+            'aria-label="Footer"' => 'aria-label="Подвал"',
+            '>Scroll Up<' => '>Прокрутить вверх<',
             'Палисьады' => 'Палисады',
             'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
             'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+        ]);
+    } else {
+        $html = gls_replace_text_pairs($html, [
+            'Братислава • Палисады' => 'Bratislava • Palisády',
+            'aria-label="Top Menu"' => 'aria-label="Horné menu"',
+            'aria-label="Верхнее меню"' => 'aria-label="Horné menu"',
+            'aria-label="Footer"' => 'aria-label="Päta stránky"',
+            'aria-label="Подвал"' => 'aria-label="Päta stránky"',
+            '>Прокрутить вверх<' => '>Späť hore<',
+            '>Scroll Up<' => '>Späť hore<',
         ]);
     }
 
