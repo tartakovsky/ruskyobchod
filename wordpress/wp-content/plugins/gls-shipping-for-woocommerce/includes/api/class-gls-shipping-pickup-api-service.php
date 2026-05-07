@@ -86,8 +86,9 @@ private function convert_date_to_dotnet_format($date_string)
             $request_data = array(
                 'Username' => $username,
                 'Password' => $this->get_password(),
-                'ClientNumber' => $client_number,
-                'Count' => $pickup_data['package_count'],
+                'ClientNumber' => (int) $client_number,
+                'Count' => (int) $pickup_data['package_count'],
+                'Info' => '',
                 'PickupTimeFrom' => $this->convert_date_to_dotnet_format($pickup_data['pickup_date_from']),
                 'PickupTimeTo' => $this->convert_date_to_dotnet_format($pickup_data['pickup_date_to']),
                 'Address' => array(
