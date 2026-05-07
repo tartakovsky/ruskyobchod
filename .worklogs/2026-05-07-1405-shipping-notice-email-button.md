@@ -23,3 +23,11 @@ The store needs a manual order-page action for notifying a customer about the pl
 - Live PHP syntax check passed.
 - WordPress bootstrap confirmed the MU plugin function is loaded.
 - No customer notification email was sent during deployment.
+
+## Follow-up
+
+- Updated the email copy to say the order is ready and the date is the planned handoff to the courier service.
+- For GLS orders, the default handoff date now comes from the latest successful GLS Pickup History entry instead of today's date.
+- Verified order `11277` resolves carrier `GLS` and default date `2026-05-11` on live.
+- Sent a corrected test email to `gastronom@trtk.me`; no customer email was sent.
+- Replaced the nested metabox form with a nonce-protected admin-post link button. The WooCommerce order edit screen already contains a form, so the nested form could redirect to the wrong admin section instead of sending the notice.

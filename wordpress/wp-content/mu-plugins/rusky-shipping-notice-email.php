@@ -109,7 +109,37 @@ function rsne_tracking_url(string $carrier, string $tracking_number): string {
     return '';
 }
 
-function rsne_default_dispatch_date(): string {
+function rsne_latest_gls_pickup_date(): string {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'gls_pickup_history';
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Reads the GLS plugin's custom pickup-history table.
+    $request_data = $wpdb->get_var("SELECT request_data FROM {$table_name} WHERE status = 'success' ORDER BY created_at DESC, id DESC LIMIT 1");
+    if (!is_string($request_data) || trim($request_data) === '') {
+        return '';
+    }
+
+    $decoded = json_decode($request_data, true);
+    if (!is_array($decoded) || empty($decoded['pickup_date_from'])) {
+        return '';
+    }
+
+    $timestamp = strtotime((string) $decoded['pickup_date_from']);
+    if ($timestamp === false) {
+        return '';
+    }
+
+    return wp_date('Y-m-d', $timestamp);
+}
+
+function rsne_default_dispatch_date(string $carrier = ''): string {
+    if (strtolower($carrier) === 'gls') {
+        $pickup_date = rsne_latest_gls_pickup_date();
+        if ($pickup_date !== '') {
+            return $pickup_date;
+        }
+    }
+
     return wp_date('Y-m-d');
 }
 
@@ -130,7 +160,7 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
     $tracking_numbers = rsne_get_order_tracking_numbers($order);
     $last_sent_at = (string) $order->get_meta('_rusky_shipping_notice_sent_at', true);
     $last_sent_date = (string) $order->get_meta('_rusky_shipping_notice_dispatch_date', true);
-    $dispatch_date = $last_sent_date !== '' ? $last_sent_date : rsne_default_dispatch_date();
+    $dispatch_date = $last_sent_date !== '' ? $last_sent_date : rsne_default_dispatch_date($carrier);
 
     echo '<p><strong>Email:</strong><br>' . esc_html($email) . '</p>';
     echo '<p><strong>Перевозчик:</strong><br>' . esc_html($carrier) . '</p>';
@@ -141,16 +171,39 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
         echo '<p style="color:#646970;"><strong>Последняя отправка:</strong><br>' . esc_html($last_sent_at) . '</p>';
     }
 
-    echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
-    echo '<input type="hidden" name="action" value="rusky_send_shipping_notice">';
-    echo '<input type="hidden" name="order_id" value="' . esc_attr((string) $order->get_id()) . '">';
-    wp_nonce_field('rusky_send_shipping_notice_' . $order->get_id(), 'rusky_shipping_notice_nonce');
+    $send_url = wp_nonce_url(
+        add_query_arg(
+            [
+                'action' => 'rusky_send_shipping_notice',
+                'order_id' => $order->get_id(),
+            ],
+            admin_url('admin-post.php')
+        ),
+        'rusky_send_shipping_notice_' . $order->get_id(),
+        'rusky_shipping_notice_nonce'
+    );
+
     echo '<p>';
-    echo '<label for="rusky_shipping_notice_dispatch_date"><strong>Дата отправки</strong></label><br>';
+    echo '<label for="rusky_shipping_notice_dispatch_date"><strong>Дата передачи курьеру</strong></label><br>';
     echo '<input type="date" id="rusky_shipping_notice_dispatch_date" name="dispatch_date" value="' . esc_attr($dispatch_date) . '" style="width:100%;">';
     echo '</p>';
-    submit_button('Отправить клиенту', 'primary', 'submit', false, ['style' => 'width:100%;']);
-    echo '</form>';
+    echo '<p><a href="' . esc_url(add_query_arg('dispatch_date', $dispatch_date, $send_url)) . '" class="button button-primary" id="rusky_shipping_notice_send" data-base-url="' . esc_url($send_url) . '" style="width:100%;text-align:center;">Отправить клиенту</a></p>';
+    echo '<script>
+        (function() {
+            var dateInput = document.getElementById("rusky_shipping_notice_dispatch_date");
+            var sendButton = document.getElementById("rusky_shipping_notice_send");
+            if (!dateInput || !sendButton) {
+                return;
+            }
+            var updateHref = function() {
+                var baseUrl = sendButton.getAttribute("data-base-url");
+                var separator = baseUrl.indexOf("?") === -1 ? "?" : "&";
+                sendButton.href = baseUrl + separator + "dispatch_date=" + encodeURIComponent(dateInput.value || "");
+            };
+            dateInput.addEventListener("change", updateHref);
+            updateHref();
+        })();
+    </script>';
 }
 
 function rsne_format_display_date(string $date): string {
@@ -185,16 +238,16 @@ function rsne_build_shipping_notice_message(WC_Order $order, string $carrier, ar
     $html = '<p>Dobrý deň,</p>';
     $html .= '<p>vaša objednávka č. <strong>' . esc_html($order_number) . '</strong> je pripravená na odoslanie.</p>';
     $html .= '<p><strong>Dopravca:</strong> ' . esc_html($carrier) . '<br>';
-    $html .= '<strong>Plánovaný dátum odoslania:</strong> ' . esc_html($date_display) . '</p>';
+    $html .= '<strong>Plánovaný dátum odovzdania kuriérskej službe:</strong> ' . esc_html($date_display) . '</p>';
     $html .= $tracking_sk . $link_sk;
     $html .= '<p>Ďakujeme za objednávku.</p>';
 
     $html .= '<hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0;">';
 
     $html .= '<p>Здравствуйте,</p>';
-    $html .= '<p>ваш заказ № <strong>' . esc_html($order_number) . '</strong> подготовлен к отправке.</p>';
+    $html .= '<p>ваш заказ № <strong>' . esc_html($order_number) . '</strong> готов к отправке.</p>';
     $html .= '<p><strong>Служба доставки:</strong> ' . esc_html($carrier) . '<br>';
-    $html .= '<strong>Планируемая дата отправки:</strong> ' . esc_html($date_display) . '</p>';
+    $html .= '<strong>Планируемая дата передачи курьерской службе:</strong> ' . esc_html($date_display) . '</p>';
     $html .= $tracking_ru . $link_ru;
     $html .= '<p>Спасибо за заказ.</p>';
 
@@ -238,7 +291,7 @@ function rsne_send_shipping_notice(WC_Order $order, string $dispatch_date): bool
 }
 
 function rsne_handle_send_shipping_notice(): void {
-    $order_id = isset($_POST['order_id']) ? (int) wp_unslash($_POST['order_id']) : 0;
+    $order_id = isset($_REQUEST['order_id']) ? (int) wp_unslash($_REQUEST['order_id']) : 0;
     $redirect = $order_id > 0 ? get_edit_post_link($order_id, 'raw') : admin_url('edit.php?post_type=shop_order');
 
     if ($order_id <= 0 || (!current_user_can('edit_post', $order_id) && !current_user_can('manage_woocommerce'))) {
@@ -246,13 +299,13 @@ function rsne_handle_send_shipping_notice(): void {
         exit;
     }
 
-    $nonce = isset($_POST['rusky_shipping_notice_nonce']) ? sanitize_text_field(wp_unslash($_POST['rusky_shipping_notice_nonce'])) : '';
+    $nonce = isset($_REQUEST['rusky_shipping_notice_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['rusky_shipping_notice_nonce'])) : '';
     if (!wp_verify_nonce($nonce, 'rusky_send_shipping_notice_' . $order_id)) {
         wp_safe_redirect(add_query_arg('rusky_shipping_notice', 'nonce', $redirect));
         exit;
     }
 
-    $dispatch_date = isset($_POST['dispatch_date']) ? sanitize_text_field(wp_unslash($_POST['dispatch_date'])) : '';
+    $dispatch_date = isset($_REQUEST['dispatch_date']) ? sanitize_text_field(wp_unslash($_REQUEST['dispatch_date'])) : '';
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dispatch_date)) {
         wp_safe_redirect(add_query_arg('rusky_shipping_notice', 'date', $redirect));
         exit;
