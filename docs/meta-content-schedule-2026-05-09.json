@@ -1,0 +1,59 @@
+{
+  "timezone": "Europe/Bratislava",
+  "business_id": "883240858199545",
+  "business_suite_asset_id": "883209351536029",
+  "posts": [
+    {
+      "id": "sat-sweets-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "meta_scheduled_post_id": "883209351536029_122133984861089306",
+      "scheduled_at": "2026-05-09T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Конфета и кот 1.jpg",
+      "public_url": "",
+      "caption": "Сладости, которые узнаешь с первого укуса.\n\nКонфеты, зефир, пряники, сгущенка и другие продукты для дома уже на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_1&utm_content=sweets_family\n\nGastronom Bratislava работает уже 17 лет.\nТеперь заказать можно и онлайн.\n\nКод для первого заказа: PALISADY5\n\n#gastronombratislava #sladkosti #bratislava #ruskyobchod #familyfood"
+    },
+    {
+      "id": "sun-caviar-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "meta_facebook_scheduled_post_id": "883209351536029_122133986841089306",
+      "meta_facebook_video_id": "985007813989620",
+      "scheduled_at": "2026-05-10T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/5_caviar.mp4",
+      "public_url": "",
+      "caption": "Икра к выходным или к небольшому домашнему празднику.\n\nСмотрите наличие и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_1&utm_content=caviar_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#ikra #caviar #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "mon-store-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "meta_scheduled_post_id": "883209351536029_122133985041089306",
+      "scheduled_at": "2026-05-11T18:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.24.28.jpeg",
+      "public_url": "",
+      "caption": "Gastronom Bratislava - магазин, который многие знают офлайн.\n\nНо не все знают, что теперь можно заказать продукты через сайт:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_1&utm_content=17_years\n\nРаботаем уже 17 лет.\nДоставка по Словакии.\nСамовывоз в Bratislava-Palisady.\n\n#gastronombratislava #bratislava #slovakia #ruskyobchod #potraviny"
+    },
+    {
+      "id": "tue-sgushenka-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "meta_facebook_scheduled_post_id": "883209351536029_122133987015089306",
+      "meta_facebook_video_id": "2042491066335235",
+      "scheduled_at": "2026-05-12T11:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/20_sgushenka.mp4",
+      "public_url": "",
+      "caption": "Сгущенка - маленькая банка, много воспоминаний.\n\nСмотрите ассортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_1&utm_content=sgushenka\n\nДля первого заказа: PALISADY5\n\n#sgushenka #gastronombratislava #bratislava #ruskyobchod #sladkosti"
+    },
+    {
+      "id": "wed-drinks-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "meta_scheduled_post_id": "883209351536029_122133986037089306",
+      "scheduled_at": "2026-05-13T18:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Print 2.png",
+      "public_url": "",
+      "caption": "Холодные напитки, квас, минералка и что-нибудь сладкое - на теплые дни.\n\nЗаказ онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_1&utm_content=cool_drinks\n\nДоставка по Словакии.\nСамовывоз: Bratislava-Palisady.\n\n#gastronombratislava #bratislava #kvass #borjomi #ruskyobchod"
+    }
+  ]
+}

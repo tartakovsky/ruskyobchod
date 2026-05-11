@@ -3,7 +3,7 @@ set -eu
 
 BASE_URL="${1:-https://ruskyobchod.sk}"
 CATEGORY_PATH="${2:-/kategoria-produktu/sneki-snacky/}"
-PRODUCT_PATH="${3:-/produkt/krekry-kirie-ky-syr-unka-suhariki-kirieshki-syr-vetchina/}"
+PRODUCT_PATH="${3:-/produkt/su-ienky-ovsen-300g-pechene-ovsyanoe-300g/}"
 
 need_cmd() {
     command -v "$1" >/dev/null 2>&1 || {
