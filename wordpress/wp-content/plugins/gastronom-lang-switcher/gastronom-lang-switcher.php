@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Gastronom Language Switcher
  * Description: Простой переключатель RU/SK для двуязычных названий товаров + стили сайта
- * Version: 6.25
+ * Version: 6.26
  * Author: Gastronom
  */
 
@@ -39,6 +39,29 @@ function gls_is_wp_login_request(): bool {
     return strpos(gls_request_path(), '/wp-login.php') === 0;
 }
 
+function gls_request_url_path(): string {
+    $path = wp_parse_url(gls_request_path(), PHP_URL_PATH);
+    return is_string($path) && $path !== '' ? $path : '/';
+}
+
+function gls_is_indexing_infrastructure_request(): bool {
+    $path = gls_request_url_path();
+
+    if ($path === '/robots.txt') {
+        return true;
+    }
+
+    if (preg_match('~/(?:wp-)?sitemap[^/]*\.xml$~i', $path) === 1) {
+        return true;
+    }
+
+    if (preg_match('~/feed/?$~i', $path) === 1 || isset($_GET['feed'])) {
+        return true;
+    }
+
+    return false;
+}
+
 function gls_is_logged_in_operator_request(): bool {
     if (!function_exists('is_user_logged_in') || !is_user_logged_in()) {
         return false;
@@ -56,6 +79,10 @@ function gls_is_logged_in_operator_request(): bool {
 }
 
 function gls_is_render_blocked_request(): bool {
+    if (gls_is_indexing_infrastructure_request()) {
+        return true;
+    }
+
     if (gls_is_wp_login_request()) {
         return true;
     }
@@ -107,6 +134,89 @@ function gls_has_explicit_lang_context(): bool {
 
     $cookie_lang = isset($_COOKIE['gastronom_lang']) ? sanitize_key(wp_unslash($_COOKIE['gastronom_lang'])) : '';
     return gls_is_supported_lang($cookie_lang);
+}
+
+function gls_has_query_lang_context(): bool {
+    $query_lang = isset($_GET['lang']) ? sanitize_key(wp_unslash($_GET['lang'])) : '';
+    return gls_is_supported_lang($query_lang);
+}
+
+function gls_is_public_indexable_surface(): bool {
+    if (gls_is_render_blocked_request()) {
+        return false;
+    }
+
+    if (is_404() || is_search()) {
+        return false;
+    }
+
+    if ((function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout())) {
+        return false;
+    }
+
+    if (function_exists('is_account_page') && is_account_page()) {
+        return false;
+    }
+
+    return is_front_page()
+        || is_singular()
+        || (function_exists('is_shop') && is_shop())
+        || (function_exists('is_product_taxonomy') && is_product_taxonomy());
+}
+
+function gls_clean_canonical_url(): string {
+    $url = '';
+
+    if (is_front_page()) {
+        $url = home_url('/');
+    } elseif (function_exists('is_shop') && is_shop() && function_exists('wc_get_page_permalink')) {
+        $url = wc_get_page_permalink('shop');
+    } elseif (is_singular()) {
+        $permalink = get_permalink();
+        $url = is_string($permalink) ? $permalink : '';
+    } elseif (function_exists('is_product_taxonomy') && is_product_taxonomy()) {
+        $term = get_queried_object();
+        $term_link = is_object($term) ? get_term_link($term) : '';
+        $url = is_wp_error($term_link) ? '' : (string) $term_link;
+    }
+
+    if ($url === '') {
+        return '';
+    }
+
+    return remove_query_arg('lang', $url);
+}
+
+function gls_output_clean_canonical_link(): void {
+    if (!gls_is_public_indexable_surface()) {
+        return;
+    }
+
+    $canonical_url = gls_clean_canonical_url();
+    if ($canonical_url === '') {
+        return;
+    }
+
+    echo '<link rel="canonical" href="' . esc_url($canonical_url) . '">' . "\n";
+}
+
+function gls_mark_query_lang_urls_noindex(array $robots): array {
+    if (!gls_has_query_lang_context() || !gls_is_public_indexable_surface()) {
+        return $robots;
+    }
+
+    $robots['noindex'] = true;
+    $robots['follow'] = true;
+
+    return $robots;
+}
+
+function gls_remove_user_sitemap_provider($provider, string $name) {
+    if ($name === 'users') {
+        return false;
+    }
+
+    return $provider;
 }
 
 function gls_redirect_target_is_auth_path(string $location): bool {
@@ -957,6 +1067,10 @@ add_filter('wpseo_twitter_title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/frontend/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/facebook/title', 'gls_normalize_public_title', 20);
 add_filter('rank_math/opengraph/twitter/title', 'gls_normalize_public_title', 20);
+remove_action('wp_head', 'rel_canonical');
+add_action('wp_head', 'gls_output_clean_canonical_link', 2);
+add_filter('wp_robots', 'gls_mark_query_lang_urls_noindex', 20);
+add_filter('wp_sitemaps_add_provider', 'gls_remove_user_sitemap_provider', 20, 2);
 
 function gls_skip_link_replacement(string $lang): string {
     return $lang === 'ru'
