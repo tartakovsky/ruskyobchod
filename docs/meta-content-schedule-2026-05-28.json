@@ -1,0 +1,93 @@
+{
+  "timezone": "Europe/Bratislava",
+  "business_id": "883240858199545",
+  "business_suite_asset_id": "883209351536029",
+  "campaign": "trust_week_3_morning",
+  "status": "scheduled_in_business_suite",
+  "prepared_at": "2026-05-27T17:15:00+02:00",
+  "notes": [
+    "Plan for Thursday 2026-05-28 through Thursday 2026-06-04.",
+    "Preferred posting window: 11:00 Europe/Bratislava.",
+    "Facebook photo posts can be scheduled through the local Graph tool when a valid page token is available.",
+    "Instagram/Reels entries can be scheduled in Meta Business Suite, or with the existing fallback as Facebook Page videos when META_FACEBOOK_FALLBACK_FOR_INSTAGRAM=1 is set.",
+    "2026-05-27 check: saved Meta token failed with OAuthException code 190, 'The access token could not be decrypted'.",
+    "2026-05-27 check: Business Suite normal Create post composer rejected vertical reel media for Instagram as wrong aspect ratio; use the dedicated Create reel flow for actual Instagram reels.",
+    "2026-05-27 update: scheduled reel posts through Meta Business Suite for Facebook and Instagram at 11:00 Europe/Vienna/Bratislava on 2026-05-28, 2026-05-30, 2026-06-01 and 2026-06-03.",
+    "2026-05-27 update: scheduled photo posts through Meta Business Suite for Facebook and Instagram at 11:00 Europe/Vienna/Bratislava on 2026-05-29, 2026-05-31, 2026-06-02 and 2026-06-04.",
+    "2026-05-27 verification: Planner showed Facebook and Instagram entries at 11:00 for all planned dates from 2026-05-28 through 2026-06-04."
+  ],
+  "posts": [
+    {
+      "id": "thu-28-pelmeni-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-05-28T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/34_pelmeni.mp4",
+      "public_url": "",
+      "caption": "Пельмени на быстрый обед или ужин дома.\n\nСмотрите ассортимент и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=pelmeni_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#pelmeni #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "fri-29-store-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-05-29T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.24.28.jpeg",
+      "public_url": "",
+      "caption": "Gastronom Bratislava - знакомый магазин на Palisady 17 и онлайн-заказ на ruskyobchod.sk.\n\nЗаказать продукты:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=store_online\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\nКод для первого заказа: PALISADY5\n\n#gastronombratislava #bratislava #ruskyobchod #potraviny"
+    },
+    {
+      "id": "sat-30-herring-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-05-30T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/6_herring.mp4",
+      "public_url": "",
+      "caption": "Сельдь, копченая рыба и закуски к выходным.\n\nСмотрите наличие на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=herring_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#herring #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "sun-31-sweets-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-05-31T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Конфета и кот 1.jpg",
+      "public_url": "",
+      "caption": "Сладости к чаю: конфеты, зефир, пряники и знакомые вкусы для дома.\n\nЗаказать онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=sweets\n\nДля первого заказа: PALISADY5\n\n#gastronombratislava #sladkosti #bratislava #ruskyobchod"
+    },
+    {
+      "id": "mon-01-kvass-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-01T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/17_kvass.mp4",
+      "public_url": "",
+      "caption": "Квас и прохладные напитки на теплые дни.\n\nСмотрите наличие и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=kvass_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#kvass #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "tue-02-pickles-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-06-02T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.23.54.jpeg",
+      "public_url": "",
+      "caption": "Соленые огурцы, маринованные овощи, закуски и продукты к ужину.\n\nОнлайн-заказ:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=pickles\n\nСамовывоз: Bratislava-Palisady.\nДоставка по Словакии.\n\n#gastronombratislava #bratislava #pickles #ruskyobchod"
+    },
+    {
+      "id": "wed-03-smoked-fish-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-03T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/24_smoked_fish.mp4",
+      "public_url": "",
+      "caption": "Копченая рыба и закуски, которые удобно добавить к заказу домой.\n\nАссортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=smoked_fish_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#smokedfish #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "thu-04-weekend-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-06-04T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Print 2.png",
+      "public_url": "",
+      "caption": "Перед выходными удобно собрать заказ заранее: напитки, сладости, закуски и продукты домой.\n\nОнлайн-заказ:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_3_morning&utm_content=weekend_basket\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#gastronombratislava #bratislava #ruskyobchod #weekend"
+    }
+  ]
+}

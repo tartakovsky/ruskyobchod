@@ -1,0 +1,95 @@
+{
+  "timezone": "Europe/Bratislava",
+  "business_id": "883240858199545",
+  "business_suite_asset_id": "883209351536029",
+  "campaign": "trust_week_4_morning",
+  "status": "facebook_scheduled_instagram_partial",
+  "prepared_at": "2026-06-08T10:31:00+02:00",
+  "notes": [
+    "Plan for Monday 2026-06-08 through Sunday 2026-06-14.",
+    "Preferred posting window: 11:00 Europe/Bratislava; first day uses 12:00 because the plan was prepared at 10:31 on 2026-06-08.",
+    "Use Meta Business Suite Create reel flow for vertical reel media; the normal Create post composer may reject vertical reel media for Instagram.",
+    "Schedule to both Facebook and Instagram where Meta Business Suite allows it.",
+    "Do not publish immediately; all entries must be scheduled.",
+    "2026-06-08 update: recovered Page token from the active Meta Business Suite session and scheduled Facebook entries through Graph API.",
+    "2026-06-08 update: Graph /videos worked for reel-style Facebook posts; Graph /photos failed with OAuthException code 200, 'User must have accepted TOS', so photo concepts were scheduled as Facebook feed/link posts.",
+    "2026-06-08 verification: Meta Planner showed the week of 2026-06-08 with Facebook entries for 2026-06-08, 2026-06-09, 2026-06-10, 2026-06-11, 2026-06-12, and 2026-06-13 in the visible week view.",
+    "2026-06-08 verification: Planner also showed an Instagram entry at 12:00 on 2026-06-08. Additional Instagram-only reel scheduling through Business Suite was attempted for 2026-06-10, but the Schedule panel became unstable before final submission, so it was not submitted."
+  ],
+  "posts": [
+    {
+      "id": "mon-08-pelmeni-reel",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-08T12:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/35_pelmeni.mp4",
+      "public_url": "",
+      "caption": "Пельмени на быстрый обед или ужин дома.\n\nСмотрите ассортимент и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=pelmeni_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#pelmeni #gastronombratislava #bratislava #ruskyobchod",
+      "meta_facebook_video_id": "998848216336740",
+      "meta_business_suite_verification": "Planner showed 12:00 Instagram and 12:00 Facebook entries on 2026-06-08."
+    },
+    {
+      "id": "tue-09-store-photo",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-06-09T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.24.16.jpeg",
+      "public_url": "",
+      "caption": "Gastronom Bratislava - знакомый магазин на Palisady 17 и онлайн-заказ на ruskyobchod.sk.\n\nЗаказать продукты:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=store_online\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\nКод для первого заказа: PALISADY5\n\n#gastronombratislava #bratislava #ruskyobchod #potraviny",
+      "meta_facebook_scheduled_post_id": "883209351536029_122137688733089306",
+      "meta_facebook_fallback": "Scheduled as feed/link post because Graph photo upload returned OAuthException code 200."
+    },
+    {
+      "id": "wed-10-caviar-reel",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-10T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/38_caviar.mp4",
+      "public_url": "",
+      "caption": "Икра к выходным или к небольшому домашнему празднику.\n\nСмотрите наличие и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=caviar_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#ikra #caviar #gastronombratislava #bratislava #ruskyobchod",
+      "meta_facebook_video_id": "1002946955922092"
+    },
+    {
+      "id": "thu-11-sweets-photo",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-06-11T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Конфета и кот 1.jpg",
+      "public_url": "",
+      "caption": "Сладости к чаю: конфеты, зефир, пряники и знакомые вкусы для дома.\n\nЗаказать онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=sweets\n\nДля первого заказа: PALISADY5\n\n#gastronombratislava #sladkosti #bratislava #ruskyobchod",
+      "meta_facebook_scheduled_post_id": "883209351536029_122137689153089306",
+      "meta_facebook_fallback": "Scheduled as feed/link post because Graph photo upload returned OAuthException code 200."
+    },
+    {
+      "id": "fri-12-smoked-fish-reel",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-12T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/27_smoked_fish.mp4",
+      "public_url": "",
+      "caption": "Копченая рыба и закуски, которые удобно добавить к заказу домой.\n\nАссортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=smoked_fish_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#smokedfish #gastronombratislava #bratislava #ruskyobchod",
+      "meta_facebook_video_id": "1024560230266345"
+    },
+    {
+      "id": "sat-13-weekend-photo",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-06-13T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Print 2.png",
+      "public_url": "",
+      "caption": "Перед выходными удобно собрать заказ заранее: напитки, сладости, закуски и продукты домой.\n\nОнлайн-заказ:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=weekend_basket\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#gastronombratislava #bratislava #ruskyobchod #weekend",
+      "meta_facebook_scheduled_post_id": "883209351536029_122137689189089306",
+      "meta_facebook_fallback": "Scheduled as feed/link post because Graph photo upload returned OAuthException code 200."
+    },
+    {
+      "id": "sun-14-zefir-reel",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-06-14T11:00:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/22_zefir.mp4",
+      "public_url": "",
+      "caption": "Зефир, конфеты и сладости к чаю.\n\nАссортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_4_morning&utm_content=zefir_reel\n\nКод для первого заказа: PALISADY5\n\n#zefir #sladkosti #gastronombratislava #bratislava #ruskyobchod",
+      "meta_facebook_video_id": "1695444578574609"
+    }
+  ]
+}

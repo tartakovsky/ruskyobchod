@@ -1,0 +1,70 @@
+{
+  "timezone": "Europe/Bratislava",
+  "business_id": "883240858199545",
+  "business_suite_asset_id": "883209351536029",
+  "campaign": "trust_week_2",
+  "status": "draft_not_submitted_to_meta",
+  "prepared_at": "2026-05-14T10:11:56+02:00",
+  "notes": [
+    "Plan for Monday 2026-05-18 through Sunday 2026-05-24.",
+    "Do not execute without a fresh Meta Planner/API check.",
+    "Facebook photo posts can be scheduled through the local Graph tool when a valid page token is available.",
+    "Instagram/Reels should be scheduled in Meta Business Suite or by a publish-time job; do not create IG containers days ahead."
+  ],
+  "posts": [
+    {
+      "id": "mon-store-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-05-18T18:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.24.02.jpeg",
+      "public_url": "",
+      "caption": "Gastronom Bratislava - продукты, которые удобно взять в магазине или заказать онлайн.\n\nАдрес: Palisady 17, Bratislava.\nОнлайн-заказ:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=store_online\n\nСамовывоз в Bratislava-Palisady.\nДоставка по Словакии.\n\nКод для первого заказа: PALISADY5\n\n#gastronombratislava #bratislava #ruskyobchod #potraviny"
+    },
+    {
+      "id": "tue-pelmeni-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-05-19T11:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/31_pelmeni.mp4",
+      "public_url": "",
+      "caption": "Пельмени на быстрый обед или ужин дома.\n\nСмотрите ассортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=pelmeni_reel\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#pelmeni #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "wed-pickles-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-05-20T18:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.23.54.jpeg",
+      "public_url": "",
+      "caption": "Соленые огурцы, маринованные овощи, закуски и продукты к ужину.\n\nЗаказать онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=pickles_table\n\nСамовывоз: Bratislava-Palisady.\nДоставка по Словакии.\n\n#gastronombratislava #bratislava #pickles #ruskyobchod"
+    },
+    {
+      "id": "thu-kvass-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-05-21T11:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/17_kvass.mp4",
+      "public_url": "",
+      "caption": "Квас и прохладные напитки на теплые дни.\n\nСмотрите наличие и заказывайте онлайн:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=kvass_reel\n\nДля первого заказа: PALISADY5\n\n#kvass #gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "fri-weekend-facebook",
+      "platform": "facebook",
+      "kind": "photo",
+      "scheduled_at": "2026-05-22T18:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/Print 2.png",
+      "public_url": "",
+      "caption": "Перед выходными удобно собрать заказ заранее: напитки, сладости, закуски и продукты домой.\n\nОнлайн-заказ:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=weekend_basket\n\nСамовывоз Bratislava-Palisady.\nДоставка по Словакии.\n\n#gastronombratislava #bratislava #ruskyobchod #weekend"
+    },
+    {
+      "id": "sun-zefir-reel-instagram",
+      "platform": "instagram",
+      "kind": "reel",
+      "scheduled_at": "2026-05-24T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/19_zefir.mp4",
+      "public_url": "",
+      "caption": "Зефир, конфеты и сладости к чаю.\n\nАссортимент на сайте:\nhttps://ruskyobchod.sk/?utm_source=meta&utm_medium=organic&utm_campaign=trust_week_2&utm_content=zefir_reel\n\nКод для первого заказа: PALISADY5\n\n#zefir #sladkosti #gastronombratislava #bratislava #ruskyobchod"
+    }
+  ]
+}
