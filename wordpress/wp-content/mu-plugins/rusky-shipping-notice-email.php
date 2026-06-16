@@ -84,6 +84,28 @@ function rsne_get_order_shipping_company(WC_Order $order): string {
 }
 
 function rsne_get_order_tracking_numbers(WC_Order $order): array {
+    $carrier = strtolower(rsne_get_order_shipping_company($order));
+
+    if ($carrier === 'packeta') {
+        $packeta_packet_id = rsne_get_packeta_packet_id($order);
+        return $packeta_packet_id !== '' ? [rsne_packeta_packet_barcode($packeta_packet_id)] : [];
+    }
+
+    if ($carrier === 'gls') {
+        return rsne_get_gls_tracking_numbers($order);
+    }
+
+    $tracking_numbers = rsne_get_gls_tracking_numbers($order);
+
+    $packeta_packet_id = rsne_get_packeta_packet_id($order);
+    if ($packeta_packet_id !== '') {
+        $tracking_numbers[] = rsne_packeta_packet_barcode($packeta_packet_id);
+    }
+
+    return array_values(array_unique($tracking_numbers));
+}
+
+function rsne_get_gls_tracking_numbers(WC_Order $order): array {
     $tracking_numbers = [];
 
     $gls_tracking_codes = $order->get_meta('_gls_tracking_codes', true);
@@ -106,9 +128,38 @@ function rsne_get_order_tracking_numbers(WC_Order $order): array {
     return array_values(array_unique($tracking_numbers));
 }
 
+function rsne_get_packeta_packet_id(WC_Order $order): string {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'packetery_order';
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads Packeta plugin's order table for the packet created for this WooCommerce order.
+    $packet_id = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT packet_id FROM {$table_name} WHERE id = %d AND packet_id IS NOT NULL AND packet_id != '' LIMIT 1",
+            $order->get_id()
+        )
+    );
+
+    if (!is_scalar($packet_id)) {
+        return '';
+    }
+
+    return preg_replace('/\D+/', '', (string) $packet_id);
+}
+
+function rsne_packeta_packet_barcode(string $packet_id): string {
+    $packet_id = preg_replace('/\D+/', '', $packet_id);
+    return $packet_id !== '' ? 'Z' . $packet_id : '';
+}
+
 function rsne_tracking_url(string $carrier, string $tracking_number): string {
     if (strtolower($carrier) === 'gls') {
         return 'https://gls-group.eu/SK/en/parcel-tracking/?match=' . rawurlencode($tracking_number);
+    }
+
+    if (strtolower($carrier) === 'packeta') {
+        $packet_id = preg_replace('/\D+/', '', $tracking_number);
+        return $packet_id !== '' ? 'https://tracking.packeta.com/Z' . rawurlencode($packet_id) : '';
     }
 
     return '';
@@ -167,6 +218,7 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
     $last_sent_date = (string) $order->get_meta('_rusky_shipping_notice_dispatch_date', true);
     $dispatch_date = $last_sent_date !== '' ? $last_sent_date : rsne_default_dispatch_date($carrier);
 
+    echo '<div id="rusky-shipping-notice-content">';
     echo '<p><strong>Email:</strong><br>' . esc_html($email) . '</p>';
     echo '<p><strong>Перевозчик:</strong><br>' . esc_html($carrier) . '</p>';
     if (!empty($tracking_numbers)) {
@@ -196,10 +248,11 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
     );
 
     echo '<p>';
-    echo '<label for="rusky_shipping_notice_dispatch_date"><strong>Дата передачи курьеру</strong></label><br>';
+    echo '<label for="rusky_shipping_notice_dispatch_date"><strong>Дата передачи перевозчику</strong></label><br>';
     echo '<input type="date" id="rusky_shipping_notice_dispatch_date" name="dispatch_date" value="' . esc_attr($dispatch_date) . '" style="width:100%;">';
     echo '</p>';
     echo '<p><a href="' . esc_url(add_query_arg('dispatch_date', $dispatch_date, $send_url)) . '" class="button button-primary" id="rusky_shipping_notice_send" data-base-url="' . esc_url($send_url) . '" style="width:100%;text-align:center;">Отправить клиенту</a></p>';
+    echo '</div>';
     echo '<script>
         (function() {
             var dateInput = document.getElementById("rusky_shipping_notice_dispatch_date");
@@ -216,6 +269,72 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
             updateHref();
         })();
     </script>';
+
+    if (strtolower($carrier) === 'packeta') {
+        rsne_render_packeta_inline_notice_script();
+    }
+}
+
+function rsne_render_packeta_inline_notice_script(): void {
+    ?>
+    <style>
+        #packetery_metabox .rsne-packeta-inline-notice {
+            border-left: 4px solid #2271b1;
+            background: #f6f7f7;
+            margin-top: 14px;
+            padding: 10px 12px;
+        }
+
+        #packetery_metabox .rsne-packeta-inline-notice h3 {
+            font-size: 14px;
+            line-height: 1.3;
+            margin: 0 0 8px;
+        }
+
+        #packetery_metabox .rsne-packeta-inline-notice p {
+            margin: 0 0 8px;
+        }
+
+        #packetery_metabox .rsne-packeta-inline-notice p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+    <script>
+        (function() {
+            var moveNotice = function() {
+                var noticeBox = document.getElementById("rusky-shipping-notice-email");
+                var noticeContent = document.getElementById("rusky-shipping-notice-content");
+                var packetaBox = document.getElementById("packetery_metabox");
+                if (!noticeBox || !noticeContent || !packetaBox || noticeContent.dataset.rsneMoved === "1") {
+                    return;
+                }
+
+                var packetaInside = packetaBox.querySelector(".inside");
+                if (!packetaInside) {
+                    return;
+                }
+
+                var panel = document.createElement("div");
+                panel.className = "rsne-packeta-inline-notice";
+
+                var title = document.createElement("h3");
+                title.textContent = "Уведомление клиенту";
+                panel.appendChild(title);
+                panel.appendChild(noticeContent);
+                noticeContent.dataset.rsneMoved = "1";
+
+                packetaInside.appendChild(panel);
+                noticeBox.style.display = "none";
+            };
+
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", moveNotice);
+            } else {
+                moveNotice();
+            }
+        })();
+    </script>
+    <?php
 }
 
 function rsne_format_display_date(string $date): string {
@@ -250,7 +369,7 @@ function rsne_build_shipping_notice_message(WC_Order $order, string $carrier, ar
     $html = '<p>Dobrý deň,</p>';
     $html .= '<p>vaša objednávka č. <strong>' . esc_html($order_number) . '</strong> je pripravená na odoslanie.</p>';
     $html .= '<p><strong>Dopravca:</strong> ' . esc_html($carrier) . '<br>';
-    $html .= '<strong>Plánovaný dátum odovzdania kuriérskej službe:</strong> ' . esc_html($date_display) . '</p>';
+    $html .= '<strong>Plánovaný dátum odovzdania dopravcovi:</strong> ' . esc_html($date_display) . '</p>';
     $html .= $tracking_sk . $link_sk;
     $html .= '<p>Ďakujeme za objednávku.</p>';
 
@@ -259,7 +378,7 @@ function rsne_build_shipping_notice_message(WC_Order $order, string $carrier, ar
     $html .= '<p>Здравствуйте,</p>';
     $html .= '<p>ваш заказ № <strong>' . esc_html($order_number) . '</strong> готов к отправке.</p>';
     $html .= '<p><strong>Служба доставки:</strong> ' . esc_html($carrier) . '<br>';
-    $html .= '<strong>Планируемая дата передачи курьерской службе:</strong> ' . esc_html($date_display) . '</p>';
+    $html .= '<strong>Планируемая дата передачи перевозчику:</strong> ' . esc_html($date_display) . '</p>';
     $html .= $tracking_ru . $link_ru;
     $html .= '<p>Спасибо за заказ.</p>';
 

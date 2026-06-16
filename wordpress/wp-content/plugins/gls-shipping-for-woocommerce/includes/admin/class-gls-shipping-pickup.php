@@ -155,9 +155,30 @@ class GLS_Shipping_Pickup
      */
     private function render_schedule_tab($all_addresses)
     {
+        $country = GLS_Shipping_Account_Helper::get_account_setting('country');
+        $is_slovakia = strtoupper((string) $country) === 'SK';
         ?>
         <div class="tab-content">
-            <p><?php esc_html_e('Schedule a pickup request with GLS to collect packages from your location.', 'gls-shipping-for-woocommerce'); ?></p>
+            <?php if ($is_slovakia): ?>
+                <div class="notice notice-warning inline" style="margin: 16px 0;">
+                    <p>
+                        <strong><?php esc_html_e('GLS Slovakia courier pickup is not ordered by label generation.', 'gls-shipping-for-woocommerce'); ?></strong>
+                    </p>
+                    <p>
+                        <?php esc_html_e('The GLS API label flow sends parcel data to GLS and creates the shipping label, but it does not order a courier pickup for this account. Order the courier pickup in MyGLS or contact GLS Slovakia directly. This legacy pickup form is disabled because it can return a technical success without creating a pickup order visible to GLS.', 'gls-shipping-for-woocommerce'); ?>
+                    </p>
+                    <p>
+                        <?php esc_html_e('GLS Slovakia contact: obchod@gls-slovakia.sk, +421 45 5242 517.', 'gls-shipping-for-woocommerce'); ?>
+                    </p>
+                    <p>
+                        <a class="button button-primary" href="https://mygls.sk/" target="_blank" rel="noopener noreferrer">
+                            <?php esc_html_e('Open MyGLS', 'gls-shipping-for-woocommerce'); ?>
+                        </a>
+                    </p>
+                </div>
+            <?php else: ?>
+                <p><?php esc_html_e('Schedule a pickup request with GLS to collect packages from your location.', 'gls-shipping-for-woocommerce'); ?></p>
+            <?php endif; ?>
             
             <form id="gls-pickup-form" method="post">
                 <?php wp_nonce_field('gls_pickup_action', 'gls_pickup_nonce'); ?>
@@ -224,7 +245,7 @@ class GLS_Shipping_Pickup
                     </tbody>
                 </table>
                 
-                <?php submit_button(__('Schedule Pickup', 'gls-shipping-for-woocommerce'), 'primary', 'schedule_pickup'); ?>
+                <?php submit_button(__('Schedule Pickup', 'gls-shipping-for-woocommerce'), 'primary', 'schedule_pickup', true, $is_slovakia ? array('disabled' => 'disabled') : array()); ?>
             </form>
         </div>
         <?php
@@ -556,6 +577,14 @@ class GLS_Shipping_Pickup
 
         // phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce verified in render_pickup_page() before calling this method
         try {
+            $country = GLS_Shipping_Account_Helper::get_account_setting('country');
+            if (strtoupper((string) $country) === 'SK') {
+                return new WP_Error(
+                    'gls_sk_pickup_requires_mygls',
+                    __('The GLS API label flow creates the shipping label and sends parcel data to GLS, but it does not order courier pickup for this account. Order pickup in MyGLS or contact GLS Slovakia: obchod@gls-slovakia.sk, +421 45 5242 517. The legacy pickup form is disabled to avoid false confirmations.', 'gls-shipping-for-woocommerce')
+                );
+            }
+
             // Get all addresses for validation
             $all_addresses = GLS_Shipping_Sender_Address_Helper::get_all_addresses_with_store_fallback();
             $sender_address_index = isset($_POST['sender_address_select']) ? intval($_POST['sender_address_select']) : 0;

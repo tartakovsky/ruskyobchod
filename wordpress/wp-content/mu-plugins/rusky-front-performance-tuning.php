@@ -13,6 +13,24 @@ function rfpt_is_front_page_request(): bool
     return !is_admin() && !wp_doing_ajax() && !is_customize_preview() && is_front_page();
 }
 
+function rfpt_is_storefront_performance_request(): bool
+{
+    if (is_admin() || wp_doing_ajax() || is_customize_preview()) {
+        return false;
+    }
+
+    if (function_exists('is_cart') && (is_cart() || is_checkout() || is_account_page())) {
+        return false;
+    }
+
+    return is_front_page()
+        || (function_exists('is_shop') && is_shop())
+        || (function_exists('is_product') && is_product())
+        || (function_exists('is_product_category') && is_product_category())
+        || (function_exists('is_product_tag') && is_product_tag())
+        || is_search();
+}
+
 function rfpt_homepage_derivative_map(): array
 {
     return [
@@ -121,6 +139,39 @@ add_action('wp_enqueue_scripts', static function (): void {
         wp_dequeue_style('dashicons');
     }
 
+    if (rfpt_is_storefront_performance_request()) {
+        // The theme enqueues an enormous Google Fonts URL; storefront pages render safely with system fonts.
+        wp_dequeue_style('food-grocery-store-font');
+        wp_deregister_style('food-grocery-store-font');
+    }
+
+    if (function_exists('is_product') && is_product()) {
+        // Keep standard WooCommerce add-to-cart intact, but remove heavy express-payment boot on product pages.
+        foreach ([
+            'WCPAY_EXPRESS_CHECKOUT_ECE',
+            'wcpay-frontend-tracks',
+            'stripe',
+            'wc-stripe',
+            'wc-stripe-payment-request',
+            'wc-stripe-express-checkout',
+            'sourcebuster-js',
+            'wc-order-attribution',
+        ] as $handle) {
+            wp_dequeue_script($handle);
+            wp_deregister_script($handle);
+        }
+
+        foreach ([
+            'WCPAY_EXPRESS_CHECKOUT_ECE',
+            'wc-blocks-checkout-style',
+            'wc-blocks-style',
+            'wcpay-upe-checkout',
+        ] as $handle) {
+            wp_dequeue_style($handle);
+            wp_deregister_style($handle);
+        }
+    }
+
     if (!is_front_page()) {
         return;
     }
@@ -160,10 +211,6 @@ add_action('wp_enqueue_scripts', static function (): void {
     wp_deregister_script('jquery-wow');
     wp_dequeue_style('animate-css');
     wp_deregister_style('animate-css');
-
-    // The theme enqueues an enormous Google Fonts URL even when the homepage renders with system fonts.
-    wp_dequeue_style('food-grocery-store-font');
-    wp_deregister_style('food-grocery-store-font');
 
     // Homepage shell uses a tiny inline SVG icon set instead of the full Font Awesome bundle.
     wp_dequeue_style('font-awesome-css');
@@ -224,15 +271,19 @@ add_action('wp_enqueue_scripts', static function (): void {
  * Suppress only these front-page font styles at output time.
  */
 add_filter('style_loader_tag', static function (string $html, string $handle, string $href, string $media): string {
-    if (is_admin() || wp_doing_ajax() || is_customize_preview() || !is_front_page()) {
+    if (is_admin() || wp_doing_ajax() || is_customize_preview() || !rfpt_is_storefront_performance_request()) {
         return $html;
     }
 
-    if (strpos($handle, 'elementor-gf-local-') === 0) {
+    if ($handle === 'food-grocery-store-font') {
         return '';
     }
 
-    if (strpos($href, '/wp-content/uploads/elementor/google-fonts/css/') !== false) {
+    if (is_front_page() && strpos($handle, 'elementor-gf-local-') === 0) {
+        return '';
+    }
+
+    if (is_front_page() && strpos($href, '/wp-content/uploads/elementor/google-fonts/css/') !== false) {
         return '';
     }
 
@@ -260,7 +311,7 @@ add_action('wp_head', static function (): void {
  * Replace the oversized homepage logo with a dedicated derivative.
  */
 add_filter('get_custom_logo', static function (string $html): string {
-    if (!rfpt_is_front_page_request() || $html === '') {
+    if (!rfpt_is_storefront_performance_request() || $html === '') {
         return $html;
     }
 
