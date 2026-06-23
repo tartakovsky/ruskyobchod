@@ -79,7 +79,7 @@ check_contains "$checkout_sk" 'Názov ulice a číslo domu' 'commerce checkout S
 check_contains "$checkout_sk" 'PSČ' 'commerce checkout SK postcode label present'
 check_contains "$checkout_sk" 'Mesto' 'commerce checkout SK city label present'
 check_contains "$checkout_sk" 'Štát / kraj' 'commerce checkout SK state label present'
-check_contains "$checkout_sk" '\(optional\)' 'commerce checkout SK optional marker present'
+check_contains "$checkout_sk" '\(voliteľné\)' 'commerce checkout SK optional marker present'
 check_contains "$checkout_sk" 'Telefón' 'commerce checkout SK phone label present'
 check_contains "$checkout_sk" 'Odoslať na inú adresu\?' 'commerce checkout SK ship to different address present'
 check_contains "$checkout_sk" 'Poznámky k objednávke' 'commerce checkout SK order note present'

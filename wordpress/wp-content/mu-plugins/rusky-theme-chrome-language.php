@@ -729,7 +729,7 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
 
                 $node->appendChild($dom->createTextNode('Я прочитал(а) и соглашаюсь с '));
 
-                $link = $dom->createElement('a', 'правилами и условиями');
+                $link = $dom->createElement('a', 'правила и условия');
                 if ($template_link instanceof DOMElement) {
                     foreach (['href', 'class', 'target'] as $attr) {
                         if ($template_link->hasAttribute($attr)) {
@@ -779,6 +779,68 @@ function rtcl_normalize_storefront_html(string $html, string $lang): string {
                 $fragment->appendXML('(включая ' . $amount_html . ' НДС)');
                 $node->appendChild($fragment);
             }
+        }
+    }
+
+    if (function_exists('is_checkout') && is_checkout()) {
+        $has_terms_text = $xpath->query('//*[contains(concat(" ", normalize-space(@class), " "), " woocommerce-terms-and-conditions-checkbox-text ")]')->length > 0;
+        $place_order = $xpath->query('//*[@id="place_order"]')->item(0);
+
+        if (!$has_terms_text && $place_order instanceof DOMElement) {
+            $terms_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('terms') : '';
+            $terms_label = $lang === 'ru' ? 'правила и условия' : 'všeobecné obchodné podmienky';
+            $terms_prefix = $lang === 'ru' ? 'Я прочитал(а) и соглашаюсь с ' : 'Prečítal/a som si ';
+            $terms_suffix = $lang === 'ru' ? '' : ' a súhlasím s nimi';
+
+            $wrapper = $dom->createElement('p');
+            $wrapper->setAttribute('class', 'form-row validate-required');
+
+            $label = $dom->createElement('label');
+            $label->setAttribute('class', 'woocommerce-form__label woocommerce-form__label-for-checkbox checkbox');
+
+            $input = $dom->createElement('input');
+            $input->setAttribute('type', 'checkbox');
+            $input->setAttribute('class', 'woocommerce-form__input woocommerce-form__input-checkbox input-checkbox');
+            $input->setAttribute('name', 'terms');
+            $input->setAttribute('id', 'terms');
+            $input->setAttribute('required', 'required');
+
+            $span = $dom->createElement('span');
+            $span->setAttribute('class', 'woocommerce-terms-and-conditions-checkbox-text');
+            $span->appendChild($dom->createTextNode($terms_prefix));
+
+            if (is_string($terms_url) && $terms_url !== '') {
+                $link = $dom->createElement('a', $terms_label);
+                $link->setAttribute('href', $terms_url);
+                $link->setAttribute('class', 'woocommerce-terms-and-conditions-link');
+                $link->setAttribute('target', '_blank');
+                $span->appendChild($link);
+            } else {
+                $span->appendChild($dom->createTextNode($terms_label));
+            }
+
+            if ($terms_suffix !== '') {
+                $span->appendChild($dom->createTextNode($terms_suffix));
+            }
+
+            $required = $dom->createElement('abbr', '*');
+            $required->setAttribute('class', 'required');
+            $required->setAttribute('title', $lang === 'ru' ? 'обязательно' : 'povinné');
+
+            $hidden = $dom->createElement('input');
+            $hidden->setAttribute('type', 'hidden');
+            $hidden->setAttribute('name', 'terms-field');
+            $hidden->setAttribute('value', '1');
+
+            $label->appendChild($input);
+            $label->appendChild($dom->createTextNode(' '));
+            $label->appendChild($span);
+            $label->appendChild($dom->createTextNode(' '));
+            $label->appendChild($required);
+            $wrapper->appendChild($label);
+            $wrapper->appendChild($hidden);
+
+            $place_order->parentNode->insertBefore($wrapper, $place_order);
         }
     }
 
