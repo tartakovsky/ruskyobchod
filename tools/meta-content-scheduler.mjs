@@ -18,7 +18,7 @@ Required for --execute:
   META_PAGE_ID
   META_PAGE_ACCESS_TOKEN
 
-This tool schedules Facebook Page photo posts. Instagram/Reels entries are reported
+This tool schedules Facebook Page feed, photo, and video posts. Instagram/Reels entries are reported
 as blocked unless META_FACEBOOK_FALLBACK_FOR_INSTAGRAM=1 is set. With that fallback,
 Instagram/Reels plan entries are scheduled as Facebook Page videos.
 `);
@@ -76,7 +76,7 @@ function validatePost(post, { execute = false } = {}) {
   if (!['facebook', 'instagram'].includes(post.platform)) {
     throw new Error(`${post.id}: unsupported platform ${post.platform}`);
   }
-  if (!['photo', 'video', 'reel'].includes(post.kind)) {
+  if (!['text', 'photo', 'video', 'reel'].includes(post.kind)) {
     throw new Error(`${post.id}: unsupported kind ${post.kind}`);
   }
   const { hour } = localHour(post.scheduled_at);
@@ -110,6 +110,21 @@ function operationFor(post, env) {
     return {
       blocked: true,
       reason: `Already recorded in Meta with id ${recordedMetaId(post)}; not preparing a new API operation for a past timestamp.`,
+    };
+  }
+
+  if (post.platform === 'facebook' && post.kind === 'text') {
+    return {
+      method: 'POST',
+      url: `${GRAPH_BASE}/${env.META_PAGE_ID}/feed`,
+      multipart: false,
+      source_path: '',
+      body: {
+        message: post.caption,
+        published: 'false',
+        scheduled_publish_time: scheduledPublishTime,
+        access_token: env.META_PAGE_ACCESS_TOKEN,
+      },
     };
   }
 
