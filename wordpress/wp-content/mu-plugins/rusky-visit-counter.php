@@ -10,6 +10,7 @@ if (!defined('ABSPATH')) {
 
 const RVC_OPTION_KEY = 'rusky_daily_visit_counts';
 const RVC_SOURCE_OPTION_KEY = 'rusky_daily_visit_sources';
+const RVC_FUNNEL_OPTION_KEY = 'rusky_daily_funnel_counts';
 const RVC_COOKIE_KEY = 'rusky_visit_day';
 const RVC_RETENTION_DAYS = 60;
 const RVC_MAX_SOURCE_BUCKETS = 25;
@@ -191,12 +192,120 @@ function rvc_track_visit_sources(string $today): void {
     update_option(RVC_SOURCE_OPTION_KEY, $sources, false);
 }
 
+function rvc_funnel_events_for_request(): array {
+    $events = [];
+
+    if (isset($_GET['add-to-cart'])) {
+        $events[] = 'add_to_cart';
+    }
+
+    if (function_exists('is_product') && is_product()) {
+        $events[] = 'product_view';
+    }
+
+    if (function_exists('is_cart') && is_cart()) {
+        $events[] = 'cart_view';
+    }
+
+    if (function_exists('is_checkout') && is_checkout()) {
+        if (function_exists('is_wc_endpoint_url') && is_wc_endpoint_url('order-received')) {
+            $events[] = 'order_received';
+        } elseif (function_exists('is_checkout_pay_page') && is_checkout_pay_page()) {
+            $events[] = 'order_pay_view';
+        } else {
+            $events[] = 'checkout_view';
+        }
+    }
+
+    return array_values(array_unique($events));
+}
+
+function rvc_sanitize_funnel_bucket_value($value): string {
+    if (!is_scalar($value)) {
+        return '(invalid)';
+    }
+
+    $value = sanitize_text_field(wp_unslash((string) $value));
+    $value = trim(strtolower($value));
+
+    if ($value === '') {
+        return '(empty)';
+    }
+
+    return substr($value, 0, 80);
+}
+
+function rvc_increment_nested_bucket(array &$bucket, string $group, string $key): void {
+    if (!isset($bucket[$group]) || !is_array($bucket[$group])) {
+        $bucket[$group] = [];
+    }
+
+    rvc_increment_bucket($bucket[$group], $key);
+}
+
+function rvc_track_funnel_request(string $today, string $family): void {
+    if (rvc_is_bot_like_agent($family)) {
+        return;
+    }
+
+    $events = rvc_funnel_events_for_request();
+    $has_utm = isset($_GET['utm_source']) || isset($_GET['utm_medium']) || isset($_GET['utm_campaign']) || isset($_GET['utm_content']);
+
+    if ($events === [] && !$has_utm) {
+        return;
+    }
+
+    $funnel = get_option(RVC_FUNNEL_OPTION_KEY, []);
+    if (!is_array($funnel)) {
+        $funnel = [];
+    }
+
+    if (!isset($funnel[$today]) || !is_array($funnel[$today])) {
+        $funnel[$today] = [
+            'events' => [],
+            'utm_sources' => [],
+            'utm_mediums' => [],
+            'utm_campaigns' => [],
+            'utm_contents' => [],
+        ];
+    }
+
+    $day = $funnel[$today];
+    if (!isset($day['events']) || !is_array($day['events'])) {
+        $day['events'] = [];
+    }
+
+    foreach ($events as $event) {
+        $day['events'][$event] = (int) ($day['events'][$event] ?? 0) + 1;
+    }
+
+    foreach ([
+        'utm_source' => 'utm_sources',
+        'utm_medium' => 'utm_mediums',
+        'utm_campaign' => 'utm_campaigns',
+        'utm_content' => 'utm_contents',
+    ] as $param => $group) {
+        if (isset($_GET[$param])) {
+            rvc_increment_nested_bucket($day, $group, rvc_sanitize_funnel_bucket_value((string) $_GET[$param]));
+        }
+    }
+
+    $funnel[$today] = $day;
+    $funnel = rvc_prune_counts($funnel, $today);
+
+    update_option(RVC_FUNNEL_OPTION_KEY, $funnel, false);
+}
+
 function rvc_track_daily_visit(): void {
     if (!rvc_is_countable_request()) {
         return;
     }
 
     $today = wp_date('Y-m-d', null, wp_timezone());
+    $family = rvc_user_agent_family();
+
+    rvc_track_funnel_request($today, $family);
+
     if (($existing = $_COOKIE[RVC_COOKIE_KEY] ?? '') === $today) {
         return;
     }

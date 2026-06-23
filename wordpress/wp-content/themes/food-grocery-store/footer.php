@@ -43,6 +43,20 @@
                         <div class="<?php echo !is_active_sidebar('footer-1') ? 'footer_hide' : esc_attr($colmd); ?> col-lg-3 col-xs-12 col-md-3 footer-block">
                             <?php if (is_active_sidebar('footer-1')) : ?>
                                 <?php dynamic_sidebar('footer-1'); ?>
+                                <?php
+                                    $food_grocery_store_footer_lang = 'sk';
+                                    if (function_exists('gls_server_lang')) {
+                                        $food_grocery_store_footer_lang = gls_server_lang() === 'ru' ? 'ru' : 'sk';
+                                    } elseif (isset($_GET['lang'])) {
+                                        $food_grocery_store_footer_lang = sanitize_key(wp_unslash($_GET['lang'])) === 'ru' ? 'ru' : 'sk';
+                                    }
+                                ?>
+                                <p class="gastronom-social-links">
+                                    <?php echo esc_html($food_grocery_store_footer_lang === 'ru' ? 'Мы в соцсетях:' : 'Sledujte nás:'); ?>
+                                    <a href="https://www.facebook.com/gastronom.bratislava/" target="_blank" rel="noopener noreferrer">Facebook</a>
+                                    <span aria-hidden="true"> · </span>
+                                    <a href="https://www.instagram.com/gastronombratislava/" target="_blank" rel="noopener noreferrer">Instagram</a>
+                                </p>
                             <?php else : ?>
                                 <aside id="search" class="widget py-3" role="complementary" aria-label="firstsidebar">
                                     <h3 class="widget-title"><?php esc_html_e( 'Search', 'food-grocery-store' ); ?></h3>

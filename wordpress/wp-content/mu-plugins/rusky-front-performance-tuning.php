@@ -220,6 +220,10 @@ add_action('wp_enqueue_scripts', static function (): void {
     wp_dequeue_style('wp-pagenavi');
     wp_deregister_style('wp-pagenavi');
 
+    // The active homepage does not use the theme block-pattern stylesheet.
+    wp_dequeue_style('food-grocery-store-block-style');
+    wp_deregister_style('food-grocery-store-block-style');
+
     // Homepage does not render Elementor widgets or Woo blocks, so these extra stylesheets are unused there.
     foreach ([
         'rusky-mobile-header-polish',
