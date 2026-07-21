@@ -110,7 +110,7 @@ function rdf_access_context() {
     ];
 }
 
-function rdf_api_get(array $context, string $path) {
+function rdf_api_get(array $context, string $path, bool $empty_on_404 = false) {
     $url = 'https://api.dotykacka.cz/v2/clouds/' . rawurlencode($context['cloud_id']) . $path;
     $response = wp_remote_get($url, [
         'headers' => [
@@ -122,8 +122,12 @@ function rdf_api_get(array $context, string $path) {
     if (is_wp_error($response)) {
         return $response;
     }
-    if (wp_remote_retrieve_response_code($response) !== 200) {
-        return new WP_Error('rdf_api_get_failed', 'Dotypos GET returned HTTP ' . wp_remote_retrieve_response_code($response) . '.');
+    $status_code = wp_remote_retrieve_response_code($response);
+    if ($empty_on_404 && $status_code === 404) {
+        return ['data' => []];
+    }
+    if ($status_code !== 200) {
+        return new WP_Error('rdf_api_get_failed', 'Dotypos GET returned HTTP ' . $status_code . '.');
     }
     return json_decode(wp_remote_retrieve_body($response), true);
 }
@@ -150,7 +154,7 @@ function rdf_branch_id(array $context) {
 function rdf_existing_order(array $context, WC_Order $order) {
     $external_id = 'WC-' . $order->get_id();
     $filter = rawurlencode('externalId|eq|' . $external_id);
-    $payload = rdf_api_get($context, '/orders?limit=10&filter=' . $filter);
+    $payload = rdf_api_get($context, '/orders?limit=10&filter=' . $filter, true);
     if (is_wp_error($payload)) {
         return $payload;
     }
@@ -194,7 +198,6 @@ function rdf_action_items(WC_Order $order) {
             'qty' => $qty,
             'manual-price' => round($gross / $qty, wc_get_price_decimals()),
             'note' => 'Woo item ' . $item->get_id(),
-            'take-away' => true,
         ];
     }
 
@@ -278,18 +281,16 @@ function rdf_fiscalize_order($order): bool {
 
     $payload = [
         'action' => 'order/create-issue-pay',
-        'validity' => time() + 120,
+        // Current Dotypos POS devices compare validity with deviceTimestamp,
+        // which is expressed in Unix milliseconds.
+        'validity' => (time() + 120) * 1000,
         'idempotency-key' => 'wc-' . $order->get_id(),
         'external-id' => 'WC-' . $order->get_id(),
         'note' => 'WooCommerce #' . $order->get_order_number() . ' / ' . $order->get_payment_method_title(),
         'items' => $items,
         'payment-method-id' => rdf_payment_method_id($order),
-        'print-type' => is_email($order->get_billing_email()) ? 'email' : 'local',
-        'take-away' => true,
+        'print-type' => 'local',
     ];
-    if ($payload['print-type'] === 'email') {
-        $payload['print-email'] = $order->get_billing_email();
-    }
 
     $url = 'https://api.dotykacka.cz/v2/clouds/' . rawurlencode($context['cloud_id'])
         . '/branches/' . $branch_id . '/pos-actions';
