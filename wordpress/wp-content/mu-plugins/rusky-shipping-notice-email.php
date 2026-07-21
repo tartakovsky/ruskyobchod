@@ -215,8 +215,9 @@ function rsne_render_shipping_notice_metabox($order_or_post): void {
     $carrier = rsne_get_order_shipping_company($order);
     $tracking_numbers = rsne_get_order_tracking_numbers($order);
     $last_sent_at = (string) $order->get_meta('_rusky_shipping_notice_sent_at', true);
-    $last_sent_date = (string) $order->get_meta('_rusky_shipping_notice_dispatch_date', true);
-    $dispatch_date = $last_sent_date !== '' ? $last_sent_date : rsne_default_dispatch_date($carrier);
+    // Always open the native date picker on today. The previously sent date
+    // remains in order history, but must not become a stale form default.
+    $dispatch_date = wp_date('Y-m-d');
 
     echo '<div id="rusky-shipping-notice-content">';
     echo '<p><strong>Email:</strong><br>' . esc_html($email) . '</p>';
