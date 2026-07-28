@@ -132,7 +132,6 @@ function rpa_order_screen_ids(): array {
 function rpa_hidden_meta_box_ids(): array {
     return [
         'tsseph_meta_box',
-        'woocommerce-order-actions',
         'woocommerce-order-notes',
         'gastronom-weight-confirmation',
     ];

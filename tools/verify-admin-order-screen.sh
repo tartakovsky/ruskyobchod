@@ -21,6 +21,9 @@ $_SERVER['HTTPS'] = 'on';
 $_SERVER['REQUEST_URI'] = '/wp-admin/admin.php?page=wc-orders';
 
 require $argv[1] . '/wp-load.php';
+if (!function_exists('add_meta_box')) {
+    require_once ABSPATH . 'wp-admin/includes/template.php';
+}
 
 $product_id = isset($argv[2]) ? (int) $argv[2] : 10617;
 $product = wc_get_product($product_id);
@@ -80,6 +83,18 @@ $order->calculate_totals(false);
 $order->save();
 $order->update_status('await-weight', 'Proof admin order screen.', true);
 
+global $wp_meta_boxes;
+$screen_id = 'shop_order';
+$wp_meta_boxes[$screen_id]['side']['high']['woocommerce-order-actions'] = [
+    'id' => 'woocommerce-order-actions',
+    'title' => 'Order actions',
+    'callback' => static function(): void {},
+    'args' => null,
+];
+rpa_remove_hidden_meta_boxes();
+
+$order_actions_box = $wp_meta_boxes[$screen_id]['side']['high']['woocommerce-order-actions'] ?? null;
+
 ob_start();
 rpa_render_inline_weight_panel($order);
 $panel_html = (string) ob_get_clean();
@@ -97,6 +112,8 @@ $checks = [
     'actual weight field' => strpos($panel_html, 'gastronom_actual_weight[') !== false,
     'confirm button' => strpos($panel_html, 'Подтвердить вес') !== false,
     'await weight status label' => strpos($panel_html, 'На уточнении веса') !== false,
+    'standard order actions remain available' => is_array($order_actions_box),
+    'order actions are not in the hidden list' => !in_array('woocommerce-order-actions', $hidden_ids, true),
     'footer ajax action' => strpos($footer_html, "params.set('action', 'gastronom_confirm_weight')") !== false,
     'footer reload handler' => strpos($footer_html, 'window.location.reload()') !== false,
     'hidden meta box id present' => in_array('gastronom-weight-confirmation', $hidden_ids, true),
@@ -114,4 +131,4 @@ echo "Admin order screen verification complete.\n";
 PHP
 
 scp -P "$REMOTE_PORT" "$tmp_local" "$REMOTE_HOST:$tmp_remote" >/dev/null
-ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT' '$PRODUCT_ID'; rm -f '$tmp_remote'"
+ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT' '$PRODUCT_ID'; status=\$?; rm -f '$tmp_remote'; exit \$status"
