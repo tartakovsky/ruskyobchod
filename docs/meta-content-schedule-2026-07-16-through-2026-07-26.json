@@ -1,0 +1,283 @@
+{
+  "business_suite_asset_id": "883209351536029",
+  "business_id": "883240858199545",
+  "campaign": "discount_2026_06_25_2026_07_31_followup",
+  "prepared_at": "2026-07-16T10:51:00+02:00",
+  "timezone": "Europe/Bratislava",
+  "notes": [
+    "Plan requested on 2026-07-16: schedule from today through the end of next week.",
+    "Discount announcement is scheduled twice per day: Slovak in the morning and Russian in the evening.",
+    "Media picks prefer assets not used in the 2026-06-23 through 2026-07-06 campaign or used only once in older plans.",
+    "Target publishing path is Meta Business Suite Composer with Facebook and Instagram selected."
+  ],
+  "announcement_copy": {
+    "sk": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády.",
+    "ru": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+  },
+  "posts": [
+    {
+      "id": "thu-16-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-16T11:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "thu-16-herring-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-16T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/6_herring.mp4",
+      "caption": "Селедка и любимые закуски к домашнему столу.\n\nДо 31 июля в Gastronom действует скидка 15 % на все товары, а новым покупателям -20 % на первый заказ или покупку.\n\nZámocká 5, Bratislava, вход со стороны Palisády.\n\n#gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "thu-16-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-16T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "fri-17-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-17T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "fri-17-pelmeni-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-17T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/28_pelmeni.mp4",
+      "caption": "Пельмени для быстрого обеда дома.\n\nДо 31 июля: -15 % на все товары в Gastronom. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava, вход со стороны Palisády.\n\n#pelmeni #gastronombratislava #bratislava"
+    },
+    {
+      "id": "fri-17-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-17T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "sat-18-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-18T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "sat-18-caviar-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-18T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/23_caviar.mp4",
+      "caption": "Икра и деликатесы для праздничного стола.\n\nДо 31 июля в Gastronom действует скидка 15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#gastronombratislava #bratislava #delikatesy"
+    },
+    {
+      "id": "sat-18-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-18T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "sun-19-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-19T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "sun-19-store-photo",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo",
+      "scheduled_at": "2026-07-19T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/2025-06-23 16.18.14.jpg",
+      "caption": "Gastronom Bratislava na Zámockej 5.\n\nPríďte si vybrať obľúbené potraviny, sladkosti a delikatesy. Do 31. júla platí zľava 15 % na všetok tovar, pre nových zákazníkov 20 % na prvý nákup.\n\n#gastronombratislava #bratislava #potraviny"
+    },
+    {
+      "id": "sun-19-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-19T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "mon-20-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-20T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "mon-20-pelmeni-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-20T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/8_pelmeni.mp4",
+      "caption": "Пельмени, вареники и продукты для домашней кухни ждут вас в Gastronom.\n\nДо 31 июля: -15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#gastronombratislava #pelmeni #bratislava"
+    },
+    {
+      "id": "mon-20-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-20T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "tue-21-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-21T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "tue-21-pickles-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-21T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/16_pickles.mp4",
+      "caption": "Соленья и консервация к обеду и ужину.\n\nДо 31 июля в Gastronom действует скидка 15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#gastronombratislava #bratislava #potraviny"
+    },
+    {
+      "id": "tue-21-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-21T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "wed-22-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-22T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "wed-22-store-photo",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo",
+      "scheduled_at": "2026-07-22T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/photo_2025-11-08 21.23.47.jpeg",
+      "caption": "Výber produktov v Gastronom Bratislava.\n\nDo 31. júla máme zľavu 15 % na všetok tovar a pre nových zákazníkov 20 % na prvý nákup.\n\nZámocká 5, Bratislava, vchod z Palisád.\n\n#gastronombratislava #bratislava"
+    },
+    {
+      "id": "wed-22-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-22T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "thu-23-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-23T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "thu-23-pelmeni-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-23T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/32_pelmeni.mp4",
+      "caption": "Еще один вариант быстрого ужина: пельмени из Gastronom.\n\nДо 31 июля: -15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#pelmeni #gastronombratislava #bratislava"
+    },
+    {
+      "id": "thu-23-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-23T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "fri-24-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-24T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "fri-24-caviar-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-24T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/37_caviar.mp4",
+      "caption": "Деликатесы для выходных уже ждут вас в Gastronom.\n\nДо 31 июля действует скидка 15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#gastronombratislava #bratislava #delikatesy"
+    },
+    {
+      "id": "fri-24-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-24T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "sat-25-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-25T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "sat-25-herring-reel",
+      "platforms": ["facebook", "instagram"],
+      "kind": "reel",
+      "scheduled_at": "2026-07-25T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/gastronom-reels/7_herring.mp4",
+      "caption": "Закуски, рыба и продукты к выходным.\n\nДо 31 июля в Gastronom действует скидка 15 % на все товары. Новым покупателям -20 % на первую покупку.\n\nZámocká 5, Bratislava.\n\n#gastronombratislava #bratislava #ruskyobchod"
+    },
+    {
+      "id": "sat-25-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-25T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    },
+    {
+      "id": "sun-26-sk-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-26T10:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-sk-v2.png",
+      "caption": "Vážení zákazníci, od 25. júna do 31. júla platí v predajni Gastronom zľava 15 % na všetok tovar. Pre nových zákazníkov máme zľavu 20 % na prvý nákup. Radi vás privítame u nás v predajni: Zámocká 5, Bratislava, vchod z ulice Palisády."
+    },
+    {
+      "id": "sun-26-store-photo",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo",
+      "scheduled_at": "2026-07-26T13:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/Documents/Бизнес/GASTRONOM/Gastronom photo/2025-06-23 16.18.44.jpg",
+      "caption": "Nedeľný výber v Gastronom Bratislava.\n\nDo 31. júla: zľava 15 % na všetok tovar. Pre nových zákazníkov 20 % na prvý nákup.\n\nZámocká 5, Bratislava, vchod z Palisád.\n\n#gastronombratislava #bratislava #potraviny"
+    },
+    {
+      "id": "sun-26-ru-discount",
+      "platforms": ["facebook", "instagram"],
+      "kind": "photo_announcement",
+      "scheduled_at": "2026-07-26T17:30:00+02:00",
+      "local_asset": "/Users/alexandertartakovsky/ruskyobchod/assets/social/discount-campaign-2026-06/announcement-ru-v2.png",
+      "caption": "Уважаемые покупатели! С 25 июня по 31 июля в Гастрономе действует скидка 15 % на все товары. Для новых покупателей скидка на первую покупку 20 %. Ждем вас в гости: Замоцка 5, вход со стороны улицы Палисады."
+    }
+  ]
+}

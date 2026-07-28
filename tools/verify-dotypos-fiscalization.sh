@@ -4,6 +4,7 @@ set -eu
 REMOTE_HOST="${REMOTE_HOST:-u595644545@46.202.156.109}"
 REMOTE_PORT="${REMOTE_PORT:-65002}"
 REMOTE_ROOT="${REMOTE_ROOT:-/home/u595644545/domains/ruskyobchod.sk/public_html}"
+AUDIT_FROM="${AUDIT_FROM:-2026-07-01}"
 
 tmp_local="$(mktemp)"
 tmp_remote="/tmp/rusky-dotypos-fiscalization-verify-$$.php"
@@ -45,7 +46,51 @@ foreach ($checks as $label => [$method, $expected_supported, $expected_payment_i
 }
 
 echo "Dotypos fiscalization verification complete.\n";
+
+$audit_from = isset($argv[2]) ? (string) $argv[2] : '2026-07-01';
+$context = rdf_access_context();
+if (is_wp_error($context)) {
+    fwrite(STDERR, "FAIL Dotypos audit authentication: {$context->get_error_message()}\n");
+    exit(1);
+}
+
+$orders = wc_get_orders([
+    'limit' => -1,
+    'status' => ['processing', 'completed', 'on-hold'],
+    'date_created' => '>=' . $audit_from . ' 00:00:00',
+    'orderby' => 'date',
+    'order' => 'ASC',
+]);
+$eligible = 0;
+$verified = 0;
+$missing = [];
+foreach ($orders as $order) {
+    if (!rdf_supported_payment_method($order)) {
+        continue;
+    }
+    if ($order->get_payment_method() !== 'cod' && !$order->is_paid()) {
+        continue;
+    }
+
+    $eligible++;
+    $remote = rdf_existing_order($context, $order);
+    $ok = is_array($remote)
+        && !empty($remote['paid'])
+        && empty($remote['canceledDate'])
+        && $order->get_meta(RDF_STATE_META, true) === 'fiscalized';
+    if ($ok) {
+        $verified++;
+        continue;
+    }
+    $missing[] = $order->get_id();
+}
+
+echo "Fiscal sales audit from {$audit_from}: eligible={$eligible} verified={$verified} missing=" . count($missing) . "\n";
+if ($missing) {
+    fwrite(STDERR, 'FAIL missing fiscal receipts for WooCommerce orders: ' . implode(',', $missing) . "\n");
+    exit(1);
+}
 PHP
 
 scp -P "$REMOTE_PORT" "$tmp_local" "$REMOTE_HOST:$tmp_remote" >/dev/null
-ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT'; status=\$?; rm -f '$tmp_remote'; exit \$status"
+ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT' '$AUDIT_FROM'; status=\$?; rm -f '$tmp_remote'; exit \$status"

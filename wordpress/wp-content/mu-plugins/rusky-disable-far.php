@@ -1,15 +1,23 @@
 <?php
 /**
  * Plugin Name: Rusky Disable FAR Runtime
- * Description: Deprecated compatibility shim. Runtime plugin filtering now belongs to rusky-runtime-shim.php.
+ * Description: Emergency runtime filter for high-risk plugins without editing active_plugins in the database.
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-function rusky_disable_far_runtime_deprecated(): void {
-    // Intentionally empty.
-    // Keep the file as a compatibility placeholder so production can
-    // remove split ownership without introducing a missing-file surprise.
-}
+add_filter('option_active_plugins', static function($plugins) {
+    if (!is_array($plugins)) {
+        return $plugins;
+    }
+
+    $blocked = [
+        'real-time-find-and-replace/real-time-find-and-replace.php',
+    ];
+
+    return array_values(array_filter($plugins, static function($plugin) use ($blocked) {
+        return !in_array($plugin, $blocked, true);
+    }));
+}, 1);

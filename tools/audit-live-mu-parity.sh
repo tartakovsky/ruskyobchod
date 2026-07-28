@@ -22,16 +22,16 @@ local_list="$(mktemp)"
 remote_list="$(mktemp)"
 trap 'rm -f "$local_list" "$remote_list"' EXIT
 
-find "$LOCAL_MU_DIR" -maxdepth 1 -type f -name 'rusky-*.php' -exec basename {} \; | sort >"$local_list"
-ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "find '$REMOTE_MU_DIR' -maxdepth 1 -type f -name 'rusky-*.php' -exec basename {} \\; | sort" >"$remote_list"
+find "$LOCAL_MU_DIR" -maxdepth 1 -type f -name 'rusky-*.php' -exec basename {} \; | LC_ALL=C sort >"$local_list"
+ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "find '$REMOTE_MU_DIR' -maxdepth 1 -type f -name 'rusky-*.php' -exec basename {} \\; | LC_ALL=C sort" >"$remote_list"
 
 echo "== local-only =="
-comm -23 "$local_list" "$remote_list" || true
+LC_ALL=C comm -23 "$local_list" "$remote_list" || true
 echo
 
 echo "== remote-only =="
-comm -13 "$local_list" "$remote_list" || true
+LC_ALL=C comm -13 "$local_list" "$remote_list" || true
 echo
 
 echo "== shared =="
-comm -12 "$local_list" "$remote_list" || true
+LC_ALL=C comm -12 "$local_list" "$remote_list" || true
