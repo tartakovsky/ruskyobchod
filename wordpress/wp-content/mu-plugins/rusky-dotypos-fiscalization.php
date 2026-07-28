@@ -31,7 +31,8 @@ function rdf_order($order): ?WC_Order {
 
 function rdf_supported_payment_method(WC_Order $order): bool {
     $method = (string) $order->get_payment_method();
-    return $method === 'cod' || strpos($method, 'stripe') !== false;
+    return in_array($method, ['cod', 'woocommerce_payments'], true)
+        || strpos($method, 'stripe') !== false;
 }
 
 function rdf_payment_method_id(WC_Order $order): int {
