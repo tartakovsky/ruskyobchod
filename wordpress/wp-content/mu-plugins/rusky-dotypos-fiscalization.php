@@ -12,6 +12,10 @@ if (!defined('ABSPATH')) {
 const RDF_STATE_META = '_rusky_dotypos_fiscal_state';
 const RDF_ORDER_ID_META = '_rusky_dotypos_fiscal_order_id';
 const RDF_ERROR_META = '_rusky_dotypos_fiscal_error';
+const RDF_RETRY_HOOK = 'rusky_dotypos_retry_fiscalization';
+const RDF_RETRY_ATTEMPTS_META = '_rusky_dotypos_fiscal_retry_attempts';
+const RDF_RETRY_SNAPSHOT_META = '_rusky_dotypos_fiscal_retry_snapshot';
+const RDF_RETRY_OFFSET_META = '_rusky_dotypos_fiscal_retry_offset';
 
 function rdf_logger(): WC_Logger_Interface {
     return wc_get_logger();
@@ -223,6 +227,33 @@ function rdf_action_items(WC_Order $order) {
         unset($action_item);
     }
 
+    // Dotypos rounds every POS line independently. Proportional allocation
+    // can therefore drift by a few cents on larger orders. Put the final
+    // cent-level residual on a quantity-one line so the issued receipt total
+    // is exactly equal to the WooCommerce amount.
+    $pos_total = 0.0;
+    foreach ($items as $action_item) {
+        $pos_total += round($action_item['manual-price'] * $action_item['qty'], 2);
+    }
+    $rounding_residual = round((float) $order->get_total() - $pos_total, 2);
+    if (abs($rounding_residual) >= 0.01) {
+        $target_index = null;
+        foreach ($items as $index => $action_item) {
+            if (abs((float) $action_item['qty'] - 1.0) <= 0.000001) {
+                $target_index = $index;
+                break;
+            }
+        }
+        if ($target_index === null) {
+            $target_index = count($items) - 1;
+        }
+        $target_qty = max((float) $items[$target_index]['qty'], 0.000001);
+        $items[$target_index]['manual-price'] = round(
+            (float) $items[$target_index]['manual-price'] + ($rounding_residual / $target_qty),
+            4
+        );
+    }
+
     return $items;
 }
 
@@ -235,12 +266,258 @@ function rdf_mark_fiscalized(WC_Order $order, array $remote_order): void {
     $order->add_order_note('Dotypos: фискальный чек создан' . ($remote_id !== '' ? ' (order ' . $remote_id . ')' : '') . '.');
 }
 
+function rdf_error_is_retryable(string $message): bool {
+    return strpos($message, 'HTTP 404') !== false
+        || strpos($message, 'HTTP 5') !== false
+        || stripos($message, 'timed out') !== false
+        || stripos($message, 'timeout') !== false
+        || stripos($message, 'could not resolve') !== false
+        || stripos($message, 'connection') !== false;
+}
+
+function rdf_retry_timestamp(): int {
+    $now = new DateTimeImmutable('now', wp_timezone());
+    $hour = (int) $now->format('G');
+    if ($hour < 8) {
+        return $now->setTime(8, 15)->getTimestamp();
+    }
+    if ($hour >= 20) {
+        return $now->modify('+1 day')->setTime(8, 15)->getTimestamp();
+    }
+    return $now->modify('+15 minutes')->getTimestamp();
+}
+
+function rdf_schedule_retry(WC_Order $order, ?int $timestamp = null): void {
+    $args = [$order->get_id()];
+    $timestamp = $timestamp ?? rdf_retry_timestamp();
+
+    if (function_exists('as_next_scheduled_action') && function_exists('as_schedule_single_action')) {
+        if (!as_next_scheduled_action(RDF_RETRY_HOOK, $args, 'rusky-dotypos')) {
+            as_schedule_single_action($timestamp, RDF_RETRY_HOOK, $args, 'rusky-dotypos');
+        }
+        return;
+    }
+
+    if (!wp_next_scheduled(RDF_RETRY_HOOK, $args)) {
+        wp_schedule_single_event($timestamp, RDF_RETRY_HOOK, $args);
+    }
+}
+
+function rdf_pos_is_online(array $context): bool {
+    $branch_id = rdf_branch_id($context);
+    if (is_wp_error($branch_id)) {
+        return false;
+    }
+
+    $url = 'https://api.dotykacka.cz/v2/clouds/' . rawurlencode($context['cloud_id'])
+        . '/branches/' . $branch_id . '/pos-actions';
+    $response = wp_remote_post($url, [
+        'headers' => [
+            'Authorization' => 'Bearer ' . $context['access_token'],
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+        ],
+        'body' => wp_json_encode([
+            'action' => 'order/hello',
+            'validity' => (time() + 120) * 1000,
+            'idempotency-key' => 'rdf-hello-' . gmdate('YmdHi'),
+        ]),
+        'timeout' => 30,
+    ]);
+    if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
+        return false;
+    }
+    $body = json_decode(wp_remote_retrieve_body($response), true);
+    return (int) ($body['code'] ?? -1) === 0;
+}
+
+function rdf_retry_stock_service() {
+    if (!class_exists('Dotypos')) {
+        return new WP_Error('rdf_retry_missing_dotypos', 'Dotypos plugin is unavailable.');
+    }
+    $settings = get_option(Dotypos::$keys['settings'], []);
+    $warehouse_id = (string) ($settings['dotypos']['warehouseId'] ?? '');
+    $dotypos = Dotypos::instance();
+    if ($warehouse_id === '' || !$dotypos || empty($dotypos->dotyposService)) {
+        return new WP_Error('rdf_retry_missing_stock_service', 'Dotypos stock service is unavailable.');
+    }
+    return [
+        'warehouse_id' => $warehouse_id,
+        'service' => $dotypos->dotyposService,
+    ];
+}
+
+function rdf_retry_capture_snapshot(WC_Order $order) {
+    $stock_context = rdf_retry_stock_service();
+    if (is_wp_error($stock_context)) {
+        return $stock_context;
+    }
+
+    $snapshot = [];
+    foreach ($order->get_items('line_item') as $item_id => $item) {
+        if (!$item instanceof WC_Order_Item_Product) {
+            continue;
+        }
+        $product = $item->get_product();
+        $dotypos_id = $product ? (string) $product->get_meta(Dotypos::$keys['product']['field-id']) : '';
+        $qty = rdf_item_quantity($order, $item);
+        if ($dotypos_id === '' || $qty <= 0) {
+            return new WP_Error('rdf_retry_invalid_item', 'Invalid Dotypos mapping or quantity for item ' . $item_id . '.');
+        }
+        $row = $stock_context['service']->getProductOnWarehouse($stock_context['warehouse_id'], $dotypos_id);
+        if (!is_array($row) || !isset($row['stockQuantityStatus'])) {
+            return new WP_Error('rdf_retry_stock_read_failed', 'Cannot read Dotypos stock for item ' . $item_id . '.');
+        }
+        $snapshot[] = [
+            'item_id' => (int) $item_id,
+            'dotypos_id' => $dotypos_id,
+            'qty' => (float) $qty,
+            'before' => (float) $row['stockQuantityStatus'],
+        ];
+    }
+    return $snapshot ?: new WP_Error('rdf_retry_empty_snapshot', 'No stock lines available for retry.');
+}
+
+function rdf_retry_apply_stock_offset(WC_Order $order, bool $allow_write = true): bool {
+    if ($order->get_meta(RDF_RETRY_OFFSET_META, true) === 'yes') {
+        return true;
+    }
+    $snapshot = $order->get_meta(RDF_RETRY_SNAPSHOT_META, true);
+    if (!is_array($snapshot) || !$snapshot) {
+        return false;
+    }
+    $stock_context = rdf_retry_stock_service();
+    if (is_wp_error($stock_context)) {
+        return false;
+    }
+
+    $all_restored = true;
+    $all_deducted = true;
+    foreach ($snapshot as $line) {
+        $row = $stock_context['service']->getProductOnWarehouse(
+            $stock_context['warehouse_id'],
+            (string) $line['dotypos_id']
+        );
+        if (!is_array($row) || !isset($row['stockQuantityStatus'])) {
+            return false;
+        }
+        $current = (float) $row['stockQuantityStatus'];
+        $before = (float) $line['before'];
+        $deducted = $before - (float) $line['qty'];
+        $all_restored = $all_restored && abs($current - $before) <= 0.0001;
+        $all_deducted = $all_deducted && abs($current - $deducted) <= 0.0001;
+    }
+
+    if ($all_restored) {
+        $order->update_meta_data(RDF_RETRY_OFFSET_META, 'yes');
+        $order->delete_meta_data(RDF_RETRY_SNAPSHOT_META);
+        $order->save();
+        return true;
+    }
+    if (!$all_deducted) {
+        rdf_log('error', 'Order ' . $order->get_id() . ': retry stock state is mixed; automatic offset stopped.');
+        return false;
+    }
+    if (!$allow_write || !function_exists('rdsb_dotypos_post')) {
+        return false;
+    }
+
+    $items = [];
+    foreach ($snapshot as $line) {
+        $items[] = [
+            '_productId' => (int) $line['dotypos_id'],
+            'quantity' => (float) $line['qty'],
+        ];
+    }
+    $ok = rdsb_dotypos_post(
+        '/warehouses/' . rawurlencode($stock_context['warehouse_id']) . '/stockups',
+        [
+            'updatePurchasePrice' => false,
+            'invoiceNumber' => 'WC-' . $order->get_id() . '-FISCAL-RETRY-OFFSET',
+            'note' => 'Offset after delayed WooCommerce fiscalization #' . $order->get_id(),
+            'items' => $items,
+        ]
+    );
+    if (!$ok) {
+        return false;
+    }
+
+    // Do one read-back pass. If the stock API is eventually consistent, the
+    // scheduled retry will observe the restored values without writing again.
+    return rdf_retry_apply_stock_offset($order, false);
+}
+
+function rdf_retry_fiscalization($order_id): void {
+    $order = wc_get_order($order_id);
+    if (!$order instanceof WC_Order) {
+        return;
+    }
+    $attempts = (int) $order->get_meta(RDF_RETRY_ATTEMPTS_META, true) + 1;
+    $order->update_meta_data(RDF_RETRY_ATTEMPTS_META, $attempts);
+    $order->save();
+    if ($attempts > 24) {
+        $order->add_order_note('Dotypos: автоматическая повторная фискализация остановлена после 24 попыток.');
+        return;
+    }
+
+    if ($order->get_meta(RDF_STATE_META, true) === 'fiscalized') {
+        if ($order->get_meta(RDF_RETRY_SNAPSHOT_META, true) && !rdf_retry_apply_stock_offset($order)) {
+            rdf_schedule_retry($order, time() + 15 * MINUTE_IN_SECONDS);
+        }
+        return;
+    }
+    if ($order->get_meta(RDF_STATE_META, true) !== 'stock-fallback') {
+        return;
+    }
+
+    $context = rdf_access_context();
+    if (is_wp_error($context) || !rdf_pos_is_online($context)) {
+        rdf_schedule_retry($order);
+        return;
+    }
+    $existing = rdf_existing_order($context, $order);
+    if (is_wp_error($existing)) {
+        rdf_schedule_retry($order, time() + 15 * MINUTE_IN_SECONDS);
+        return;
+    }
+    if (is_array($existing)) {
+        rdf_mark_fiscalized($order, $existing);
+        if ($order->get_meta(RDF_RETRY_SNAPSHOT_META, true) && !rdf_retry_apply_stock_offset($order)) {
+            rdf_schedule_retry($order, time() + 15 * MINUTE_IN_SECONDS);
+        }
+        return;
+    }
+
+    $snapshot = rdf_retry_capture_snapshot($order);
+    if (is_wp_error($snapshot)) {
+        rdf_log('error', 'Order ' . $order->get_id() . ': ' . $snapshot->get_error_message());
+        return;
+    }
+    $order->update_meta_data(RDF_RETRY_SNAPSHOT_META, $snapshot);
+    $order->delete_meta_data(RDF_STATE_META);
+    $order->delete_meta_data(RDF_ERROR_META);
+    $order->save();
+
+    if (!rdf_fiscalize_order($order)) {
+        return;
+    }
+    if (rdf_retry_apply_stock_offset($order)) {
+        $order->add_order_note('Dotypos: отложенная фискализация выполнена, повторное POS-списание склада компенсировано.');
+        return;
+    }
+    rdf_schedule_retry($order, time() + 15 * MINUTE_IN_SECONDS);
+}
+add_action(RDF_RETRY_HOOK, 'rdf_retry_fiscalization', 10, 1);
+
 function rdf_fail(WC_Order $order, string $message): void {
     $order->update_meta_data(RDF_STATE_META, 'stock-fallback');
     $order->update_meta_data(RDF_ERROR_META, $message);
     $order->save();
     $order->add_order_note('Dotypos: фискализация не выполнена; сохранено обычное складское списание. ' . $message);
     rdf_log('error', 'Order ' . $order->get_id() . ': ' . $message);
+    if (rdf_error_is_retryable($message)) {
+        rdf_schedule_retry($order);
+    }
 }
 
 function rdf_fiscalize_order($order): bool {

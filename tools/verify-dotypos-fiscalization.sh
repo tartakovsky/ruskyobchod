@@ -20,7 +20,12 @@ $_SERVER['HTTPS'] = 'on';
 $_SERVER['REQUEST_URI'] = '/?verify_dotypos_fiscalization=1';
 require $argv[1] . '/wp-load.php';
 
-if (!function_exists('rdf_supported_payment_method') || !function_exists('rdf_payment_method_id')) {
+if (
+    !function_exists('rdf_supported_payment_method')
+    || !function_exists('rdf_payment_method_id')
+    || !function_exists('rdf_error_is_retryable')
+    || !function_exists('rdf_retry_fiscalization')
+) {
     fwrite(STDERR, "FAIL fiscalization runtime missing\n");
     exit(1);
 }
@@ -43,6 +48,35 @@ foreach ($checks as $label => [$method, $expected_supported, $expected_payment_i
         exit(1);
     }
     echo "OK   {$label}\n";
+}
+
+if (
+    !rdf_error_is_retryable('POS Action failed (HTTP 404, result -1).')
+    || !rdf_error_is_retryable('POS Action failed (HTTP 503).')
+    || rdf_error_is_retryable('Dotypos device is not paired.')
+) {
+    fwrite(STDERR, "FAIL retryable error classification\n");
+    exit(1);
+}
+echo "OK   transient POS errors are retryable\n";
+
+if (!has_action(RDF_RETRY_HOOK, 'rdf_retry_fiscalization')) {
+    fwrite(STDERR, "FAIL retry action hook is not registered\n");
+    exit(1);
+}
+echo "OK   retry action hook is registered\n";
+
+$rounding_order = wc_get_order(11398);
+if ($rounding_order instanceof WC_Order) {
+    $pos_total = 0.0;
+    foreach (rdf_action_items($rounding_order) as $action_item) {
+        $pos_total += round((float) $action_item['manual-price'] * (float) $action_item['qty'], 2);
+    }
+    if (abs($pos_total - (float) $rounding_order->get_total()) > 0.0001) {
+        fwrite(STDERR, "FAIL POS line rounding total {$pos_total} differs from Woo total {$rounding_order->get_total()}\n");
+        exit(1);
+    }
+    echo "OK   POS line rounding matches order #11398 total\n";
 }
 
 echo "Dotypos fiscalization verification complete.\n";
