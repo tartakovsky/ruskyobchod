@@ -16,6 +16,8 @@ const RDF_RETRY_HOOK = 'rusky_dotypos_retry_fiscalization';
 const RDF_RETRY_ATTEMPTS_META = '_rusky_dotypos_fiscal_retry_attempts';
 const RDF_RETRY_SNAPSHOT_META = '_rusky_dotypos_fiscal_retry_snapshot';
 const RDF_RETRY_OFFSET_META = '_rusky_dotypos_fiscal_retry_offset';
+const RDF_COD_DEFERRED_STATE = 'cod-awaiting-finalization';
+const RDF_MAX_RETRY_ATTEMPTS = 24;
 
 function rdf_logger(): WC_Logger_Interface {
     return wc_get_logger();
@@ -67,7 +69,7 @@ function rdf_should_fiscalize(WC_Order $order): bool {
     }
 
     if ($order->get_payment_method() === 'cod') {
-        return in_array($order->get_status(), ['processing', 'on-hold', 'completed'], true);
+        return $order->has_status('completed');
     }
 
     return $order->is_paid();
@@ -462,7 +464,7 @@ function rdf_retry_fiscalization($order_id): void {
     $attempts = (int) $order->get_meta(RDF_RETRY_ATTEMPTS_META, true) + 1;
     $order->update_meta_data(RDF_RETRY_ATTEMPTS_META, $attempts);
     $order->save();
-    if ($attempts > 24) {
+    if ($attempts > RDF_MAX_RETRY_ATTEMPTS) {
         $order->add_order_note('Dotypos: автоматическая повторная фискализация остановлена после 24 попыток.');
         return;
     }
@@ -622,8 +624,39 @@ function rdf_fiscalize_when_stock_reduces($order): void {
 }
 add_action('woocommerce_reduce_order_stock', 'rdf_fiscalize_when_stock_reduces', 5, 1);
 
+function rdf_defer_cod_after_stock_reduction($order): void {
+    $order = rdf_order($order);
+    if (
+        !$order
+        || $order->get_payment_method() !== 'cod'
+        || $order->has_status('completed')
+        || !$order->get_meta('_dotypos_stock_synced', true)
+        || $order->get_meta(RDF_STATE_META, true) === 'fiscalized'
+    ) {
+        return;
+    }
+    $order->update_meta_data(RDF_STATE_META, RDF_COD_DEFERRED_STATE);
+    $order->delete_meta_data(RDF_ERROR_META);
+    $order->save();
+}
+add_action('woocommerce_reduce_order_stock', 'rdf_defer_cod_after_stock_reduction', 20, 1);
+
 function rdf_fiscalize_after_payment($order_id): void {
-    rdf_fiscalize_order($order_id);
+    $order = rdf_order($order_id);
+    if (!$order) {
+        return;
+    }
+    if (
+        $order->get_payment_method() === 'cod'
+        && $order->has_status('completed')
+        && $order->get_meta(RDF_STATE_META, true) === RDF_COD_DEFERRED_STATE
+    ) {
+        $order->update_meta_data(RDF_STATE_META, 'stock-fallback');
+        $order->save();
+        rdf_retry_fiscalization($order->get_id());
+        return;
+    }
+    rdf_fiscalize_order($order);
 }
 add_action('woocommerce_payment_complete', 'rdf_fiscalize_after_payment', 20, 1);
 add_action('woocommerce_order_status_processing', 'rdf_fiscalize_after_payment', 20, 1);

@@ -66,6 +66,40 @@ if (!has_action(RDF_RETRY_HOOK, 'rdf_retry_fiscalization')) {
 }
 echo "OK   retry action hook is registered\n";
 
+if (!defined('RDF_MAX_RETRY_ATTEMPTS') || RDF_MAX_RETRY_ATTEMPTS !== 24) {
+    fwrite(STDERR, "FAIL retry attempt limit\n");
+    exit(1);
+}
+echo "OK   fiscal retry chain is bounded to 24 attempts\n";
+
+$cod_flow = new WC_Order();
+$cod_flow->set_payment_method('cod');
+$cod_flow->set_status('processing');
+if (rdf_should_fiscalize($cod_flow)) {
+    fwrite(STDERR, "FAIL processing COD order would fiscalize before editing\n");
+    exit(1);
+}
+$cod_flow->update_meta_data(RDF_STATE_META, RDF_COD_DEFERRED_STATE);
+if (!function_exists('rcoe_is_deferred_cod_order') || !rcoe_is_deferred_cod_order($cod_flow)) {
+    fwrite(STDERR, "FAIL processing COD order is not editable in deferred state\n");
+    exit(1);
+}
+if (
+    !has_filter('wc_order_is_editable', 'rcoe_allow_deferred_cod_editing')
+    || !has_action('woocommerce_saved_order_items', 'rcoe_sync_saved_quantity_changes')
+    || !has_action('woocommerce_ajax_order_items_added', 'rcoe_sync_added_items')
+    || !has_action('woocommerce_ajax_order_items_removed', 'rcoe_sync_removed_item')
+) {
+    fwrite(STDERR, "FAIL COD editing stock synchronization hooks\n");
+    exit(1);
+}
+$cod_flow->set_status('completed');
+if (!rdf_should_fiscalize($cod_flow) || rcoe_is_deferred_cod_order($cod_flow)) {
+    fwrite(STDERR, "FAIL completed COD finalization state\n");
+    exit(1);
+}
+echo "OK   COD stays editable before completion and fiscalizes only when completed\n";
+
 $rounding_order = wc_get_order(11398);
 if ($rounding_order instanceof WC_Order) {
     $pos_total = 0.0;
@@ -100,6 +134,9 @@ $verified = 0;
 $missing = [];
 foreach ($orders as $order) {
     if (!rdf_supported_payment_method($order)) {
+        continue;
+    }
+    if (!rdf_should_fiscalize($order) && $order->get_meta(RDF_STATE_META, true) !== 'fiscalized') {
         continue;
     }
     if ($order->get_payment_method() !== 'cod' && !$order->is_paid()) {
