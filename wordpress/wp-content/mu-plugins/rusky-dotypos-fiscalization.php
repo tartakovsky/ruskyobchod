@@ -292,6 +292,13 @@ function rdf_schedule_retry(WC_Order $order, ?int $timestamp = null): void {
     $timestamp = $timestamp ?? rdf_retry_timestamp();
 
     if (function_exists('as_next_scheduled_action') && function_exists('as_schedule_single_action')) {
+        // While this hook is running, Action Scheduler can report the current
+        // action as the "next" matching action. A transient failure would then
+        // finish the current action without ever creating its successor.
+        if (doing_action(RDF_RETRY_HOOK)) {
+            as_schedule_single_action($timestamp, RDF_RETRY_HOOK, $args, 'rusky-dotypos');
+            return;
+        }
         if (!as_next_scheduled_action(RDF_RETRY_HOOK, $args, 'rusky-dotypos')) {
             as_schedule_single_action($timestamp, RDF_RETRY_HOOK, $args, 'rusky-dotypos');
         }
