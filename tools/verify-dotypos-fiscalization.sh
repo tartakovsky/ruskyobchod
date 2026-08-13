@@ -75,30 +75,57 @@ echo "OK   fiscal retry chain is bounded to 24 attempts\n";
 $cod_flow = new WC_Order();
 $cod_flow->set_payment_method('cod');
 $cod_flow->set_status('processing');
-if (rdf_should_fiscalize($cod_flow)) {
-    fwrite(STDERR, "FAIL processing COD order would fiscalize before editing\n");
-    exit(1);
-}
-$cod_flow->update_meta_data(RDF_STATE_META, RDF_COD_DEFERRED_STATE);
-if (!function_exists('rcoe_is_deferred_cod_order') || !rcoe_is_deferred_cod_order($cod_flow)) {
-    fwrite(STDERR, "FAIL processing COD order is not editable in deferred state\n");
-    exit(1);
-}
-if (
-    !has_filter('wc_order_is_editable', 'rcoe_allow_deferred_cod_editing')
-    || !has_action('woocommerce_saved_order_items', 'rcoe_sync_saved_quantity_changes')
-    || !has_action('woocommerce_ajax_order_items_added', 'rcoe_sync_added_items')
-    || !has_action('woocommerce_ajax_order_items_removed', 'rcoe_sync_removed_item')
-) {
-    fwrite(STDERR, "FAIL COD editing stock synchronization hooks\n");
+$cod_flow->set_date_created('2026-08-13 12:00:00');
+if (!rdf_should_fiscalize($cod_flow)) {
+    fwrite(STDERR, "FAIL processing COD order would not fiscalize immediately\n");
     exit(1);
 }
 $cod_flow->set_status('completed');
-if (!rdf_should_fiscalize($cod_flow) || rcoe_is_deferred_cod_order($cod_flow)) {
-    fwrite(STDERR, "FAIL completed COD finalization state\n");
+if (!rdf_should_fiscalize($cod_flow)) {
+    fwrite(STDERR, "FAIL completed COD order is not fiscalizable\n");
     exit(1);
 }
-echo "OK   COD stays editable before completion and fiscalizes only when completed\n";
+echo "OK   COD fiscalizes immediately while completion remains a fulfillment status\n";
+
+$quarter_cod = new WC_Order();
+$quarter_cod->set_payment_method('cod');
+$quarter_cod->set_status('processing');
+$quarter_cod->set_date_created('2026-09-26 12:00:00');
+if (rdf_cod_quarter_fiscalization_date($quarter_cod) !== null || !rdf_should_fiscalize($quarter_cod)) {
+    fwrite(STDERR, "FAIL COD order five calendar days from next quarter would be deferred\n");
+    exit(1);
+}
+$quarter_cod->set_date_created('2026-09-27 12:00:00');
+$quarter_date = rdf_cod_quarter_fiscalization_date($quarter_cod);
+if (!$quarter_date || $quarter_date->format('Y-m-d H:i') !== '2026-10-01 00:05' || rdf_should_fiscalize($quarter_cod)) {
+    fwrite(STDERR, "FAIL COD order in final four quarter days is not deferred to next month\n");
+    exit(1);
+}
+if (!has_action(RDF_QUARTER_COD_HOOK, 'rdf_fiscalize_quarter_cod_order')) {
+    fwrite(STDERR, "FAIL quarter-boundary COD fiscalization hook is not registered\n");
+    exit(1);
+}
+echo "OK   final four quarter days defer COD fiscalization to next month's first day\n";
+
+foreach ([
+    ['2026-03-27 12:00:00', null],
+    ['2026-03-28 12:00:00', '2026-04-01 00:05'],
+    ['2026-06-26 12:00:00', null],
+    ['2026-06-27 12:00:00', '2026-07-01 00:05'],
+    ['2026-09-26 12:00:00', null],
+    ['2026-09-27 12:00:00', '2026-10-01 00:05'],
+    ['2026-12-27 12:00:00', null],
+    ['2026-12-28 12:00:00', '2027-01-01 00:05'],
+] as [$created, $expected]) {
+    $quarter_cod->set_date_created($created);
+    $actual = rdf_cod_quarter_fiscalization_date($quarter_cod);
+    $actual_value = $actual ? $actual->format('Y-m-d H:i') : null;
+    if ($actual_value !== $expected) {
+        fwrite(STDERR, "FAIL quarter boundary {$created}: expected " . ($expected ?? 'immediate') . ", got " . ($actual_value ?? 'immediate') . "\n");
+        exit(1);
+    }
+}
+echo "OK   all four quarter boundaries use the correct four-day window\n";
 
 $rounding_order = wc_get_order(11398);
 if ($rounding_order instanceof WC_Order) {

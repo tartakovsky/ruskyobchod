@@ -17,6 +17,7 @@ const RDF_RETRY_ATTEMPTS_META = '_rusky_dotypos_fiscal_retry_attempts';
 const RDF_RETRY_SNAPSHOT_META = '_rusky_dotypos_fiscal_retry_snapshot';
 const RDF_RETRY_OFFSET_META = '_rusky_dotypos_fiscal_retry_offset';
 const RDF_COD_DEFERRED_STATE = 'cod-awaiting-finalization';
+const RDF_QUARTER_COD_HOOK = 'rusky_dotypos_quarter_cod_fiscalization';
 const RDF_MAX_RETRY_ATTEMPTS = 24;
 
 function rdf_logger(): WC_Logger_Interface {
@@ -63,13 +64,30 @@ function rdf_has_unconfirmed_weight_item(WC_Order $order): bool {
     return false;
 }
 
+function rdf_cod_quarter_fiscalization_date(WC_Order $order): ?DateTimeImmutable {
+    if ($order->get_payment_method() !== 'cod' || !$order->get_date_created()) {
+        return null;
+    }
+    $timezone = new DateTimeZone('Europe/Bratislava');
+    $created = DateTimeImmutable::createFromInterface($order->get_date_created())->setTimezone($timezone);
+    if (!in_array((int) $created->format('n'), [3, 6, 9, 12], true)) {
+        return null;
+    }
+    $days_remaining = (int) $created->format('t') - (int) $created->format('j');
+    if ($days_remaining > 3) {
+        return null;
+    }
+    return $created->modify('first day of next month')->setTime(0, 5);
+}
+
 function rdf_should_fiscalize(WC_Order $order): bool {
     if (!rdf_supported_payment_method($order) || rdf_has_unconfirmed_weight_item($order)) {
         return false;
     }
 
     if ($order->get_payment_method() === 'cod') {
-        return $order->has_status('completed');
+        return in_array($order->get_status(), ['processing', 'on-hold', 'completed'], true)
+            && rdf_cod_quarter_fiscalization_date($order) === null;
     }
 
     return $order->is_paid();
@@ -387,6 +405,26 @@ function rdf_retry_capture_snapshot(WC_Order $order) {
     return $snapshot ?: new WP_Error('rdf_retry_empty_snapshot', 'No stock lines available for retry.');
 }
 
+function rdf_retry_align_woo_stock(WC_Order $order, array $snapshot): bool {
+    foreach ($snapshot as $line) {
+        $item = $order->get_item((int) $line['item_id']);
+        $product = $item instanceof WC_Order_Item_Product ? $item->get_product() : null;
+        if (!$product instanceof WC_Product) {
+            return false;
+        }
+        $before = (float) $line['before'];
+        if ($product->get_meta('_gastronom_weight_preorder', true) === 'yes') {
+            update_post_meta($product->get_id(), '_gastronom_cash_stock_kg', $before);
+            clean_post_cache($product->get_id());
+            continue;
+        }
+        if (wc_update_product_stock($product, $before, 'set') === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
 function rdf_retry_apply_stock_offset(WC_Order $order, bool $allow_write = true): bool {
     if ($order->get_meta(RDF_RETRY_OFFSET_META, true) === 'yes') {
         return true;
@@ -418,6 +456,9 @@ function rdf_retry_apply_stock_offset(WC_Order $order, bool $allow_write = true)
     }
 
     if ($all_restored) {
+        if (!rdf_retry_align_woo_stock($order, $snapshot)) {
+            return false;
+        }
         $order->update_meta_data(RDF_RETRY_OFFSET_META, 'yes');
         $order->delete_meta_data(RDF_RETRY_SNAPSHOT_META);
         $order->save();
@@ -624,39 +665,49 @@ function rdf_fiscalize_when_stock_reduces($order): void {
 }
 add_action('woocommerce_reduce_order_stock', 'rdf_fiscalize_when_stock_reduces', 5, 1);
 
-function rdf_defer_cod_after_stock_reduction($order): void {
+function rdf_schedule_quarter_cod_fiscalization($order): void {
     $order = rdf_order($order);
-    if (
-        !$order
-        || $order->get_payment_method() !== 'cod'
-        || $order->has_status('completed')
-        || !$order->get_meta('_dotypos_stock_synced', true)
-        || $order->get_meta(RDF_STATE_META, true) === 'fiscalized'
-    ) {
+    if (!$order || $order->get_meta(RDF_STATE_META, true) === 'fiscalized') {
         return;
     }
+    $fiscalization_date = rdf_cod_quarter_fiscalization_date($order);
+    if (!$fiscalization_date || !$order->get_meta('_dotypos_stock_synced', true)) {
+        return;
+    }
+
     $order->update_meta_data(RDF_STATE_META, RDF_COD_DEFERRED_STATE);
     $order->delete_meta_data(RDF_ERROR_META);
     $order->save();
+
+    $timestamp = $fiscalization_date->getTimestamp();
+    if (function_exists('as_next_scheduled_action') && function_exists('as_schedule_single_action')) {
+        if (!as_next_scheduled_action(RDF_QUARTER_COD_HOOK, [$order->get_id()], 'rusky-dotykacka')) {
+            as_schedule_single_action($timestamp, RDF_QUARTER_COD_HOOK, [$order->get_id()], 'rusky-dotykacka', true);
+        }
+        return;
+    }
+    if (!wp_next_scheduled(RDF_QUARTER_COD_HOOK, [$order->get_id()])) {
+        wp_schedule_single_event($timestamp, RDF_QUARTER_COD_HOOK, [$order->get_id()]);
+    }
 }
-add_action('woocommerce_reduce_order_stock', 'rdf_defer_cod_after_stock_reduction', 20, 1);
+add_action('woocommerce_reduce_order_stock', 'rdf_schedule_quarter_cod_fiscalization', 20, 1);
+
+function rdf_fiscalize_quarter_cod_order($order_id): void {
+    $order = rdf_order($order_id);
+    if (!$order
+        || $order->get_payment_method() !== 'cod'
+        || $order->get_meta(RDF_STATE_META, true) !== RDF_COD_DEFERRED_STATE
+    ) {
+        return;
+    }
+    $order->update_meta_data(RDF_STATE_META, 'stock-fallback');
+    $order->save();
+    rdf_retry_fiscalization($order->get_id());
+}
+add_action(RDF_QUARTER_COD_HOOK, 'rdf_fiscalize_quarter_cod_order', 10, 1);
 
 function rdf_fiscalize_after_payment($order_id): void {
-    $order = rdf_order($order_id);
-    if (!$order) {
-        return;
-    }
-    if (
-        $order->get_payment_method() === 'cod'
-        && $order->has_status('completed')
-        && $order->get_meta(RDF_STATE_META, true) === RDF_COD_DEFERRED_STATE
-    ) {
-        $order->update_meta_data(RDF_STATE_META, 'stock-fallback');
-        $order->save();
-        rdf_retry_fiscalization($order->get_id());
-        return;
-    }
-    rdf_fiscalize_order($order);
+    rdf_fiscalize_order($order_id);
 }
 add_action('woocommerce_payment_complete', 'rdf_fiscalize_after_payment', 20, 1);
 add_action('woocommerce_order_status_processing', 'rdf_fiscalize_after_payment', 20, 1);
