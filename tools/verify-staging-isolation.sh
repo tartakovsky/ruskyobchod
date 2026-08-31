@@ -44,7 +44,16 @@ printf("safety_guard=%s\n", function_exists('rssg_block_external_http') ? 'yes' 
 PHP
 
 local_script="${TMPDIR:-/tmp}/rusky-verify-staging-isolation-$$.php"
-trap 'rm -f "$local_script"; cleanup' EXIT
+staging_body="$(mktemp)"
+trap 'rm -f "$local_script" "$staging_body"; cleanup' EXIT
+
+curl -ksS --max-time 20 "$expected_url/" -o "$staging_body"
+if grep -Eqi 'connect\.facebook\.net|facebook\.com/tr\?id=' "$staging_body"; then
+    echo "FAIL staging renders an external Meta Pixel" >&2
+    exit 1
+fi
+echo 'OK   staging does not render an external Meta Pixel'
+
 scp -P "$REMOTE_PORT" "$local_script" "$REMOTE_HOST:$REMOTE_SCRIPT" >/dev/null
 rm -f "$local_script"
 

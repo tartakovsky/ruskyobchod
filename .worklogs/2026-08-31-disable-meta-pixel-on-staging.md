@@ -13,10 +13,12 @@ send a test page view to Meta.
 `RUSKY_STAGING_MODE` constant is enabled. Production does not define that
 constant, so its Pixel behavior is unchanged.
 
-## Verification plan
+## Verification
 
 - lint the updated MU plugin;
 - deploy and check staging HTML has no Meta Pixel URL or pixel image;
 - verify staging isolation and WooCommerce compatibility checks;
 - deploy the same committed file to production and verify the production
   storefront still renders the Pixel and all critical hashes match.
+- add the Pixel absence check to `verify-staging-isolation.sh` so the boundary
+  cannot regress silently.
