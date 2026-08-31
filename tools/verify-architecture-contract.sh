@@ -31,6 +31,7 @@ run 'order-page language' "$ROOT_DIR/tools/verify-order-page-language.sh"
 run 'language runtime surface' "$ROOT_DIR/tools/verify-language-runtime-surface.sh"
 run 'live bootstrap surface' "$ROOT_DIR/tools/verify-live-bootstrap-surface.sh"
 run 'runtime plugin policy' "$ROOT_DIR/tools/verify-plugin-runtime-policy.sh"
+run 'output-buffer policy' "$ROOT_DIR/tools/verify-output-buffer-policy.sh"
 run 'Elementor pair compatibility' "$ROOT_DIR/tools/verify-elementor-pair-compat.sh"
 
 # Dotypos and fiscalization contract. The confirmation proof intercepts its
