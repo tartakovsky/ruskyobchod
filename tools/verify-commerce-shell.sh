@@ -19,7 +19,8 @@ need_cmd mktemp
 
 failures=0
 cookie_jar="$(mktemp)"
-trap 'rm -f "$cookie_jar"' EXIT
+response_body="$(mktemp)"
+trap 'rm -f "$cookie_jar" "$response_body"' EXIT
 
 seed_cart() {
     curl -ks -c "$cookie_jar" -b "$cookie_jar" \
@@ -44,7 +45,9 @@ check_contains() {
     url="$1"
     pattern="$2"
     label="$3"
-    if curl -ks --compressed -c "$cookie_jar" -b "$cookie_jar" "$url" | python3 -c 'import html, sys; sys.stdout.write(html.unescape(sys.stdin.read()))' | rg -q "$pattern"; then
+    if curl -ks --compressed -c "$cookie_jar" -b "$cookie_jar" "$url" \
+        | python3 -c 'import html, sys; sys.stdout.write(html.unescape(sys.stdin.read()))' >"$response_body" \
+        && rg -q "$pattern" "$response_body"; then
         echo "OK   $label"
     else
         echo "FAIL $label"
