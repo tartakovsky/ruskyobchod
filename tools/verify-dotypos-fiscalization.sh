@@ -127,17 +127,24 @@ foreach ([
 }
 echo "OK   all four quarter boundaries use the correct four-day window\n";
 
-$rounding_order = wc_get_order(11398);
-if ($rounding_order instanceof WC_Order) {
+$rounding_orders = [11398, 11415];
+foreach ($rounding_orders as $rounding_order_id) {
+    $rounding_order = wc_get_order($rounding_order_id);
+    if (!$rounding_order instanceof WC_Order) {
+        continue;
+    }
     $pos_total = 0.0;
     foreach (rdf_action_items($rounding_order) as $action_item) {
-        $pos_total += round((float) $action_item['manual-price'] * (float) $action_item['qty'], 2);
+        $pos_total += round(
+            round((float) $action_item['manual-price'], wc_get_price_decimals()) * (float) $action_item['qty'],
+            wc_get_price_decimals()
+        );
     }
     if (abs($pos_total - (float) $rounding_order->get_total()) > 0.0001) {
-        fwrite(STDERR, "FAIL POS line rounding total {$pos_total} differs from Woo total {$rounding_order->get_total()}\n");
+        fwrite(STDERR, "FAIL POS line rounding total {$pos_total} differs from Woo total {$rounding_order->get_total()} for order #{$rounding_order_id}\n");
         exit(1);
     }
-    echo "OK   POS line rounding matches order #11398 total\n";
+    echo "OK   POS line rounding matches order #{$rounding_order_id} total\n";
 }
 
 echo "Dotypos fiscalization verification complete.\n";

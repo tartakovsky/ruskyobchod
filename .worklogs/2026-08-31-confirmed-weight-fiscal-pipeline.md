@@ -40,3 +40,13 @@ one customer email. The temporary order and product state are restored.
   fiscal receipt state, zero fallback warehouse-sales calls, and one intercepted
   customer email;
 - the proof order was deleted and its product stock/meta were restored.
+
+## Receipt rounding follow-up
+
+Legacy order `#11415` was recovered with the guarded fiscal retry path after
+operator approval. Its pre-existing warehouse sale was compensated after the
+new receipt was created. The receipt exposed a two-cent discrepancy because
+Dotypos rounds the unit price to cents before calculating a fractional-weight
+line. The fiscal action builder and verification script now model that POS
+rounding rule and refuse an unresolvable total rather than issue an incorrect
+receipt.

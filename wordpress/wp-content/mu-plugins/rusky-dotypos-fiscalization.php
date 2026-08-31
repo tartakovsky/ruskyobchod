@@ -242,36 +242,63 @@ function rdf_action_items(WC_Order $order) {
             $line_gross = $action_item['manual-price'] * $action_item['qty'];
             $share = $index === $last ? $difference - $allocated : round($difference * ($line_gross / $base), 2);
             $allocated += $share;
-            $action_item['manual-price'] = round(($line_gross + $share) / $action_item['qty'], 4);
+            $action_item['manual-price'] = round(
+                ($line_gross + $share) / $action_item['qty'],
+                wc_get_price_decimals()
+            );
         }
         unset($action_item);
     }
 
-    // Dotypos rounds every POS line independently. Proportional allocation
-    // can therefore drift by a few cents on larger orders. Put the final
-    // cent-level residual on a quantity-one line so the issued receipt total
-    // is exactly equal to the WooCommerce amount.
+    // Dotypos first rounds the unit manual price to the currency precision,
+    // then calculates and rounds each line. Model that exact behavior before
+    // sending a POS Action; otherwise fractional-weight lines can differ by
+    // cents from the fiscal receipt.
     $pos_total = 0.0;
     foreach ($items as $action_item) {
-        $pos_total += round($action_item['manual-price'] * $action_item['qty'], 2);
+        $pos_total += round(
+            round((float) $action_item['manual-price'], wc_get_price_decimals()) * (float) $action_item['qty'],
+            wc_get_price_decimals()
+        );
     }
     $rounding_residual = round((float) $order->get_total() - $pos_total, 2);
     if (abs($rounding_residual) >= 0.01) {
-        $target_index = null;
+        $direction = $rounding_residual > 0 ? 1 : -1;
+        $precision = wc_get_price_decimals();
+        $adjusted = false;
+
+        // A one-cent change to the unit price affects a fractional-weight line
+        // by less than one cent, so search deterministic cent steps and accept
+        // only an exact POS total. A receipt with a wrong amount is worse than
+        // a clear, retryable fiscalization failure.
         foreach ($items as $index => $action_item) {
-            if (abs((float) $action_item['qty'] - 1.0) <= 0.000001) {
-                $target_index = $index;
-                break;
+            $base_price = (float) $action_item['manual-price'];
+            for ($step = 1; $step <= 1000; $step++) {
+                $candidate_price = round($base_price + ($direction * $step / 100), $precision);
+                if ($candidate_price < 0) {
+                    break;
+                }
+                $candidate_total = 0.0;
+                foreach ($items as $candidate_index => $candidate_item) {
+                    $price = $candidate_index === $index
+                        ? $candidate_price
+                        : (float) $candidate_item['manual-price'];
+                    $candidate_total += round(round($price, $precision) * (float) $candidate_item['qty'], $precision);
+                }
+                if (abs(round((float) $order->get_total() - $candidate_total, $precision)) < 0.000001) {
+                    $items[$index]['manual-price'] = $candidate_price;
+                    $adjusted = true;
+                    break 2;
+                }
             }
         }
-        if ($target_index === null) {
-            $target_index = count($items) - 1;
+
+        if (!$adjusted) {
+            return new WP_Error(
+                'rdf_pos_rounding_unresolvable',
+                sprintf('Cannot construct an exact Dotypos total for WooCommerce order %d.', $order->get_id())
+            );
         }
-        $target_qty = max((float) $items[$target_index]['qty'], 0.000001);
-        $items[$target_index]['manual-price'] = round(
-            (float) $items[$target_index]['manual-price'] + ($rounding_residual / $target_qty),
-            4
-        );
     }
 
     return $items;
