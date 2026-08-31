@@ -36,6 +36,7 @@ run 'Elementor pair compatibility' "$ROOT_DIR/tools/verify-elementor-pair-compat
 # external calls; the remaining verifiers are read-only.
 run 'Dotypos readonly state' "$ROOT_DIR/tools/verify-dotypos-readonly.sh"
 run 'Dotypos Action Scheduler' "$ROOT_DIR/tools/verify-dotypos-action-scheduler.sh"
+run 'Dotypos owner contract' "$ROOT_DIR/tools/verify-dotypos-owner-contract.sh"
 run 'confirmed-weight fiscal contract' "$ROOT_DIR/tools/prove-admin-weight-confirmation.sh"
 run 'fiscal receipt and retry contract' "$ROOT_DIR/tools/verify-dotypos-fiscalization.sh"
 

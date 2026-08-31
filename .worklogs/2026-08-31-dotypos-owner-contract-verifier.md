@@ -28,3 +28,9 @@ file. It creates no orders and makes no Dotypos API calls.
 - live owner and hook assertions passed;
 - existing Dotypos read-only, fiscalization, and Action Scheduler baselines
   were green before the verifier was added.
+
+## Integration
+
+The owner-contract verifier is included in `verify-architecture-contract.sh`.
+This makes the existing aggregate gate fail before reporting architecture
+success if a deployment changes the validated ownership or hook order.
