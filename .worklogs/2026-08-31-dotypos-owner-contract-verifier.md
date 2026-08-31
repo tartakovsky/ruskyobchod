@@ -10,8 +10,10 @@ file. It creates no orders and makes no Dotypos API calls.
 
 ## Contract captured
 
-- `gastronom_apply_dotypos_stock_to_wc_product` and
-  `gastronom_resolve_dotypos_order_sync_quantity` are owned by
+- `gastronom_apply_dotypos_stock_to_wc_product`,
+  `gastronom_resolve_dotypos_order_sync_quantity`,
+  `gastronom_sync_confirmed_preorder_items_to_dotypos`, and
+  `gastronom_restore_confirmed_preorder_items_to_dotypos` are owned by
   `rusky-dotypos-stock-bridge.php`.
 - `rdf_fiscalize_order` is owned by `rusky-dotypos-fiscalization.php`.
 - `woocommerce_reduce_order_stock` order remains:

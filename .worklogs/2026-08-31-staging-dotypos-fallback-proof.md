@@ -27,7 +27,7 @@ customers, uploads, API credentials, or product catalogue were copied.
 2. Confirmed the owner contract with all plugins active.
 3. Deactivated only `gastronom-stock-fix` in staging.
 4. Re-ran the owner contract successfully:
-   - bridge compatibility functions remained owned by
+   - all four bridge compatibility functions remained owned by
      `rusky-dotypos-stock-bridge.php`;
    - fiscalization ownership and priorities 5, 10, and 20 remained correct;
    - the vendor direct sale callback remained absent from priority 10;

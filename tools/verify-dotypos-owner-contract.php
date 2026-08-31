@@ -65,6 +65,14 @@ contract_function_owner(
     '/wp-content/mu-plugins/rusky-dotypos-stock-bridge.php'
 );
 contract_function_owner(
+    'gastronom_sync_confirmed_preorder_items_to_dotypos',
+    '/wp-content/mu-plugins/rusky-dotypos-stock-bridge.php'
+);
+contract_function_owner(
+    'gastronom_restore_confirmed_preorder_items_to_dotypos',
+    '/wp-content/mu-plugins/rusky-dotypos-stock-bridge.php'
+);
+contract_function_owner(
     'rdf_fiscalize_order',
     '/wp-content/mu-plugins/rusky-dotypos-fiscalization.php'
 );
