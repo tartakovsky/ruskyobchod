@@ -17,6 +17,8 @@ need_cmd rg
 need_cmd python3
 
 failures=0
+response_body="$(mktemp)"
+trap 'rm -f "$response_body"' EXIT
 
 check_status() {
     url="$1"
@@ -34,7 +36,9 @@ check_contains() {
     url="$1"
     pattern="$2"
     label="$3"
-    if curl -ks --compressed "$url" | python3 -c 'import html, sys; sys.stdout.write(html.unescape(sys.stdin.read()))' | rg -q "$pattern"; then
+    if curl -ks --compressed "$url" \
+        | python3 -c 'import html, sys; sys.stdout.write(html.unescape(sys.stdin.read()))' >"$response_body" \
+        && rg -q "$pattern" "$response_body"; then
         echo "OK   $label"
     else
         echo "FAIL $label"
