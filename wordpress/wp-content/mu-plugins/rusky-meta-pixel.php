@@ -9,6 +9,10 @@ defined( 'ABSPATH' ) || exit;
 const RUSKY_META_PIXEL_ID = '988003717119707';
 
 function rusky_meta_pixel_enabled(): bool {
+	if ( defined( 'RUSKY_STAGING_MODE' ) && RUSKY_STAGING_MODE ) {
+		return false;
+	}
+
 	return ! is_admin() && RUSKY_META_PIXEL_ID !== '';
 }
 
