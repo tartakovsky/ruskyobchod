@@ -2,10 +2,10 @@
 # Verifies that an explicitly provisioned staging site cannot act as production.
 set -eu
 
-STAGING_URL="${STAGING_URL:-https://staging.gastronom-bratislava.sk}"
+STAGING_URL="${STAGING_URL:-https://staging.ruskyobchod.sk}"
 REMOTE_HOST="${REMOTE_HOST:-u595644545@46.202.156.109}"
 REMOTE_PORT="${REMOTE_PORT:-65002}"
-REMOTE_ROOT="${REMOTE_ROOT:-/home/u595644545/domains/staging.gastronom-bratislava.sk/public_html}"
+REMOTE_ROOT="${REMOTE_ROOT:-/home/u595644545/domains/ruskyobchod.sk/public_html/staging-gastronom}"
 REMOTE_SCRIPT="/tmp/rusky-verify-staging-isolation-$$.php"
 
 cleanup() {
@@ -31,13 +31,13 @@ fi
 
 cat >"${TMPDIR:-/tmp}/rusky-verify-staging-isolation-$$.php" <<'PHP'
 <?php
-$_SERVER['HTTP_HOST'] = 'staging.gastronom-bratislava.sk';
+$_SERVER['HTTP_HOST'] = 'staging.ruskyobchod.sk';
 $_SERVER['REQUEST_METHOD'] = 'GET';
 $_SERVER['REQUEST_URI'] = '/';
 require $argv[1] . '/wp-load.php';
 
 printf("home=%s\n", home_url('/'));
-printf("siteurl=%s\n", site_url('/'));
+printf("siteurl=%s\n", get_option('siteurl'));
 printf("blog_public=%s\n", (string) get_option('blog_public'));
 printf("staging_mode=%s\n", defined('RUSKY_STAGING_MODE') && RUSKY_STAGING_MODE === true ? 'yes' : 'no');
 printf("safety_guard=%s\n", function_exists('rssg_block_external_http') ? 'yes' : 'no');
@@ -63,7 +63,7 @@ check_line() {
 }
 
 check_line "home=$expected_url/" 'WordPress home URL is staging'
-check_line "siteurl=$expected_url/" 'WordPress site URL is staging'
+check_line "siteurl=$expected_url" 'WordPress site URL is staging'
 check_line 'blog_public=0' 'search indexing is disabled'
 check_line 'staging_mode=yes' 'staging mode is explicitly enabled'
 check_line 'safety_guard=yes' 'mail and external WordPress HTTP guard is loaded'

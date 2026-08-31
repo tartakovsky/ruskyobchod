@@ -6,7 +6,13 @@
 
 declare(strict_types=1);
 
-if (!defined('RUSKY_STAGING_MODE') || RUSKY_STAGING_MODE !== true) {
+$request_host = isset($_SERVER['HTTP_HOST']) ? strtolower((string) $_SERVER['HTTP_HOST']) : '';
+$staging_host = 'staging.ruskyobchod.sk';
+
+if (
+    (!defined('RUSKY_STAGING_MODE') || RUSKY_STAGING_MODE !== true)
+    && $request_host !== $staging_host
+) {
     return;
 }
 
