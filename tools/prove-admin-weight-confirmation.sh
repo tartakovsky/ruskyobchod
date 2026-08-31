@@ -158,6 +158,7 @@ if (!isset($settings['dotypos']) || !is_array($settings['dotypos'])) {
 $settings['product']['movement']['syncToDotypos'] = 1;
 $settings['dotypos']['warehouseId'] = $settings['dotypos']['warehouseId'] ?? 1;
 update_option($settings_key, $settings);
+$proof_warehouse_id = (string) $settings['dotypos']['warehouseId'];
 
 $dotypos = Dotypos::instance();
 if (!$dotypos || !is_object($dotypos)) {
@@ -201,6 +202,48 @@ add_filter('pre_wp_mail', static function ($null, $atts) use (&$mail_calls) {
     $mail_calls[] = $atts;
     return true;
 }, 10, 2);
+
+$pos_actions = [];
+add_filter('pre_http_request', static function ($preempt, $args, $url) use (&$pos_actions, $proof_warehouse_id) {
+    $response = static function (int $code, array $body): array {
+        return [
+            'headers' => [],
+            'body' => wp_json_encode($body),
+            'response' => ['code' => $code, 'message' => 'Proof response'],
+            'cookies' => [],
+            'filename' => null,
+        ];
+    };
+
+    if ($url === 'https://api.dotykacka.cz/v2/signin/token') {
+        return $response(201, ['accessToken' => 'proof-token']);
+    }
+    if (strpos($url, '/warehouse-branches?') !== false) {
+        return $response(200, ['data' => [[
+            '_warehouseId' => $proof_warehouse_id,
+            '_branchId' => 120313449,
+            'visible' => true,
+        ]]]);
+    }
+    if (strpos($url, '/orders?') !== false) {
+        return $response(200, ['data' => []]);
+    }
+    if (strpos($url, '/branches/120313449/pos-actions') !== false) {
+        $payload = json_decode((string) ($args['body'] ?? ''), true);
+        $pos_actions[] = $payload;
+        if (($payload['action'] ?? '') === 'order/create-issue-pay') {
+            return $response(200, ['code' => 0, 'order' => [
+                'id' => 'proof-fiscal-order',
+                'paid' => true,
+                'price-total' => array_sum(array_map(static function (array $item): float {
+                    return round((float) $item['manual-price'] * (float) $item['qty'], 2);
+                }, $payload['items'] ?? [])),
+            ]]);
+        }
+    }
+
+    return $preempt;
+}, 10, 3);
 
 $order = wc_create_order();
 $GLOBALS['rusky_ajax_proof_state']['order_id'] = $order->get_id();
@@ -266,13 +309,32 @@ $summary = [
     'actual_weight_after' => $post_item instanceof WC_Order_Item_Product ? $post_item->get_meta('_gastronom_actual_weight_kg', true) : null,
     'weight_confirmed_after' => $post_item instanceof WC_Order_Item_Product ? $post_item->get_meta('_gastronom_weight_confirmed', true) : null,
     'cash_synced_after' => $post_item instanceof WC_Order_Item_Product ? $post_item->get_meta('_gastronom_weight_cash_synced', true) : null,
+    'fiscal_state_after' => $post_order ? $post_order->get_meta('_rusky_dotypos_fiscal_state', true) : null,
+    'fiscal_order_after' => $post_order ? $post_order->get_meta('_rusky_dotypos_fiscal_order_id', true) : null,
     'mail_calls' => count($mail_calls),
     'dotypos_calls' => $stub_calls,
+    'pos_actions' => $pos_actions,
+];
+
+$receipt_actions = array_values(array_filter($pos_actions, static function ($action): bool {
+    return is_array($action) && ($action['action'] ?? '') === 'order/create-issue-pay';
+}));
+$receipt = $receipt_actions[0] ?? [];
+$summary['assertions'] = [
+    'one_fiscal_pos_action' => count($receipt_actions) === 1,
+    'local_print_requested' => ($receipt['print-type'] ?? '') === 'local',
+    'confirmed_weight_on_receipt' => abs((float) ($receipt['items'][0]['qty'] ?? 0) - $actual_weight) < 0.000001,
+    'order_fiscalized' => $summary['fiscal_state_after'] === 'fiscalized' && $summary['fiscal_order_after'] === 'proof-fiscal-order',
+    'no_duplicate_warehouse_sale' => $summary['cash_synced_after'] === 'no' && $stub_calls === [],
+    'one_customer_email' => $summary['mail_calls'] === 1,
 ];
 
 rusky_ajax_proof_cleanup();
 
 echo wp_json_encode($summary, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . PHP_EOL;
+if (in_array(false, $summary['assertions'], true)) {
+    exit(1);
+}
 PHP
 
 scp -P "$REMOTE_PORT" "$tmp_local" "$REMOTE_HOST:$tmp_remote" >/dev/null

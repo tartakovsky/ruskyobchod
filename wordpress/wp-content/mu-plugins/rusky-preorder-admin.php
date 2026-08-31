@@ -506,8 +506,17 @@ function rpa_handle_weight_confirmation_ajax(): void {
     $order->add_order_note(gastronom_tt($order, 'Фактический вес подтверждён, заказ пересчитан.', 'Skutočná hmotnosť bola potvrdená, objednávka bola prepočítaná.'));
     $order->save();
 
-    gastronom_sync_confirmed_preorder_items_to_dotypos($order);
-    gastronom_mark_weight_confirmed_order_ready($order);
+    // A confirmed-weight order must have one POS stock owner. The fiscal POS
+    // action creates, pays and prints the receipt and performs that movement.
+    // The older warehouse sale is retained only as a fallback when the POS
+    // cannot create the fiscal receipt; retry recovery compensates its later
+    // POS movement before leaving stock synchronized.
+    gastronom_mark_weight_confirmed_order_ready($order, false);
+    $fiscalized = function_exists('rdf_fiscalize_order') && rdf_fiscalize_order($order);
+    if (!$fiscalized) {
+        gastronom_sync_confirmed_preorder_items_to_dotypos($order);
+    }
+    gastronom_send_weight_confirmation_email($order);
 
     wp_send_json_success(['message' => 'ok']);
 }

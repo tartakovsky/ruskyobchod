@@ -179,7 +179,7 @@ function rpn_send_weight_confirmation_email($order): void {
     }
 }
 
-function rpn_mark_weight_confirmed_order_ready($order): void {
+function rpn_mark_weight_confirmed_order_ready($order, bool $send_email = true): void {
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -208,7 +208,9 @@ function rpn_mark_weight_confirmed_order_ready($order): void {
         $order->update_status($next_status, $note, true);
     }
 
-    rpn_send_weight_confirmation_email($order);
+    if ($send_email) {
+        rpn_send_weight_confirmation_email($order);
+    }
 }
 
 if (!function_exists('gastronom_send_preorder_created_emails')) {
@@ -224,7 +226,7 @@ if (!function_exists('gastronom_send_weight_confirmation_email')) {
 }
 
 if (!function_exists('gastronom_mark_weight_confirmed_order_ready')) {
-    function gastronom_mark_weight_confirmed_order_ready($order): void {
-        rpn_mark_weight_confirmed_order_ready($order);
+    function gastronom_mark_weight_confirmed_order_ready($order, bool $send_email = true): void {
+        rpn_mark_weight_confirmed_order_ready($order, $send_email);
     }
 }
