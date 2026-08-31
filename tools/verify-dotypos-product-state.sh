@@ -9,7 +9,11 @@ PRODUCT_ID="${1:-10617}"
 
 tmp_local="$(mktemp)"
 tmp_remote="/tmp/rusky-dotypos-product-state-$$.php"
-trap 'rm -f "$tmp_local"' EXIT
+cleanup() {
+    rm -f "$tmp_local"
+    ssh -n -p "$REMOTE_PORT" "$REMOTE_HOST" "rm -f '$tmp_remote'" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
 
 cat >"$tmp_local" <<'PHP'
 <?php
@@ -53,12 +57,13 @@ $is_weight_preorder = get_post_meta($product_id, '_gastronom_weight_preorder', t
 $local_cash = (float) get_post_meta($product_id, '_gastronom_cash_stock_kg', true);
 $local_stock = (float) get_post_meta($product_id, '_stock', true);
 $remote = $dotypos->dotyposService->getProductOnWarehouse($warehouse_id, $dotypos_id);
-$remote_qty = (float) ($remote['stockQuantityStatus'] ?? -1);
 
-if ($remote_qty < 0) {
+if (!is_array($remote) || !array_key_exists('stockQuantityStatus', $remote)) {
     fwrite(STDERR, "FAIL remote stock missing\n");
     exit(1);
 }
+
+$remote_qty = (float) $remote['stockQuantityStatus'];
 
 $expected_source = $is_weight_preorder ? 'local_cash_stock_kg' : 'local_stock';
 $expected_qty = $is_weight_preorder ? $local_cash : $local_stock;
@@ -85,4 +90,4 @@ if (!$match) {
 PHP
 
 scp -P "$REMOTE_PORT" "$tmp_local" "$REMOTE_HOST:$tmp_remote" >/dev/null
-ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT' '$PRODUCT_ID'; rm -f '$tmp_remote'"
+ssh -p "$REMOTE_PORT" "$REMOTE_HOST" "php '$tmp_remote' '$REMOTE_ROOT' '$PRODUCT_ID'"
