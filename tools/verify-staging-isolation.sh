@@ -29,6 +29,25 @@ if printf '%s\n' "$headers" | grep -Eqi '^location: https://ruskyobchod\.sk/?$';
     exit 1
 fi
 
+check_http_status() {
+    path="$1"
+    expected="$2"
+    label="$3"
+    status="$(curl -ksS --max-time 20 -o /dev/null -w '%{http_code}' "$expected_url$path")"
+    if [ "$status" != "$expected" ]; then
+        echo "FAIL $label expected=$expected got=${status:-none}" >&2
+        exit 1
+    fi
+    echo "OK   $label -> $status"
+}
+
+check_http_status '/wp-login.php' '200' 'staging login route'
+check_http_status '/wp-json/' '200' 'staging REST index route'
+check_http_status '/shop/' '200' 'staging shop route'
+check_http_status '/cart/' '200' 'staging cart route'
+check_http_status '/my-account/' '200' 'staging account route'
+check_http_status '/checkout/' '302' 'empty staging checkout redirects to cart'
+
 cat >"${TMPDIR:-/tmp}/rusky-verify-staging-isolation-$$.php" <<'PHP'
 <?php
 $_SERVER['HTTP_HOST'] = 'staging.ruskyobchod.sk';
