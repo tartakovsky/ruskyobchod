@@ -86,7 +86,7 @@ $jobs = [
         'mode' => 'cover',
         'width' => 560,
         'height' => 560,
-        'quality' => 82,
+        'quality' => 68,
     ],
     [
         'source' => '2026/02/68de579d0edc846936543a05-1-scaled.jpeg.webp',
