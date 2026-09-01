@@ -112,3 +112,23 @@ if ($inactive !== $expectedInactive) {
 
 echo 'OK   installed production plugin surface matches allowlist (' . count($installed) . ")\n";
 echo "OK   only Elementor Pro and Google Listings remain intentionally inactive\n";
+
+$rawPluginAutoUpdates = $wpdb->get_var(
+    "SELECT option_value FROM {$wpdb->options} WHERE option_name = 'auto_update_plugins' LIMIT 1"
+);
+$pluginAutoUpdates = maybe_unserialize($rawPluginAutoUpdates);
+if (!is_array($pluginAutoUpdates) || $pluginAutoUpdates !== []) {
+    fwrite(STDERR, "FAIL production plugin auto-updates must remain disabled for staged updates\n");
+    exit(1);
+}
+
+$rawThemeAutoUpdates = $wpdb->get_var(
+    "SELECT option_value FROM {$wpdb->options} WHERE option_name = 'auto_update_themes' LIMIT 1"
+);
+$themeAutoUpdates = $rawThemeAutoUpdates === null ? [] : maybe_unserialize($rawThemeAutoUpdates);
+if (!is_array($themeAutoUpdates) || $themeAutoUpdates !== []) {
+    fwrite(STDERR, "FAIL production theme auto-updates must remain disabled for staged updates\n");
+    exit(1);
+}
+
+echo "OK   production plugin and theme auto-updates remain staging-gated\n";
