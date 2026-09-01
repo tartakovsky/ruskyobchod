@@ -32,6 +32,7 @@ run 'language runtime surface' "$ROOT_DIR/tools/verify-language-runtime-surface.
 run 'live bootstrap surface' "$ROOT_DIR/tools/verify-live-bootstrap-surface.sh"
 run 'configured production plugin inventory' "$ROOT_DIR/tools/verify-production-plugin-inventory.sh"
 run 'production and staging theme inventory' "$ROOT_DIR/tools/verify-theme-inventory.sh"
+run 'production administrator surface' "$ROOT_DIR/tools/verify-production-admin-surface.sh"
 run 'runtime plugin policy' "$ROOT_DIR/tools/verify-plugin-runtime-policy.sh"
 run 'output-buffer policy' "$ROOT_DIR/tools/verify-output-buffer-policy.sh"
 run 'Elementor pair compatibility' "$ROOT_DIR/tools/verify-elementor-pair-compat.sh"
