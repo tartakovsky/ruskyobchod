@@ -74,3 +74,41 @@ foreach ($configured as $plugin) {
 
 echo 'OK   configured production plugin inventory matches allowlist (' . count($configured) . ")\n";
 echo "OK   every configured production plugin entry file exists\n";
+
+$expectedInstalled = array_merge($expected, [
+    'elementor-pro/elementor-pro.php',
+    'google-listings-and-ads/google-listings-and-ads.php',
+]);
+sort($expectedInstalled, SORT_STRING);
+
+$installed = array_keys(get_plugins());
+sort($installed, SORT_STRING);
+
+$missingInstalled = array_values(array_diff($expectedInstalled, $installed));
+$unexpectedInstalled = array_values(array_diff($installed, $expectedInstalled));
+
+if ($missingInstalled !== []) {
+    fwrite(STDERR, 'FAIL missing installed production plugins: ' . implode(', ', $missingInstalled) . "\n");
+}
+if ($unexpectedInstalled !== []) {
+    fwrite(STDERR, 'FAIL unexpected installed production plugins: ' . implode(', ', $unexpectedInstalled) . "\n");
+}
+if ($missingInstalled !== [] || $unexpectedInstalled !== []) {
+    exit(1);
+}
+
+$inactive = array_values(array_diff($installed, $configured));
+$expectedInactive = [
+    'elementor-pro/elementor-pro.php',
+    'google-listings-and-ads/google-listings-and-ads.php',
+];
+sort($inactive, SORT_STRING);
+sort($expectedInactive, SORT_STRING);
+
+if ($inactive !== $expectedInactive) {
+    fwrite(STDERR, 'FAIL inactive production plugin inventory drifted: ' . implode(', ', $inactive) . "\n");
+    exit(1);
+}
+
+echo 'OK   installed production plugin surface matches allowlist (' . count($installed) . ")\n";
+echo "OK   only Elementor Pro and Google Listings remain intentionally inactive\n";
