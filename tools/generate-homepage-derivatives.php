@@ -18,6 +18,14 @@ $jobs = [
     ],
     [
         'source' => '2025/09/image_2400x1200.png',
+        'target' => '2025/09/image_2400x1200-home-800.webp',
+        'mode' => 'contain',
+        'width' => 800,
+        'height' => 400,
+        'quality' => 82,
+    ],
+    [
+        'source' => '2025/09/image_2400x1200.png',
         'target' => '2025/09/image_2400x1200-home-1600.webp',
         'mode' => 'contain',
         'width' => 1600,

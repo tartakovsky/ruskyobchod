@@ -355,7 +355,11 @@ add_filter('the_content', static function (string $content): string {
             $tag = preg_replace('~\s+width="[^"]*"~i', '', $tag) ?? $tag;
             $tag = preg_replace('~\s+height="[^"]*"~i', '', $tag) ?? $tag;
 
-            return str_replace('<img', '<img width="1600" height="800" sizes="100vw"', $tag);
+            return str_replace(
+                '<img',
+                '<img width="1600" height="800" srcset="https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-800.webp 800w, https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp 1600w" sizes="100vw"',
+                $tag
+            );
         },
         $content
     ) ?? $content;
