@@ -36,11 +36,22 @@ $_SERVER['REQUEST_METHOD'] = 'GET';
 $_SERVER['REQUEST_URI'] = '/';
 require $argv[1] . '/wp-load.php';
 
+global $wpdb;
+$raw_active_plugins = $wpdb->get_var(
+    "SELECT option_value FROM {$wpdb->options} WHERE option_name = 'active_plugins' LIMIT 1"
+);
+$configured_active_plugins = maybe_unserialize($raw_active_plugins);
+if (!is_array($configured_active_plugins)) {
+    $configured_active_plugins = [];
+}
+sort($configured_active_plugins, SORT_STRING);
+
 printf("home=%s\n", home_url('/'));
 printf("siteurl=%s\n", get_option('siteurl'));
 printf("blog_public=%s\n", (string) get_option('blog_public'));
 printf("staging_mode=%s\n", defined('RUSKY_STAGING_MODE') && RUSKY_STAGING_MODE === true ? 'yes' : 'no');
 printf("safety_guard=%s\n", function_exists('rssg_block_external_http') ? 'yes' : 'no');
+printf("configured_active_plugins=%s\n", implode(',', $configured_active_plugins));
 PHP
 
 local_script="${TMPDIR:-/tmp}/rusky-verify-staging-isolation-$$.php"
@@ -76,5 +87,6 @@ check_line "siteurl=$expected_url" 'WordPress site URL is staging'
 check_line 'blog_public=0' 'search indexing is disabled'
 check_line 'staging_mode=yes' 'staging mode is explicitly enabled'
 check_line 'safety_guard=yes' 'mail and external WordPress HTTP guard is loaded'
+check_line 'configured_active_plugins=gastronom-stock-fix/gastronom-stock-fix.php,woocommerce-extension-master/dotypos.php,woocommerce/woocommerce.php' 'configured active plugin inventory is minimal'
 
 echo 'Staging isolation verification complete.'
