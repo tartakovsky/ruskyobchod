@@ -48,6 +48,16 @@ check_pair \
     "gastronom-lang-switcher.php"
 
 check_pair \
+    "$ROOT_DIR/wordpress/wp-content/plugins/gastronom-lang-switcher/gls-script.js" \
+    "$REMOTE_ROOT/wp-content/plugins/gastronom-lang-switcher/gls-script.js" \
+    "gls-script.js"
+
+check_pair \
+    "$ROOT_DIR/wordpress/wp-content/plugins/gastronom-lang-switcher/gls-style.css" \
+    "$REMOTE_ROOT/wp-content/plugins/gastronom-lang-switcher/gls-style.css" \
+    "gls-style.css"
+
+check_pair \
     "$ROOT_DIR/wordpress/wp-content/plugins/gastronom-stock-fix/gastronom-stock-fix.php" \
     "$REMOTE_ROOT/wp-content/plugins/gastronom-stock-fix/gastronom-stock-fix.php" \
     "gastronom-stock-fix.php"

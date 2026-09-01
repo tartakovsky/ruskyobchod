@@ -492,6 +492,9 @@
                 el.childNodes.forEach(node => {
                     if (node.nodeType !== Node.TEXT_NODE || !node.textContent) return;
                     node.textContent = node.textContent
+                        .replaceAll('Палисьады', 'Палисады')
+                        .replaceAll('Вход со стороны улицы Палисады', 'Вход со\u00A0стороны улицы\u00A0Палисады')
+                        .replaceAll('Вход со стороны улицы Палисьады', 'Вход со\u00A0стороны улицы\u00A0Палисады')
                         .replaceAll('ул. Palisády', 'ул.\u00A0Palisády')
                         .replaceAll('Братислава I,', 'Братислава\u00A0I,')
                         .replaceAll('Словацкая республика', 'Словацкая Республика')
@@ -503,6 +506,9 @@
 
             if (el.innerHTML) {
                 el.innerHTML = el.innerHTML
+                    .replaceAll('Палисьады', 'Палисады')
+                    .replaceAll('Вход со стороны улицы Палисады', 'Вход со&nbsp;стороны улицы&nbsp;Палисады')
+                    .replaceAll('Вход со стороны улицы Палисьады', 'Вход со&nbsp;стороны улицы&nbsp;Палисады')
                     .replaceAll('ул. Palisády', 'ул.&nbsp;Palisády')
                     .replaceAll('Братислава I,', 'Братислава&nbsp;I,')
                     .replaceAll('Словацкая республика', 'Словацкая Республика')
@@ -898,6 +904,16 @@
                 el.innerHTML = el.innerHTML.replaceAll('Môj Účet', 'Môj účet');
             }
         });
+
+        if (lang === 'ru') {
+            document.querySelectorAll('a[title], button[title], span[title], div[title]').forEach(el => {
+                const title = el.getAttribute('title');
+                if (!title) return;
+                if (title.includes('Мой Аккаунт')) {
+                    el.setAttribute('title', title.replaceAll('Мой Аккаунт', 'Мой аккаунт'));
+                }
+            });
+        }
 
         // Translate breadcrumb text nodes
         document.querySelectorAll('.woocommerce-breadcrumb, nav.woocommerce-breadcrumb').forEach(bc => {
