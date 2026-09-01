@@ -117,6 +117,7 @@ $forbidden = [
 ];
 
 $profile = 'production';
+$allowed = null;
 if (defined('RUSKY_STAGING_MODE') && RUSKY_STAGING_MODE) {
     /*
      * The isolated staging profile intentionally enables only WooCommerce,
@@ -124,6 +125,11 @@ if (defined('RUSKY_STAGING_MODE') && RUSKY_STAGING_MODE) {
      * request-context filters without pretending to be a production clone.
      */
     $profile = 'staging';
+    $allowed = [
+        'woocommerce/woocommerce.php',
+        'woocommerce-extension-master/dotypos.php',
+        'gastronom-stock-fix/gastronom-stock-fix.php',
+    ];
 
     foreach ($forbidden as $name => $pluginsForContext) {
         $forbidden[$name] = array_values(array_unique(array_merge(
@@ -151,6 +157,14 @@ foreach ($required[$context] as $plugin) {
 foreach ($forbidden[$context] as $plugin) {
     if (in_array($plugin, $plugins, true)) {
         fwrite(STDERR, "FAIL {$context}: forbidden {$plugin} is loaded\n");
+        exit(1);
+    }
+}
+
+if ($allowed !== null) {
+    $unexpected = array_values(array_diff($plugins, $allowed));
+    if ($unexpected !== []) {
+        fwrite(STDERR, "FAIL {$context}: unexpected staging plugins are loaded: " . implode(', ', $unexpected) . "\n");
         exit(1);
     }
 }
