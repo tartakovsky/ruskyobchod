@@ -44,6 +44,7 @@ run 'confirmed-weight fiscal contract' "$ROOT_DIR/tools/prove-admin-weight-confi
 run 'fiscal receipt and retry contract' "$ROOT_DIR/tools/verify-dotypos-fiscalization.sh"
 
 # Production integrity and safety boundaries.
+run 'WordPress core integrity' "$ROOT_DIR/tools/verify-wordpress-core-integrity.sh"
 run 'MU-plugin filename parity' "$ROOT_DIR/tools/audit-live-mu-parity.sh"
 run 'critical file hash parity' "$ROOT_DIR/tools/verify-live-critical-file-hashes.sh"
 run 'live PHP syntax' "$ROOT_DIR/tools/verify-live-php-syntax.sh"
