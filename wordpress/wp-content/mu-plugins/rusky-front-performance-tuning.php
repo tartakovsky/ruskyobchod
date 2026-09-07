@@ -35,6 +35,7 @@ function rfpt_homepage_derivative_map(): array
 {
     return [
         'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
+        'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
         'https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200.png' => 'https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp',
         'https://ruskyobchod.sk/wp-content/uploads/2026/02/Alko.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Alko-home-560.webp',
         'https://ruskyobchod.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled-home-560.webp',
@@ -321,6 +322,7 @@ add_filter('get_custom_logo', static function (string $html): string {
 
     $html = strtr($html, [
         'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
+        'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
     ]);
 
     return preg_replace_callback(
