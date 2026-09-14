@@ -34,31 +34,31 @@ function rfpt_is_storefront_performance_request(): bool
 function rfpt_homepage_derivative_map(): array
 {
     return [
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
-        'https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200.png' => 'https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Alko.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Alko-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Dzhemy.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Dzhemy-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd38210edc84693653f675-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd38210edc84693653f675-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Karamel.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Karamel-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de59a50edc846936543a75-1-scaled.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de59a50edc846936543a75-1-scaled-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Konfety.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Konfety-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de579d0edc846936543a05-1-scaled.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de579d0edc846936543a05-1-scaled-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Lapsha.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Lapsha-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3840de9da6af4df9450f-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3840de9da6af4df9450f-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c100edc846936543b2c-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c100edc846936543b2c-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3854de9da6af4df94511-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3854de9da6af4df94511-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Konservatsiya.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Konservatsiya-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c40de9da6af4df98a4c-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c40de9da6af4df98a4c-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c5ade9da6af4df98a4f-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c5ade9da6af4df98a4f-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3880d82091e41c7c9b59-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68dd3880d82091e41c7c9b59-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c770edc846936543b3f-1.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/68de5c770edc846936543b3f-1-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Dllya-zdorovya.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Dllya-zdorovya-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Prazdnichnye.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Prazdnichnye-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/Hleb.jpg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/Hleb-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/ad3dd88d6df011eeb16356181a0358a2_upscaled.jpeg.webp' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/ad3dd88d6df011eeb16356181a0358a2_upscaled-home-560.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/03/Pngtree-dark-chocolate-bar-on-white_15459579-1-.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/03/Pngtree-dark-chocolate-bar-on-white_15459579-1--home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2025/09/image_2400x1200.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Alko.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Alko-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/close-up-futuristic-soft-drink-scaled-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Dzhemy.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Dzhemy-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd38210edc84693653f675-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd38210edc84693653f675-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Karamel.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Karamel-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de59a50edc846936543a75-1-scaled.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de59a50edc846936543a75-1-scaled-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Konfety.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Konfety-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de579d0edc846936543a05-1-scaled.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de579d0edc846936543a05-1-scaled-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Lapsha.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Lapsha-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3840de9da6af4df9450f-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3840de9da6af4df9450f-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c100edc846936543b2c-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c100edc846936543b2c-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3854de9da6af4df94511-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3854de9da6af4df94511-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Konservatsiya.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Konservatsiya-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c40de9da6af4df98a4c-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c40de9da6af4df98a4c-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c5ade9da6af4df98a4f-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c5ade9da6af4df98a4f-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3880d82091e41c7c9b59-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68dd3880d82091e41c7c9b59-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c770edc846936543b3f-1.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/68de5c770edc846936543b3f-1-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Dllya-zdorovya.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Dllya-zdorovya-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Prazdnichnye.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Prazdnichnye-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Hleb.jpg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/Hleb-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/ad3dd88d6df011eeb16356181a0358a2_upscaled.jpeg.webp' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/ad3dd88d6df011eeb16356181a0358a2_upscaled-home-560.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/03/Pngtree-dark-chocolate-bar-on-white_15459579-1-.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/03/Pngtree-dark-chocolate-bar-on-white_15459579-1--home-560.webp',
     ];
 }
 
@@ -321,8 +321,8 @@ add_filter('get_custom_logo', static function (string $html): string {
     }
 
     $html = strtr($html, [
-        'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
-        'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://ruskyobchod.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/gastronom-logo.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/02/gastronom-logo-home-200.webp',
+        'https://gastronom-bratislava.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent.png' => 'https://gastronom-bratislava.sk/wp-content/uploads/2026/09/gastronom-logo-circle-transparent-300x285.png',
     ]);
 
     return preg_replace_callback(
@@ -359,7 +359,7 @@ add_filter('the_content', static function (string $content): string {
 
             return str_replace(
                 '<img',
-                '<img width="1600" height="800" srcset="https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-800.webp 800w, https://ruskyobchod.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp 1600w" sizes="100vw"',
+                '<img width="1600" height="800" srcset="https://gastronom-bratislava.sk/wp-content/uploads/2025/09/image_2400x1200-home-800.webp 800w, https://gastronom-bratislava.sk/wp-content/uploads/2025/09/image_2400x1200-home-1600.webp 1600w" sizes="100vw"',
                 $tag
             );
         },
@@ -367,7 +367,7 @@ add_filter('the_content', static function (string $content): string {
     ) ?? $content;
 
     $content = preg_replace_callback(
-        '~<div class="gc-card-img"><img\b[^>]*src="https://ruskyobchod\.sk/wp-content/uploads/[^"]+-home-560\.webp"[^>]*>~i',
+        '~<div class="gc-card-img"><img\b[^>]*src="https://gastronom-bratislava\.sk/wp-content/uploads/[^"]+-home-560\.webp"[^>]*>~i',
         static function (array $matches): string {
             $tag = preg_replace('~\s+width="[^"]*"~i', '', $matches[0]) ?? $matches[0];
             $tag = preg_replace('~\s+height="[^"]*"~i', '', $tag) ?? $tag;

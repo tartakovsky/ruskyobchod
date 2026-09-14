@@ -230,7 +230,7 @@
         'Условия торговли': 'Obchodné podmienky',
         'Защита персональных данных': 'Ochrana osobných údajov',
         'Рекламационный порядок': 'Reklamačný poriadok',
-        'Вход со стороны ул. Palisády': 'Vstup z ulice Palisády',
+        'Вход со стороны ул. Zámocká': 'Vstup zo Zámockej ulice',
         'Широкий ассортимент товаров из стран бывшего СССР в Братиславе.': 'Široký sortiment potravín z krajín bývalého ZSSR v Bratislave.',
         'Словацкая республика': 'Slovenská republika',
         'Зарегистрирована в торговом реестре окружного суда Братислава I,': 'Zapísaná v OR OS Bratislava I,',
@@ -493,8 +493,7 @@
                     if (node.nodeType !== Node.TEXT_NODE || !node.textContent) return;
                     node.textContent = node.textContent
                         .replaceAll('Палисьады', 'Палисады')
-                        .replaceAll('Вход со стороны улицы Палисады', 'Вход со\u00A0стороны улицы\u00A0Палисады')
-                        .replaceAll('Вход со стороны улицы Палисьады', 'Вход со\u00A0стороны улицы\u00A0Палисады')
+                        .replaceAll('Вход со стороны улицы Замоцкая', 'Вход со\u00A0стороны улицы\u00A0Замоцкая')
                         .replaceAll('ул. Palisády', 'ул.\u00A0Palisády')
                         .replaceAll('Братислава I,', 'Братислава\u00A0I,')
                         .replaceAll('Словацкая республика', 'Словацкая Республика')
@@ -507,8 +506,7 @@
             if (el.innerHTML) {
                 el.innerHTML = el.innerHTML
                     .replaceAll('Палисьады', 'Палисады')
-                    .replaceAll('Вход со стороны улицы Палисады', 'Вход со&nbsp;стороны улицы&nbsp;Палисады')
-                    .replaceAll('Вход со стороны улицы Палисьады', 'Вход со&nbsp;стороны улицы&nbsp;Палисады')
+                    .replaceAll('Вход со стороны улицы Замоцкая', 'Вход со&nbsp;стороны улицы&nbsp;Замоцкая')
                     .replaceAll('ул. Palisády', 'ул.&nbsp;Palisády')
                     .replaceAll('Братислава I,', 'Братислава&nbsp;I,')
                     .replaceAll('Словацкая республика', 'Словацкая Республика')

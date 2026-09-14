@@ -1095,8 +1095,7 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
             'Zámocká 5' => 'Замоцка 5',
             'Bratislava' => 'Братислава',
             'Палисьады' => 'Палисады',
-            'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
-            'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+            'Вход со стороны улицы Замоцкая' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Замоцкая</span>',
             'Slovenská republika' => 'Словацкая Республика',
             'Братислава I,' => 'Братислава&nbsp;I,',
             'Bratislava I,' => 'Братислава&nbsp;I,',
@@ -1113,8 +1112,8 @@ function gls_normalize_legal_company_text_html(string $html, string $lang): stri
         'Замоцка 5, 811 01 Братислава' => 'Zámocká 5, 811 01 Bratislava',
         'Замоцка 5' => 'Zámocká 5',
         'Братислава' => 'Bratislava',
-        'Вход со&nbsp;стороны улицы&nbsp;Палисады' => 'Vchod z ulice Palisády',
-        'Вход со стороны улицы Палисады' => 'Vchod z ulice Palisády',
+        'Вход со&nbsp;стороны улицы&nbsp;Замоцкая' => 'Vchod zo Zámockej ulice',
+        'Вход со стороны улицы Замоцкая' => 'Vchod zo Zámockej ulice',
         'Словацкая Республика' => 'Slovenská republika',
         'Зарегистрирована в торговом реестре окружного суда Братислава I,' => 'Zapísaná v OR OS Bratislava I,',
         'Раздел s.r.o., № записи 182562/B' => 'Oddiel: Sro, Vložka č. 182562/B',
@@ -1440,8 +1439,7 @@ function gls_normalize_front_page_html(string $html, string $lang): string {
             'aria-label="Footer"' => 'aria-label="Подвал"',
             '>Scroll Up<' => '>Прокрутить вверх<',
             'Палисьады' => 'Палисады',
-            'Вход со стороны улицы Палисьады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
-            'Вход со стороны улицы Палисады' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Палисады</span>',
+            'Вход со стороны улицы Замоцкая' => '<span class="gls-footer-address-line">Вход со&nbsp;стороны улицы&nbsp;Замоцкая</span>',
         ]);
     } else {
         $html = gls_replace_text_pairs($html, [

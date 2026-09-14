@@ -5,8 +5,11 @@ SetHandler application/x-lsphp82
 # BEGIN Host redirect
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteCond %{HTTP_HOST} ^(www\.)?gastronom-bratislava\.sk$ [NC]
-RewriteRule ^ https://ruskyobchod.sk%{REQUEST_URI} [R=301,L]
+# Preserve legacy POST callbacks (payments/integrations); redirect visitor GET/HEAD requests.
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$ [NC]
+RewriteCond %{HTTP_HOST} ^(www\.)?ruskyobchod\.sk$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www\.gastronom-bratislava\.sk$ [NC]
+RewriteRule ^ https://gastronom-bratislava.sk%{REQUEST_URI} [R=301,L]
 </IfModule>
 # END Host redirect
 
