@@ -216,7 +216,8 @@ add_filter('woocommerce_rest_product_schema', function($schema) {
     return $schema;
 });
 
-add_action('woocommerce_before_product_object_save', function($product) {
+function rca_preserve_decimal_stock_before_save($product): void {
+    // Preserve the existing quantity-update path used by the stock integration.
     $changes = $product->get_changes();
     if (isset($changes['stock_quantity'])) {
         $product->set_stock_quantity(floatval($changes['stock_quantity']));
@@ -224,7 +225,27 @@ add_action('woocommerce_before_product_object_save', function($product) {
             $product->set_stock_status('instock');
         }
     }
-}, 10, 1);
+    // WC_Product::validate_props() casts stock to int before this hook. It also
+    // runs on status/photo/price saves, when stock_quantity is NOT in changes.
+    // Correct only explicitly fractional simple products; preorder stock is
+    // a count of whole portions and must retain its existing availability rules.
+    if (
+        !$product->is_type('simple')
+        || $product->get_manage_stock('edit') !== true
+        || $product->get_meta('_gls_weighted', true, 'edit') !== 'yes'
+        || $product->get_meta('_gastronom_weight_preorder', true, 'edit') === 'yes'
+        || (float) get_option('woocommerce_notify_no_stock_amount', 0) !== 0.0
+    ) {
+        return;
+    }
+
+    $qty = (float) $product->get_stock_quantity('edit');
+    // Ignore floating-point residue from the POS, rather than reopening zero stock.
+    if ($qty > 0.000001 && $qty < 1.0) {
+        $product->set_stock_status('instock');
+    }
+}
+add_action('woocommerce_before_product_object_save', 'rca_preserve_decimal_stock_before_save', 10, 1);
 
 function rca_weighted_product_field() {
     woocommerce_wp_checkbox([
