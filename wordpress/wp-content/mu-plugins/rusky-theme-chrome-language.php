@@ -983,7 +983,9 @@ add_filter('gettext', function($translation, $text, $domain) {
         return $normalized;
     }
 
-    return rtcl_translate_phrase((string) $text, $lang);
+    $source_translation = rtcl_translate_phrase((string) $text, $lang);
+    // A missing custom override must not discard the language-pack translation.
+    return $source_translation !== (string) $text ? $source_translation : $translation;
 }, 120, 3);
 
 add_filter('ngettext', function($translation, $single, $plural, $number, $domain) {
@@ -998,7 +1000,9 @@ add_filter('ngettext', function($translation, $single, $plural, $number, $domain
     }
 
     $source = $number === 1 ? (string) $single : (string) $plural;
-    return rtcl_translate_phrase($source, $lang);
+    $source_translation = rtcl_translate_phrase($source, $lang);
+    // Preserve the language pack's plural form when our map has no override.
+    return $source_translation !== $source ? $source_translation : $translation;
 }, 120, 5);
 
 add_filter('get_product_search_form', function($form) {
