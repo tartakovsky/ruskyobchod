@@ -47,4 +47,23 @@ commerce/account/home surfaces and output-buffer ownership. No order submission.
 If any regression occurs, restore only the matching backed-up MU file, verify
 baseline hash and affected pages. No database rollback is necessary.
 
-Postdeployment results will be appended after verification.
+## Production verification
+
+Candidate committed/pushed as 573dbc66 before deployment. Rechecked baseline,
+then rsynced only the MU file. Production SHA256 equals repository candidate:
+`cafe2aacf2436d4021e6168f401fdf72bf1a1ee69741ac07a86bd2eb5d973978`.
+Live lint, RU/SK read-only regression verifier and output-buffer policy passed.
+Accessible debug.log remains unchanged (5572 bytes, April 9 timestamp).
+
+In an isolated browser context, verified:
+
+- RU/SK homepage and account pages plus login return 200;
+- server switcher remains present; no gls-script.js/translateAll runtime;
+- zero-stock product shows Нет в наличии / Nie je na sklade;
+- adding .1 kg Barbaris succeeds; attempted 1 kg and additional .6 kg are
+  blocked, with both native stock notices correctly translated in RU/SK;
+- cart quantity remains .1, checkout displays EUR1.50, card/COD methods and
+  no error in each language; no order/payment submitted;
+- test item removed and empty cart verified.
+
+No stock, product, order, language option or catalogue file was changed.
