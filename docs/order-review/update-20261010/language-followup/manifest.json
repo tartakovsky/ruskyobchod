@@ -1,0 +1,10 @@
+{
+  "cutoff": "2026-10-03 08:01:16",
+  "files": [
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php",
+      "before": "c2b1a6b948a4cd3c2acf299ae5a603719e025326f372b453b45e8b3d46aea8ed",
+      "after": "74ada6f0075fae6cb436bce60b9dae3d2b29f3b20b653d08f138bbc280eed8b6"
+    }
+  ]
+}

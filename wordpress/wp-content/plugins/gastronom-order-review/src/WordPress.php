@@ -264,7 +264,7 @@ function gor_admin_state(array $state): array {
     $lang = gor_admin_language();
     if (isset($state['effect']['reference'])) { $state['effect']['reference'] = \Gastronom\OrderReview\AdminLanguage::message((string) $state['effect']['reference'], $lang); }
     if (function_exists('gastronom_localize_title')) {
-        foreach (['quote','original'] as $key) { foreach ($state[$key]['lines'] as &$line) { $line['name'] = gastronom_localize_title(wp_strip_all_tags($line['name']), $lang); } unset($line); }
+        foreach (['quote','original'] as $key) { foreach ($state[$key]['lines'] as &$line) { $line['name'] = gastronom_localize_title(wp_strip_all_tags($line['name']), $state['language']); } unset($line); }
     }
     return $state;
 }

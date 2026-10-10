@@ -35,3 +35,20 @@ All 23 suites passed: 572 checks including native posts/HPOS, actual public HTTP
 mail, original source immutability, POS idempotency, stock and carrier boundaries.
 Server PHP 8.2 syntax verification passed. A live controlled transaction is not
 performed by this UI update. Report and file-only manifest: docs/order-review/update-20261010.
+
+User clarified after the main deployment: product names must follow the order
+language (SK order → SK product names), independently of administrative controls.
+Removed the optional catalog-name recovery proposal. One-line presentation change
+in existing WordPress owner, checked with 10 language cases, 43 adapter cases and
+90 native WP 6.9.10/Woo 10.7.0 posts/HPOS checks. Separate one-file manifest and
+fresh backup. Original order/configuration/ownership are unchanged.
+
+User-requested extra testing: full isolated rerun passed 572 checks before that
+clarification; installed module passed 44 in-memory business scenarios with SQL,
+HTTP and mail blocked. Default WordPress transients isolated to in-process cache.
+
+Investigated real spam using Gmail metadata of the three 11654 emails and safe
+server/DNS reads. Confirmed correction DMARC fail/quarantine, no DKIM and Hostinger
+envelope domain different from From; no SMTP transport. No mail/DNS settings changed.
+Preferred branded mailbox is only proposed and may not exist. MAIL-AUDIT.md records
+the actual evidence and pending authenticated SMTP/OAuth setup.

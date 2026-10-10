@@ -3,7 +3,7 @@
   "isolated": true,
   "productionChanged": false,
   "sourceHashes": {
-    "tests/order-review/admin-language.php": "a10b7650d1703d6ce5f527b82066b079cb58a78cec46c2529974ab02aea4013a",
+    "tests/order-review/admin-language.php": "e35fe57c51d5779be5206a4b180793a8a624246520fe00600d185ad7fa1725c2",
     "tests/order-review/browser-bridge.php": "1b320c3cc2fec06068a412eff4f6858f0d72a04e521abd1f7e095bc4337b29c2",
     "tests/order-review/contracts.php": "07ce9686ed66c5afd2db8b8a48697622cea0998f28a5ae11c784e3637c60e847",
     "tests/order-review/customer-consent.php": "d2f3b453612ba1729323b74e32310209700dba24287a0329b3883bb0dd21cb54",
@@ -60,7 +60,7 @@
     "wordpress/wp-content/plugins/gastronom-order-review/src/Reservations.php": "d923bcd1ef07e00190eb46f0ee6f81514c009673aae49356fefd655b47563a43",
     "wordpress/wp-content/plugins/gastronom-order-review/src/Review.php": "0b5a281f9452f0a17fc86fdaccefbca5d91f0a3ac496280ff64087a5ba6f7520",
     "wordpress/wp-content/plugins/gastronom-order-review/src/StockHolds.php": "cfd14ac401412ca2f44dff302def90592f7feb412c8f1c4fa9b9a4b872fabc1d",
-    "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php": "c2b1a6b948a4cd3c2acf299ae5a603719e025326f372b453b45e8b3d46aea8ed",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php": "74ada6f0075fae6cb436bce60b9dae3d2b29f3b20b653d08f138bbc280eed8b6",
     "wordpress/wp-content/plugins/gastronom-order-review/templates/acknowledgement.php": "27a91eda644bb8d4f023867135c09b64c7e8a828f69b599e2eac55ca4732e076",
     "wordpress/wp-content/plugins/gastronom-stock-fix/gastronom-stock-fix.php": "8ee6ce1a42b67e9def0277df18ce0b74c6530e8ecc297dea75a25724b0f2c256",
     "wordpress/wp-content/plugins/gls-shipping-for-woocommerce/includes/api/class-gls-shipping-api-data.php": "3c87bbc86d00b07b2b356fa655621d1c74c4bd472b6465591f6e8da7249c87e5",
@@ -217,6 +217,12 @@
       "exitCode": 0,
       "checks": 26,
       "output": "PASS actual outbox message has both customer actions\nPASS GET validation has no consent or order side effects\nPASS tampered token rejected\nPASS tampered expires rejected\nPASS expiry boundary rejected\nPASS different order rejected\nPASS different recipient rejected\nPASS unsent message cannot be accepted\nPASS composition is cryptographically bound\nPASS customer uses existing order lock\nPASS customer records agreement only, ignoring supplied approve action\nPASS customer consent actor and UTC time recorded automatically\nPASS customer consent leaves POS, original source and stock effects untouched\nPASS repeated consent is idempotent\nPASS editing invalidates an already sent customer link\nPASS manual telephone consent requires no date input\nPASS admin refresh is read-only\nPASS existing emails remain compatible with manual consent\nPASS partial shortage identifies exact missing quantity with apology\nPASS shortage names escaped\nPASS full removal identifies full missing quantity\nPASS customer request not misrepresented as stock shortage\nPASS Slovak partial shortage\nPASS fractional kg shortage\nPASS actual pack weight not interpreted as missing kilograms\nPASS duplicate original product rows aggregated\n"
+    },
+    {
+      "suite": "User order-language rule: WordPress 6.9.10 / Woo 10.7.0 posts and HPOS",
+      "exitCode": 0,
+      "checks": 90,
+      "output": "Fresh isolated WordPress database installed.\nWordPress 6.9.10 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: posts\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS native order editor view has clean localized numbered title\nPASS editor title projection leaves stored order title untouched\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\nFresh isolated WordPress database installed.\nWordPress 6.9.10 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: HPOS\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\n"
     }
   ],
   "postVerification": {
@@ -225,5 +231,21 @@
     "file": "wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php",
     "previous_sha256": "ecffee2880839a7cea2a18fcbe421aaa8a004a813c9d82bfb30b08b12f853c5d",
     "new_sha256": "176a9120eb356b43544c7e3b307d58a8a564c46d5cf7008b5c387c987ce4b94c"
+  },
+  "orderLanguageFollowup": {
+    "at": "2026-10-10T13:06:27.422826+00:00",
+    "changes": {
+      "tests/order-review/admin-language.php": {
+        "before": "a10b7650d1703d6ce5f527b82066b079cb58a78cec46c2529974ab02aea4013a",
+        "after": "e35fe57c51d5779be5206a4b180793a8a624246520fe00600d185ad7fa1725c2"
+      },
+      "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php": {
+        "before": "c2b1a6b948a4cd3c2acf299ae5a603719e025326f372b453b45e8b3d46aea8ed",
+        "after": "74ada6f0075fae6cb436bce60b9dae3d2b29f3b20b653d08f138bbc280eed8b6"
+      }
+    },
+    "contract": "Product names follow the order language; admin controls follow admin language",
+    "focused_language_checks": 10,
+    "focused_adapter_checks": 43
   }
 }

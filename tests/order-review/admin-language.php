@@ -4,9 +4,9 @@ function al(bool $yes,string $name):void {if(!$yes)throw new Exception('FAIL '.$
 $GLOBALS['admin_locale']='ru_RU';
 $o=new WC_Order(17001);$o->meta['_gastronom_lang']='sk';
 $original=gor_state($o);$view=gor_admin_state($original);
-al($original['language']==='sk'&&$view['language']==='sk'&&$view['quote']['lines'][0]['name']==='Пельмени «Домашние», 500 г','admin language does not follow Slovak customer email language');
+al($original['language']==='sk'&&$view['language']==='sk'&&$view['quote']['lines'][0]['name']==='Domáce pelmene, 500 g','Russian admin controls preserve Slovak order product names');
 $GLOBALS['admin_locale']='sk_SK';$o->meta['_gastronom_lang']='ru';$original=gor_state($o);$view=gor_admin_state($original);
-al($view['quote']['lines'][0]['name']==='Domáce pelmene, 500 g'&&$original['quote']['lines'][0]['name']==='Пельмени «Домашние», 500 г','Slovak admin gets localized view without modifying stored quote');
+al($view['quote']['lines'][0]['name']==='Пельмени «Домашние», 500 г'&&$original['quote']['lines'][0]['name']==='Пельмени «Домашние», 500 г','Slovak admin controls preserve Russian order product names without modifying source');
 al(gor_mail_state($original)['quote']['lines'][0]['name']==='Пельмени «Домашние», 500 г','Russian customer mail remains Russian under Slovak admin');
 al(Gastronom\OrderReview\AdminLanguage::message('Согласие относится к другой версии.','sk')==='Súhlas sa vzťahuje na inú verziu.','Slovak validation errors localized at admin boundary');
 $GLOBALS['admin']=false;$GLOBALS['ajax']=false;$GLOBALS['lang']='sk';
