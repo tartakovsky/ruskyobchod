@@ -387,6 +387,8 @@ function rsne_build_shipping_notice_message(WC_Order $order, string $carrier, ar
 }
 
 function rsne_send_shipping_notice(WC_Order $order, string $dispatch_date): bool {
+    if (function_exists('grg_managed') && grg_managed($order)) { return false; }
+    if (function_exists('gor_managed') && gor_managed($order)) { return false; }
     $to = sanitize_email((string) $order->get_billing_email());
     if ($to === '') {
         return false;

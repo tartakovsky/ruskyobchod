@@ -97,6 +97,8 @@ function rtcl_phrase_map(string $lang): array {
             'Ship to a different address?' => 'Доставка по другому адресу?',
             'Order notes' => 'Примечание к заказу',
             'terms and conditions' => 'правила и условия',
+            'Please read and accept the terms and conditions to proceed with your order.' => 'Чтобы продолжить оформление заказа, прочитайте правила и условия и подтвердите своё согласие с ними.',
+            'Pred pokračovaním objednávky si prečítajte obchodné podmienky a potvrďte svoj súhlas s nimi.' => 'Чтобы продолжить оформление заказа, прочитайте правила и условия и подтвердите своё согласие с ними.',
             'Billing details' => 'Платёжные данные',
             'Product' => 'Товар',
             'Price' => 'Цена',
@@ -239,6 +241,8 @@ function rtcl_phrase_map(string $lang): array {
         'Order notes' => 'Poznámky k objednávke',
         'Примечание к заказу' => 'Poznámky k objednávke',
         'terms and conditions' => 'obchodné podmienky',
+        'Please read and accept the terms and conditions to proceed with your order.' => 'Pred pokračovaním objednávky si prečítajte obchodné podmienky a potvrďte svoj súhlas s nimi.',
+        'Чтобы продолжить оформление заказа, прочитайте правила и условия и подтвердите своё согласие с ними.' => 'Pred pokračovaním objednávky si prečítajte obchodné podmienky a potvrďte svoj súhlas s nimi.',
         'правила и условия' => 'obchodné podmienky',
         'Billing details' => 'Fakturačné údaje',
         'Платёжные данные' => 'Fakturačné údaje',
@@ -973,6 +977,9 @@ function rtcl_translate_tax_suffix_html(string $html, string $lang): string {
 }
 
 add_filter('gettext', function($translation, $text, $domain) {
+    if ($domain === 'woocommerce' && $text === 'Please read and accept the terms and conditions to proceed with your order.' && (!is_admin() || (function_exists('wp_doing_ajax') && wp_doing_ajax()))) {
+        return rtcl_translate_phrase((string) $text, rtcl_current_lang());
+    }
     if (is_admin()) {
         return $translation;
     }

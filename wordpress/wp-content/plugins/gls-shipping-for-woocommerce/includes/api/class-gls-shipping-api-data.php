@@ -240,7 +240,7 @@ class GLS_Shipping_API_Data
             $service_list[] = [
                 'Code' => 'INS',
                 'INSParameter' => [
-                    'Value' => $order->get_total()
+                    'Value' => (function_exists('gor_carrier_total') ? gor_carrier_total($order) : $order->get_total())
                 ]
             ];
         }
@@ -305,7 +305,7 @@ class GLS_Shipping_API_Data
      */
     public function isInsuranceAllowed($order)
     {
-        $packageValue = $order->get_total();
+        $packageValue = (function_exists('gor_carrier_total') ? gor_carrier_total($order) : $order->get_total());
         $originCountry = $this->get_option('country');
         $destinationCountry = $order->get_shipping_country();
 
@@ -489,11 +489,13 @@ class GLS_Shipping_API_Data
             }
 
             if ($order->get_payment_method() === 'cod') {
-                $parcel['CODAmount'] = $order->get_total();
+                $parcel['CODAmount'] = (function_exists('gor_carrier_total') ? gor_carrier_total($order) : $order->get_total());
                 // Use saved COD reference if available, otherwise use order ID
                 $parcel['CODReference'] = !empty($saved_cod_reference) ? $saved_cod_reference : $orderId;
             }
 
+            if (function_exists('gor_gls_parcel')) { $parcel = gor_gls_parcel($parcel, $order); }
+            elseif (function_exists('grg_managed') && grg_managed($order)) { throw new \DomainException('Модуль Gastronom приостановлен. Отправка заблокирована.'); }
             $parcel_list[] = $parcel;
         }
 
@@ -564,11 +566,14 @@ class GLS_Shipping_API_Data
         }
 
         if ($order->get_payment_method() === 'cod') {
-            $parcel['CODAmount'] = $order->get_total();
+            $parcel['CODAmount'] = (function_exists('gor_carrier_total') ? gor_carrier_total($order) : $order->get_total());
             // Use custom COD reference if provided, otherwise fall back to order ID
             $final_cod_reference = $cod_reference !== null ? $cod_reference : $orderId;
             $parcel['CODReference'] = $final_cod_reference;
         }
+
+        if (function_exists('gor_gls_parcel')) { $parcel = gor_gls_parcel($parcel, $order); }
+            elseif (function_exists('grg_managed') && grg_managed($order)) { throw new \DomainException('Модуль Gastronom приостановлен. Отправка заблокирована.'); }
 
         // Use custom print position if provided, otherwise use default from settings
         $final_print_position = $print_position !== null ? $print_position : ((int)$this->get_option("print_position") ?: 1);
@@ -599,7 +604,7 @@ class GLS_Shipping_API_Data
             '{{customer_email}}' => $order->get_billing_email(),
             '{{customer_phone}}' => $this->get_order_phone($order),
             '{{customer_comment}}' => $order->get_customer_note(),
-            '{{order_total}}' => $order->get_total(),
+            '{{order_total}}' => (function_exists('gor_carrier_total') ? gor_carrier_total($order) : $order->get_total()),
             '{{shipping_method}}' => $order->get_shipping_method(),
         );
 

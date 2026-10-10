@@ -66,6 +66,7 @@ function rwp_reserved_qty($product_id, $exclude_order_id = 0): int {
         if (!$order instanceof WC_Order) {
             continue;
         }
+        if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { continue; }
         if ($exclude_order_id > 0 && (int) $order->get_id() === $exclude_order_id) {
             continue;
         }
@@ -148,6 +149,7 @@ function rwp_item_is_confirmed($item): bool {
 }
 
 function rwp_normalize_order_state($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -243,6 +245,7 @@ function rwp_reserve_site_stock($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if ($order->get_meta('_gastronom_preorder_site_reserved', true) === 'yes') {
         return;
     }
@@ -276,6 +279,7 @@ function rwp_restore_site_stock($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if ($order->get_meta('_gastronom_preorder_site_reserved', true) !== 'yes') {
         return;
     }
@@ -322,6 +326,7 @@ function rwp_can_restore_order_stock($can_restore, $order) {
 }
 
 function rwp_prepare_checkout_processed_order($order_id, $posted_data, $order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (!$order instanceof WC_Order || !rwp_order_requires_confirmation($order)) {
         return;
     }

@@ -390,7 +390,15 @@ class PacketSubmitter {
 		 *
 		 * @param array $createPacketData CreatePacket request data.
 		 */
-		return (array) apply_filters( 'packeta_create_packet', $createPacketData );
+		$createPacketData = (array) apply_filters( 'packeta_create_packet', $createPacketData );
+		if ( function_exists( 'gor_packeta_payload' ) ) {
+			try { $createPacketData = gor_packeta_payload( $createPacketData, $order ); }
+			catch ( \DomainException $e ) { throw new InvalidRequestException( $e->getMessage(), [ $e->getMessage() ] ); }
+		}
+		if ( ! function_exists( 'gor_packeta_payload' ) && function_exists( 'grg_managed' ) && grg_managed( (int) $order->getNumber() ) ) {
+			throw new InvalidRequestException( 'Gastronom review module is paused.', [ 'Activate Gastronom review before shipment.' ] );
+		}
+		return $createPacketData;
 	}
 
 	/**

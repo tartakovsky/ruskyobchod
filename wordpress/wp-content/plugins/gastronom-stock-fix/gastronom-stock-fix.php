@@ -653,6 +653,7 @@ function gastronom_weight_preorder_reserved_qty($product_id, $exclude_order_id =
         if (!$order instanceof WC_Order) {
             continue;
         }
+        if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { continue; }
         if ($exclude_order_id > 0 && (int) $order->get_id() === $exclude_order_id) {
             continue;
         }
@@ -1318,6 +1319,7 @@ function gastronom_reserve_preorder_site_stock($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if ($order->get_meta('_gastronom_preorder_site_reserved', true) === 'yes') {
         return;
     }
@@ -1353,6 +1355,7 @@ function gastronom_restore_preorder_site_stock($order): void {
     if (!$order instanceof WC_Order) {
         return;
     }
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if ($order->get_meta('_gastronom_preorder_site_reserved', true) !== 'yes') {
         return;
     }
@@ -1393,6 +1396,7 @@ function gastronom_send_preorder_created_emails($order): void {
 
 if (!function_exists('gastronom_prepare_checkout_processed_preorder')) {
 function gastronom_prepare_checkout_processed_preorder($order_id, $posted_data, $order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (!$order instanceof WC_Order || !gastronom_order_requires_weight_confirmation($order)) {
         return;
     }
@@ -1460,6 +1464,7 @@ add_filter('wc_order_statuses', 'gastronom_inject_await_weight_status');
 
 if (!function_exists('gastronom_sync_confirmed_preorder_items_to_dotypos')) {
 function gastronom_sync_confirmed_preorder_items_to_dotypos($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (function_exists('rdsb_sync_confirmed_preorder_items')) {
         rdsb_sync_confirmed_preorder_items($order);
         return;
@@ -1516,6 +1521,7 @@ function gastronom_sync_confirmed_preorder_items_to_dotypos($order): void {
 
 if (!function_exists('gastronom_restore_confirmed_preorder_items_to_dotypos')) {
 function gastronom_restore_confirmed_preorder_items_to_dotypos($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (function_exists('rdsb_restore_confirmed_preorder_items')) {
         rdsb_restore_confirmed_preorder_items($order);
         return;

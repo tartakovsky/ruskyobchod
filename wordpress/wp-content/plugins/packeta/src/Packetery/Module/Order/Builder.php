@@ -261,6 +261,7 @@ class Builder {
 
 		$order->setCustomsDeclaration( $this->customsDeclarationRepository->getByOrderNumber( $order->getNumber() ) );
 
+		if ( function_exists( 'gor_packeta_display' ) ) { gor_packeta_display( $order, $wcOrder ); }
 		return $order;
 	}
 

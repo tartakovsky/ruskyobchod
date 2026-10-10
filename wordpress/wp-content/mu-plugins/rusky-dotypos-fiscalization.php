@@ -81,6 +81,7 @@ function rdf_cod_quarter_fiscalization_date(WC_Order $order): ?DateTimeImmutable
 }
 
 function rdf_should_fiscalize(WC_Order $order): bool {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return false; }
     if (!rdf_supported_payment_method($order) || rdf_has_unconfirmed_weight_item($order)) {
         return false;
     }
@@ -290,6 +291,40 @@ function rdf_action_items(WC_Order $order) {
                     $adjusted = true;
                     break 2;
                 }
+            }
+        }
+
+        // Whole-unit lines can have a total that is not divisible by their
+        // quantity in cents. Split the same product into two adjacent prices,
+        // preserving its total quantity and the exact receipt amount.
+        if (!$adjusted) {
+            $scale = 10 ** $precision;
+            foreach ($items as $index => $action_item) {
+                $qty = (float) $action_item['qty'];
+                if ($qty < 2 || abs($qty - round($qty)) > 0.000001) {
+                    continue;
+                }
+                $units = (int) round($qty);
+                $line_cents = (int) round((float) $action_item['manual-price'] * $units * $scale)
+                    + (int) round($rounding_residual * $scale);
+                if ($line_cents < 0) {
+                    continue;
+                }
+                $unit_cents = intdiv($line_cents, $units);
+                $higher_units = $line_cents % $units;
+                $lower = $action_item;
+                $lower['qty'] = $units - $higher_units;
+                $lower['manual-price'] = $unit_cents / $scale;
+                $replacement = [$lower];
+                if ($higher_units > 0) {
+                    $higher = $action_item;
+                    $higher['qty'] = $higher_units;
+                    $higher['manual-price'] = ($unit_cents + 1) / $scale;
+                    $replacement[] = $higher;
+                }
+                array_splice($items, $index, 1, $replacement);
+                $adjusted = true;
+                break;
             }
         }
 
@@ -525,6 +560,7 @@ function rdf_retry_apply_stock_offset(WC_Order $order, bool $allow_write = true)
 }
 
 function rdf_retry_fiscalization($order_id): void {
+    if (function_exists('gor_managed') && gor_managed($order_id)) { return; }
     $order = wc_get_order($order_id);
     if (!$order instanceof WC_Order) {
         return;
@@ -693,6 +729,7 @@ function rdf_fiscalize_when_stock_reduces($order): void {
 add_action('woocommerce_reduce_order_stock', 'rdf_fiscalize_when_stock_reduces', 5, 1);
 
 function rdf_schedule_quarter_cod_fiscalization($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     $order = rdf_order($order);
     if (!$order || $order->get_meta(RDF_STATE_META, true) === 'fiscalized') {
         return;
@@ -720,6 +757,7 @@ function rdf_schedule_quarter_cod_fiscalization($order): void {
 add_action('woocommerce_reduce_order_stock', 'rdf_schedule_quarter_cod_fiscalization', 20, 1);
 
 function rdf_fiscalize_quarter_cod_order($order_id): void {
+    if (function_exists('gor_managed') && gor_managed($order_id)) { return; }
     $order = rdf_order($order_id);
     if (!$order
         || $order->get_payment_method() !== 'cod'
@@ -746,6 +784,7 @@ add_action('woocommerce_order_status_completed', 'rdf_fiscalize_after_payment', 
  * /stockups callback. A successful POS Action already owns that deduction.
  */
 function rdf_stock_fallback($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (rdf_order_owns_dotypos_stock_movement($order)) {
         return;
     }

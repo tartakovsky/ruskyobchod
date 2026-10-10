@@ -50,6 +50,7 @@ function rdsb_resolve_order_sync_quantity($order, $item, bool $restore = false) 
 }
 
 function rdsb_sync_confirmed_preorder_items($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -123,6 +124,7 @@ function rdsb_sync_confirmed_preorder_items($order): void {
 }
 
 function rdsb_restore_confirmed_preorder_items($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }
@@ -325,6 +327,7 @@ function rdsb_collect_order_stock_changes($order, bool $restore = false): array 
 }
 
 function rdsb_sync_order_sale_to_dotypos($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (!rdsb_order_stock_sync_enabled()) {
         return;
     }
@@ -380,6 +383,7 @@ function rdsb_sync_order_sale_to_dotypos($order): void {
 }
 
 function rdsb_restore_order_stock_to_dotypos($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (!rdsb_order_stock_sync_enabled()) {
         return;
     }

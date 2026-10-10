@@ -18,6 +18,7 @@ function rpn_get_order_item_gross_total(WC_Order_Item_Product $item): float {
 }
 
 function rpn_send_preorder_created_emails($order): void {
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) { return; }
     if (is_numeric($order)) {
         $order = wc_get_order($order);
     }

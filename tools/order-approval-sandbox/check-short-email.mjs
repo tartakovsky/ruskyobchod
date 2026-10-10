@@ -1,0 +1,42 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {JSDOM} from 'jsdom';
+import {createSandbox,html} from './runtime.mjs';
+const source=fs.readFileSync(new URL('./build-short-email.mjs',import.meta.url),'utf8');
+const mail=fs.readFileSync(new URL('../../wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php',import.meta.url),'utf8');
+const ui=fs.readFileSync(new URL('../../wordpress/wp-content/plugins/gastronom-order-review/assets/review.js',import.meta.url),'utf8');
+const sandbox=await createSandbox();sandbox.php.writeFile('/app/wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php',mail);
+for(const match of source.matchAll(/files\["(\/app\/wordpress[^"]+)"\]=(.*);/g)){sandbox.php.writeFile(match[1],JSON.parse(match[2]));}
+const config=await sandbox.request({scenario:'prepaid',action:'reset'});
+const dom=new JSDOM(html(config),{runScripts:'outside-only'});const w=dom.window;
+w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
+let active=Promise.resolve();w.gorTransport=p=>active=sandbox.request({...p,scenario:'prepaid'});w.eval(ui);
+async function click(s){w.document.querySelector(s).click();await active;await new Promise(r=>setTimeout(r,50));}
+await click('[data-action="edit"]');assert.equal(w.document.querySelector('[name="reason"]'),null);
+await click('[data-remove="0"]');await click('[data-action="preview"]');
+const letter=w.document.querySelector('iframe').dataset.html;
+assert.ok(letter.includes('Новый состав заказа'));assert.ok(!letter.includes('Первоначальный состав'));assert.ok(letter.includes('не хватает 1 шт.'));assert.ok(letter.includes('IBAN'));assert.ok(letter.includes('40,00')&&letter.includes('34,00'));
+console.log('PASS: preview, automatic description, one composition, old/new totals, refund details');
+w.close();
+const wc=await sandbox.request({scenario:'weight',action:'reset'});
+const wd=new JSDOM(html(wc),{runScripts:'outside-only'});const ww=wd.window;
+ww.gorTransport=p=>active=sandbox.request({...p,scenario:'weight'});ww.eval(ui);
+assert.ok(ww.document.querySelector('[name="actual_weight_0"]'));
+assert.equal(ww.document.querySelector('[name="cause"]'),null);
+assert.ok(ww.document.body.textContent.includes('Диапазон за 1 шт.: 0.3–0.5'));
+ww.document.querySelector('[name="actual_weight_0"]').value='0.6';
+ww.document.querySelector('[data-action="weight"]').click();await active.catch(()=>{});await new Promise(r=>setTimeout(r,50));
+assert.ok(ww.document.querySelector('[role="alert"]').textContent.includes('выходит за диапазон'));
+ww.document.querySelector('[name="actual_weight_0"]').value='0.46';
+ww.document.querySelector('[data-action="weight"]').click();await active;await new Promise(r=>setTimeout(r,50));
+let weighted=await sandbox.request({scenario:'weight',action:'read'});
+assert.equal(weighted.state.status,'pending');assert.equal(weighted.state.quote.lines[0].qty,460);assert.equal(weighted.state.quote.lines[0].weight_pending,false);
+assert.equal(Object.keys(weighted.state.mail).length,0);
+const preview=await sandbox.request({scenario:'weight',action:'preview_confirmation',version:weighted.state.version});
+assert.ok(preview.preview.html.includes('Мы уточнили фактический вес'));
+assert.ok(!preview.preview.html.includes('закончились')&&!preview.preview.html.includes('на замену'));
+
+ww.document.querySelector('[name="dispatch_date"]').value='2026-09-12';ww.document.querySelector('[name="dispatch_date"]').dispatchEvent(new ww.Event('input',{bubbles:true}));
+ww.document.querySelector('[data-action="approve"]').click();await active;await new Promise(r=>setTimeout(r,50));
+weighted=await sandbox.request({scenario:'weight',action:'read'});assert.equal(weighted.state.status,'approved');
+console.log('PASS: direct weight input, recalculation without correction/mail, approval');ww.close();

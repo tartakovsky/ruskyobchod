@@ -1,0 +1,37 @@
+#gor-app {color:#213544;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:1100px}
+#gor-app * {box-sizing:border-box}
+#gor-app h2 {padding:0;font-size:21px;margin:0 0 15px}
+#gor-app h3 {font-size:16px;margin:0 0 10px}
+#gor-app .gor-grid {display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px;padding:18px 0;border-bottom:1px solid #e0e5e8}
+#gor-app p {margin:4px 0 10px}
+#gor-app .gor-label {display:block;color:#637582;font-size:12px;margin-bottom:4px}
+#gor-app .gor-status {display:inline-block;padding:5px 12px;border-radius:5px;background:#fff0cf;color:#704c00;font-weight:600}
+#gor-app .gor-status.approved {background:#e4f3e8;color:#245c35}
+#gor-app .gor-status.error {background:#fde7e7;color:#922727}
+#gor-app .gor-controls {display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:20px 0}
+#gor-app button {cursor:pointer;border:1px solid #a4b4bf;border-radius:5px;background:white;color:#254354;font:inherit;padding:8px 14px}
+#gor-app button.primary {background:#174e70;color:white;border-color:#174e70}
+#gor-app button:disabled {opacity:.5;cursor:not-allowed}
+#gor-app button.link {border:0;background:none;color:#215c83;padding:4px 0;text-decoration:underline}
+#gor-app input,#gor-app textarea,#gor-app select {font:inherit;max-width:100%;border:1px solid #aebdc7;border-radius:4px;padding:7px;background:#fff;color:#213544}
+#gor-app input[type=checkbox] {width:auto}
+#gor-app textarea {width:100%;min-height:65px}
+#gor-app label {display:block}
+#gor-app table {width:100%;border-collapse:collapse;margin:8px 0 16px}
+#gor-app th,#gor-app td {text-align:left;border-bottom:1px solid #e4e9ed;padding:12px 7px;vertical-align:top}
+#gor-app td:last-child,#gor-app th:last-child {text-align:right}
+#gor-app .gor-total {text-align:right;font-size:19px;font-weight:700}
+#gor-app .gor-edit {background:#f7fafc;border:1px solid #dae3e9;border-radius:7px;padding:20px;margin-bottom:18px}
+#gor-app .gor-row {display:grid;grid-template-columns:2.5fr 1fr 1fr 1fr auto;gap:8px;margin:10px 0;align-items:end}
+#gor-app .gor-row input {width:100%}
+#gor-app .gor-row .gor-weight {grid-column:1/-1}
+#gor-app .gor-summary {padding:10px 0;font-weight:600}
+#gor-app .gor-error {background:#fff0f0;color:#942d2d;padding:12px;border-left:3px solid #b73939}
+#gor-app .gor-muted {color:#627482;font-size:13px}
+#gor-app .gor-search-results {display:grid;gap:5px;margin:10px 0}
+#gor-app .gor-search-results button {text-align:left}
+#gor-app dialog {border:1px solid #ccd6dd;border-radius:8px;width:min(780px,95vw);max-height:90vh;padding:20px}
+#gor-app dialog::backdrop {background:#132b3a88}
+#gor-app iframe {width:100%;height:60vh;border:0}
+#gor-app .gor-inline {display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media(max-width:700px){#gor-app .gor-grid{grid-template-columns:1fr;gap:12px}#gor-app .gor-row{grid-template-columns:1fr 1fr}#gor-app .gor-row>label:first-child{grid-column:1/-1}#gor-app .gor-edit{padding:12px}#gor-app table{font-size:13px;table-layout:fixed}#gor-app td,#gor-app th{overflow-wrap:anywhere;padding:10px 4px}#gor-app th:first-child{width:34%}}

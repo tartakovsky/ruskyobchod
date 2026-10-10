@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-10T11:25:10.860Z",
+  "isolated": true,
+  "productionChanged": false,
+  "sourceHashes": {
+    "tests/order-review/admin-language.php": "a10b7650d1703d6ce5f527b82066b079cb58a78cec46c2529974ab02aea4013a",
+    "tests/order-review/browser-bridge.php": "1b320c3cc2fec06068a412eff4f6858f0d72a04e521abd1f7e095bc4337b29c2",
+    "tests/order-review/contracts.php": "07ce9686ed66c5afd2db8b8a48697622cea0998f28a5ae11c784e3637c60e847",
+    "tests/order-review/customer-consent.php": "d2f3b453612ba1729323b74e32310209700dba24287a0329b3883bb0dd21cb54",
+    "tests/order-review/domain.php": "444fb5047e892531410fc5b8a6347d8cc5b18a82b67b2c030f9fe94dcdc1b356",
+    "tests/order-review/execution.php": "24caf2ca919d2b62a07cb7be0dfebb63ce7ac8d95780b219745845a1aab102e7",
+    "tests/order-review/fulfillment-rounding.php": "466c1007cd7395a7ada0febfe3c44993ba2772657f63cbdbbf1adc01bfa0830f",
+    "tests/order-review/full-integrations.php": "2287a11d8afb2571b072a9ac3a8378a009018a9b2f255597b6f09b4a372d009d",
+    "tests/order-review/full-wordpress.php": "c0e4a1beaf197e64291dfa7905ac4df3b9537d5c95aea4bf2f760740cc57f384",
+    "tests/order-review/integration.php": "213a6ba98187faa75087ebe3b6349ec4e7c5c305351e07aa52216e96514b96a5",
+    "tests/order-review/legacy-fiscal-rounding.php": "c383f9798d7ea0a0db4aecd7936a41bc4c6f9675b4411cc80918ee8c498986f8",
+    "tests/order-review/lint.php": "93631c7b9e42c15e6c75f8868d00d77090639bb03d6e6d8e7d77d92e0a12314f",
+    "tests/order-review/live-adapter.php": "a9fc74aab9b4321c06928e34131892045f6449ec6fc0714714e9fd4710ef16f2",
+    "tests/order-review/outbox.php": "88935fc48d6f7e249f2748d1271b59819fa5dbd3d57744648353db1736ec072d",
+    "tests/order-review/ownership-guard.php": "9c79a9e5b4b9800481d59572437c0aa8516ed747f8250bf21373b2368e50987d",
+    "tests/order-review/production-gate.php": "c31095844adb63f863523cdcf8b9a8f9cb5bd8ea2089b576b2ed995f9a08d753",
+    "tests/order-review/wp-fixture.php": "1d142cf6e7439bffb9b1be008e29a466dca45317ab12fb8d75d8f4b8fb155253",
+    "tools/order-approval-sandbox/build-offline.mjs": "08143249ed04c2ba4317cfc492cd22efc5e801791523d89ae3b80286d20ffafc",
+    "tools/order-approval-sandbox/build-short-email.mjs": "891ca866e5aa30dfa75afa5329d76405b3e8ee0d8faef98a8336aa4581ae8b67",
+    "tools/order-approval-sandbox/check-four-mails.mjs": "04fa816cb89e6c913d243c03892a5a639795549e1abdd87cedeeb0215dc5c531",
+    "tools/order-approval-sandbox/check-short-email.mjs": "9d2c6b8a05f2636e8cd2d0ce51136731e3a1b55f5d629c8181870839c6e26138",
+    "tools/order-approval-sandbox/package-lock.json": "2135c552db82c04314849f1f9ebca41396c4b14cec5237ffe3e40e5dbe263824",
+    "tools/order-approval-sandbox/package.json": "4812c573dc2ef5ccdb1fe73b4d5ab411e5921fa6f35a8efe2c268cbdc7194ec1",
+    "tools/order-approval-sandbox/run-php.mjs": "e8a700b88dc63fd994deef3692f4ec7f81340a50ce407a546a15989cf874783e",
+    "tools/order-approval-sandbox/runtime.mjs": "c677deffab5df0f83d236e6324607f2880c83def622d06fba1c86e0ac3d46692",
+    "tools/order-approval-sandbox/server.mjs": "1bcfe1c1e22aa31464ab943f5df824673b2c102d524fbc0a51f493a77e5f1c6d",
+    "tools/order-approval-sandbox/test-customer-http.mjs": "f6b2ce260cb9a454c155813e515113e42bb6d03e6790c8532eb64641824cc11a",
+    "tools/order-approval-sandbox/test-gates.mjs": "96128c11e3d8419a8bde67eb2c52ffc65bfc7dd02b4cf210da8aa8caa095ad58",
+    "tools/order-approval-sandbox/test-ui.mjs": "52c676d2be50ebc94fa048a02fdeab3e6b2d109a98f351887d68ccfe86ae4423",
+    "tools/order-approval-sandbox/test-wordpress.mjs": "ccc031f80b7a3f5fd1247445ab5870db17c7b4bffcd311cf2efcdfd76f7ea17b",
+    "tools/order-approval-sandbox/verify.mjs": "dc7148791e9c45000a41d886d5c5e3252fd7cc353ed5f722c1f3b7f9c8f5664d",
+    "wordpress/wp-content/mu-plugins/rusky-dotypos-fiscalization.php": "a053064cfe3a674ff1a985561c13a287b8279e0b879f1026573e07dbec105cc3",
+    "wordpress/wp-content/mu-plugins/rusky-dotypos-stock-bridge.php": "858e709c026ad8ce9cb9ffaa5b7783a409216ed5f083386e9a8f515b0c9b3912",
+    "wordpress/wp-content/mu-plugins/rusky-order-review-guard.php": "abc0eae8490320c3a1e465260559f722bc249a983ef5179578a937a135de3cb9",
+    "wordpress/wp-content/mu-plugins/rusky-preorder-admin.php": "13215f43b5c534601e6bad556a5d9680c32a5ae3d796db65df260ffae06b49da",
+    "wordpress/wp-content/mu-plugins/rusky-preorder-notifications.php": "12bb6250002e2015a3ed16559023863237df5d59690f599260ab1c313adf6ba8",
+    "wordpress/wp-content/mu-plugins/rusky-shipping-notice-email.php": "558b22a26fe3826af31d88e8819fec1b23ed7460506dbfebf20f82b6a27cd3e2",
+    "wordpress/wp-content/mu-plugins/rusky-theme-chrome-language.php": "7e123a254425d8012a8281aca865f94020e52b6f7c9c434ddf497bc0e24be355",
+    "wordpress/wp-content/mu-plugins/rusky-weight-preorder.php": "d965147dcabaa74285c644b1b6455e2c78aa7c4ec2f570d5aaf4351694e99d82",
+    "wordpress/wp-content/plugins/gastronom-order-review/assets/review.css": "4fb38125efc7d923d445fe09c909424dcc8bf8c3855a2dec453717c98407a426",
+    "wordpress/wp-content/plugins/gastronom-order-review/assets/review.js": "8f00b2eacb26067e61c348bdd3a5eefd76cf232c8bdd020586ae0a5831aa837d",
+    "wordpress/wp-content/plugins/gastronom-order-review/gastronom-order-review.php": "b5e10a206de0482d16588755d337acb2aa7579f207bf7bc29b6cc53429b67cb2",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/AdminLanguage.php": "2a74df19eff49b52fb20fb7e1b07611ebfec289e3896f2fb2ee9c69bef29228e",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Carriers.php": "ed93a81d365ca12d130d85060cbd5fedb596d9f51f95e157855104ffdab8837c",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Consent.php": "705110c6ee787fe7220ec4c4adabe8d471a0356b57eab11af2003d21b05424eb",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/CustomerApproval.php": "c1556dec7fbf7ed40e5a790cc97162734b9dc9c181f2410b9e42fc98154392de",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/DotyposTransport.php": "dabc363e0010529bb0bcfb14d2e7818e18d140dbf3736dccf5feb20f244ef2fd",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/ExecutionAdapter.php": "e99e058f7128b14afff55e94f1c264d648cb533f394c8fbb47b65b252a893e28",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Executor.php": "e0355df941661ebe9b939593353ff086476e7a6fdbb01d07273838bc81a99a2d",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Fulfillment.php": "b3726b9ba1c5c4349d8c936edd7ba6e6fe5f7704cce34dab0d9c273e123a9fa1",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/LiveAdapter.php": "48ec8fd1878d6dbe54e002e45ebeafcd8f66c6d441c62fd9e1c5704d718e16cf",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php": "176a9120eb356b43544c7e3b307d58a8a564c46d5cf7008b5c387c987ce4b94c",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Operations.php": "bbc01a0b930118a9a3793823f7c077328bf895ea8a8fb583a5c5c1b5176fd8c1",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Outbox.php": "1d83d38b5334c69d5afbd00d95377b75a6d84f9f645ec7dfa145d17737e22af2",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Reservations.php": "d923bcd1ef07e00190eb46f0ee6f81514c009673aae49356fefd655b47563a43",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/Review.php": "0b5a281f9452f0a17fc86fdaccefbca5d91f0a3ac496280ff64087a5ba6f7520",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/StockHolds.php": "cfd14ac401412ca2f44dff302def90592f7feb412c8f1c4fa9b9a4b872fabc1d",
+    "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php": "c2b1a6b948a4cd3c2acf299ae5a603719e025326f372b453b45e8b3d46aea8ed",
+    "wordpress/wp-content/plugins/gastronom-order-review/templates/acknowledgement.php": "27a91eda644bb8d4f023867135c09b64c7e8a828f69b599e2eac55ca4732e076",
+    "wordpress/wp-content/plugins/gastronom-stock-fix/gastronom-stock-fix.php": "8ee6ce1a42b67e9def0277df18ce0b74c6530e8ecc297dea75a25724b0f2c256",
+    "wordpress/wp-content/plugins/gls-shipping-for-woocommerce/includes/api/class-gls-shipping-api-data.php": "3c87bbc86d00b07b2b356fa655621d1c74c4bd472b6465591f6e8da7249c87e5",
+    "wordpress/wp-content/plugins/packeta/src/Packetery/Module/Order/Builder.php": "b2a04af0c19af35e94c2ea13ab4fd5e7b8b94595c47c67d042652e4ed9a67cf5",
+    "wordpress/wp-content/plugins/packeta/src/Packetery/Module/Order/PacketSubmitter.php": "54e4647a13987fc02f431771be436cdd0527bd83a1164eaee36a62d1bba26470"
+  },
+  "report": [
+    {
+      "suite": "Domain",
+      "exitCode": 0,
+      "checks": 43,
+      "output": "PASS money uses integer cents\nPASS weight precision\nPASS reject money -1\nPASS reject money 1e4\nPASS reject money NaN\nPASS reject money 1.001\nPASS reject money 99999999999999999\nPASS zero quantity\nPASS IBAN checksum and normalization\nPASS IBAN bad checksum\nPASS courier date required\nPASS invalid calendar date\nPASS past dispatch date\nPASS no confirmation before execution\nPASS execution failure is visible\nPASS retry preserves idempotency key\nPASS confirmation outbox after success\nPASS double approval blocked\nPASS approved composition immutable\nPASS original order preserved\nPASS removal shows refund delta\nPASS unsent proposal cannot approve\nPASS failed delivery cannot be agreed\nPASS consent evidence required\nPASS changed replacement invalidates consent and calculates topup\nPASS prepaid shortfall blocks approval\nPASS manual extra payment balances order\nPASS confirmation includes dispatch date\nPASS email HTML escaped\nPASS refund not recorded before approval\nPASS partial refund leaves exact outstanding balance\nPASS same bank reference cannot be counted twice\nPASS over-refund blocked\nPASS refund does not double subtract order total\nPASS repeated refund blocked after balance zero\nPASS stale admin tab rejected\nPASS shipping deal preserved\nPASS proposed cancellation removes shipping and fees\nPASS empty agreed order cancelled without courier date\nPASS unknown actual weight blocks approval\nPASS pickup does not require courier date\nPASS Slovak template\nPASS unweighed pack count never labeled as kilograms\n\n43 domain checks passed.\n"
+    },
+    {
+      "suite": "WordPress adapter",
+      "exitCode": 0,
+      "checks": 43,
+      "output": "PASS cutover boundary\nPASS new order automatic stock blocked\nPASS legacy stock unchanged\nPASS real fiscal module guarded for new orders\nPASS real fiscal decision unchanged for legacy order\nPASS background retry and stock fallback leave new order untouched\nPASS sandbox blocks outbound HTTP\nPASS sandbox intercepts mail\nPASS permission denied without capability\nPASS concurrent request rejected\nPASS WordPress normal approval\nPASS one fiscal and stock effect\nPASS Woo source order unchanged\nPASS confirmation captured not sent\nPASS dispatch date in actual generated confirmation\nPASS API double approval rejected\nPASS product name comes from catalog\nPASS API refund calculation\nPASS mail failure retained\nPASS cannot consent to unsent mail\nPASS retry mail only\nPASS failed fiscal execution does not send confirmation\nPASS retry completes one effect\nPASS corrected fulfillment payload, no COD on prepaid\nPASS prepaid source order immutable\nPASS unchanged discounted line preserves exact cent total\nPASS server derives weight semantics despite client tampering\nPASS late payment reconciled before command\nPASS out-of-band source item modification blocked\n\n29 WordPress adapter checks passed.\nPASS full cancellation proposes full prepaid refund\nPASS approved cancellation has no sale or stock deduction\nPASS cancelled prepaid order supports manual full refund\nPASS reverting a sent proposal still requires fresh consent\nPASS old proposal cannot be resent after revision changed\nPASS unknown weight reserves maximum pack mass\nPASS weight approval deducts actual kg, not reserved maximum\nPASS remaining kilograms converted to safe piece capacity\nPASS finance export distinguishes original sale, cancellation and bank refund\nPASS recovery refuses recent active worker\nPASS operator recovery restores reconciliation after crashed request\nPASS COD Woo paid date does not invent original-amount receipt\nPASS invalid POS plan does not freeze editable order\nPASS catalog mapping change cannot alter approved replay plan\n"
+    },
+    {
+      "suite": "Customer consent and shortages",
+      "exitCode": 0,
+      "checks": 26,
+      "output": "PASS actual outbox message has both customer actions\nPASS GET validation has no consent or order side effects\nPASS tampered token rejected\nPASS tampered expires rejected\nPASS expiry boundary rejected\nPASS different order rejected\nPASS different recipient rejected\nPASS unsent message cannot be accepted\nPASS composition is cryptographically bound\nPASS customer uses existing order lock\nPASS customer records agreement only, ignoring supplied approve action\nPASS customer consent actor and UTC time recorded automatically\nPASS customer consent leaves POS, original source and stock effects untouched\nPASS repeated consent is idempotent\nPASS editing invalidates an already sent customer link\nPASS manual telephone consent requires no date input\nPASS admin refresh is read-only\nPASS existing emails remain compatible with manual consent\nPASS partial shortage identifies exact missing quantity with apology\nPASS shortage names escaped\nPASS full removal identifies full missing quantity\nPASS customer request not misrepresented as stock shortage\nPASS Slovak partial shortage\nPASS fractional kg shortage\nPASS actual pack weight not interpreted as missing kilograms\nPASS duplicate original product rows aggregated\n"
+    },
+    {
+      "suite": "Admin and checkout language",
+      "exitCode": 0,
+      "checks": 10,
+      "output": "PASS admin language does not follow Slovak customer email language\nPASS Slovak admin gets localized view without modifying stored quote\nPASS Russian customer mail remains Russian under Slovak admin\nPASS Slovak validation errors localized at admin boundary\nPASS existing language module owns checkout error translation\nPASS Slovak checkout terms error localized despite Russian native catalogue\nPASS checkout AJAX terms error follows storefront language\nPASS native administrative catalogue unchanged\nPASS Russian checkout terms error localized despite Slovak catalogue\nPASS native translation fallback remains intact\n"
+    },
+    {
+      "suite": "Fulfillment and reservations",
+      "exitCode": 0,
+      "checks": 13,
+      "output": "PASS unapproved payload blocked\nPASS COD matches effective total\nPASS parcel weight belongs to carrier\nPASS stock projection retains units\nPASS POS rounded total exact\nPASS unmapped SKU blocked\nPASS missing ordinary product mass does not block approval\nPASS reservation does not deduct physical stock\nPASS renewal does not double reserve\nPASS second order cannot reserve final piece\nPASS replacement releases removed hold\nPASS cancellation releases reservation\nPASS unknown weight not treated as exact reservation\n\n13 adapter and reservation contract checks passed.\n"
+    },
+    {
+      "suite": "Execution recovery",
+      "exitCode": 0,
+      "checks": 17,
+      "output": "PASS intent persisted before side effect\nPASS lost response is uncertain\nPASS uncertain send journal retained\nPASS retry reconciles receipt without new sale\nPASS completed replay has no side effect\nPASS missing remote result does not authorize resend\nPASS uncertain absent result never resent\nPASS wrong total blocks completion\nPASS paid is not proof of fiscalization\nPASS wrong stock quantity blocks completion\nPASS changed plan cannot reuse operation\nPASS duplicate remote receipts block execution\nPASS printer error uses authoritative fiscalized receipt\nPASS POS cannot apply hidden product discount or modifiers\nPASS fiscalization failure flag rejected\nPASS missing stock movement rejected\nPASS wrong branch rejected\n"
+    },
+    {
+      "suite": "Mail outbox",
+      "exitCode": 0,
+      "checks": 7,
+      "output": "PASS mail intent durable before transport\nPASS explicit mail refusal retryable\nPASS sent email replay does not send again\nPASS retry retains frozen text and recipient\nPASS ambiguous mail transport remains uncertain\nPASS uncertain email not automatically resent\nPASS WordPress mail adapter preserves reply channel\n"
+    },
+    {
+      "suite": "Release adapter with fake HTTP",
+      "exitCode": 0,
+      "checks": 11,
+      "output": "PASS release adapter constructs branch-scoped endpoint\nPASS release transport uses stable reference and configured payment mapping\nPASS remote millisecond timestamps normalized\nPASS release stock adapter sets authoritative stock without extra deduction\nPASS release stock adapter frees completed hold\nPASS repeated reconciliation does not subtract sold quantities\nPASS pre-receipt warehouse snapshot rejected\nPASS stock synchronization never invokes sale endpoint\nPASS generic product version cannot replace stock version\nPASS incorrect stock field casing rejected\nPASS invalid warehouse version leaves local stock untouched\n"
+    },
+    {
+      "suite": "Production gate",
+      "exitCode": 0,
+      "checks": 1,
+      "output": "PASS production environment cannot activate review handlers even with sandbox flag\n"
+    },
+    {
+      "suite": "Rollback ownership",
+      "exitCode": 0,
+      "checks": 6,
+      "output": "PASS persistent cutoff retains order ownership with review plugin disabled\nPASS old fiscal handler blocked even when review plugin disabled\nPASS Woo automatic stock blocked during rollback\nPASS rollback suppresses misleading original confirmation\nPASS saved effective state retains ownership even without cutoff option\nPASS unconfigured install leaves ordinary legacy orders untouched\n"
+    },
+    {
+      "suite": "Legacy fiscal rounding",
+      "exitCode": 0,
+      "checks": 28,
+      "output": "PASS legacy six-unit receipt representable 36\nPASS exact cents and original stock quantity 36\nPASS legacy six-unit receipt representable 45.4\nPASS exact cents and original stock quantity 45.4\nPASS legacy six-unit receipt representable 45.41\nPASS exact cents and original stock quantity 45.41\nPASS legacy six-unit receipt representable 45.42\nPASS exact cents and original stock quantity 45.42\nPASS legacy six-unit receipt representable 45.43\nPASS exact cents and original stock quantity 45.43\nPASS September 11612 rounding fix retained\nPASS legacy six-unit receipt representable 45.44\nPASS exact cents and original stock quantity 45.44\nPASS legacy six-unit receipt representable 45.45\nPASS exact cents and original stock quantity 45.45\nPASS legacy six-unit receipt representable 45.46\nPASS exact cents and original stock quantity 45.46\nPASS legacy six-unit receipt representable 45.47\nPASS exact cents and original stock quantity 45.47\nPASS legacy six-unit receipt representable 45.48\nPASS exact cents and original stock quantity 45.48\nPASS legacy six-unit receipt representable 45.49\nPASS exact cents and original stock quantity 45.49\nPASS legacy six-unit receipt representable 45.5\nPASS exact cents and original stock quantity 45.5\nPASS legacy six-unit receipt representable 45.51\nPASS exact cents and original stock quantity 45.51\nPASS legacy fractional weight preserved\n"
+    },
+    {
+      "suite": "New fulfillment rounding",
+      "exitCode": 0,
+      "checks": 29,
+      "output": "PASS exact approved fiscal/COD amount 3600\nPASS stock quantity and mapping unchanged 3600\nPASS exact approved fiscal/COD amount 4540\nPASS stock quantity and mapping unchanged 4540\nPASS exact approved fiscal/COD amount 4541\nPASS stock quantity and mapping unchanged 4541\nPASS exact approved fiscal/COD amount 4542\nPASS stock quantity and mapping unchanged 4542\nPASS exact approved fiscal/COD amount 4543\nPASS stock quantity and mapping unchanged 4543\nPASS same exact split as legacy 11612 fix\nPASS exact approved fiscal/COD amount 4544\nPASS stock quantity and mapping unchanged 4544\nPASS exact approved fiscal/COD amount 4545\nPASS stock quantity and mapping unchanged 4545\nPASS exact approved fiscal/COD amount 4546\nPASS stock quantity and mapping unchanged 4546\nPASS exact approved fiscal/COD amount 4547\nPASS stock quantity and mapping unchanged 4547\nPASS exact approved fiscal/COD amount 4548\nPASS stock quantity and mapping unchanged 4548\nPASS exact approved fiscal/COD amount 4549\nPASS stock quantity and mapping unchanged 4549\nPASS exact approved fiscal/COD amount 4550\nPASS stock quantity and mapping unchanged 4550\nPASS exact approved fiscal/COD amount 4551\nPASS stock quantity and mapping unchanged 4551\nPASS single-unit exact line unchanged\nPASS fractional weight quantity and amount unchanged\n"
+    },
+    {
+      "suite": "Activation gates",
+      "exitCode": 0,
+      "checks": 6,
+      "output": "PASS unconfigured production\nPASS sandbox flag cannot enable production\nPASS live flag cannot enable staging\nPASS live flag cannot enable local\nPASS conflicting flags fail closed\nPASS missing cutoff fails closed\n"
+    },
+    {
+      "suite": "PHP syntax",
+      "exitCode": 0,
+      "checks": 29,
+      "output": "PASS syntax gastronom-order-review.php\nPASS syntax AdminLanguage.php\nPASS syntax Carriers.php\nPASS syntax Consent.php\nPASS syntax CustomerApproval.php\nPASS syntax DotyposTransport.php\nPASS syntax ExecutionAdapter.php\nPASS syntax Executor.php\nPASS syntax Fulfillment.php\nPASS syntax LiveAdapter.php\nPASS syntax Mail.php\nPASS syntax Operations.php\nPASS syntax Outbox.php\nPASS syntax Reservations.php\nPASS syntax Review.php\nPASS syntax StockHolds.php\nPASS syntax WordPress.php\nPASS syntax acknowledgement.php\n18 PHP files parsed.\nPASS syntax rusky-dotypos-fiscalization.php\nPASS syntax rusky-dotypos-stock-bridge.php\nPASS syntax rusky-preorder-admin.php\nPASS syntax rusky-weight-preorder.php\nPASS syntax rusky-preorder-notifications.php\nPASS syntax rusky-order-review-guard.php\nPASS syntax rusky-shipping-notice-email.php\nPASS syntax gastronom-stock-fix/gastronom-stock-fix.php\nPASS syntax gls-shipping-for-woocommerce/includes/api/class-gls-shipping-api-data.php\nPASS syntax packeta/src/Packetery/Module/Order/Builder.php\nPASS syntax packeta/src/Packetery/Module/Order/PacketSubmitter.php\n"
+    },
+    {
+      "suite": "Interface",
+      "exitCode": 0,
+      "checks": 25,
+      "output": "PASS normal order has no correction panel\nPASS approve disabled without courier date\nPASS carrier side area present separately\nPASS missing date hint visible\nPASS past courier date cannot enable approval\nPASS valid courier date enables approval\nPASS cleared courier date disables approval\nPASS normal approval through UI\nPASS UI confirmation preview includes dispatch date\nPASS correction only after explicit click\nPASS preview opens before send\nPASS refund proposal requests IBAN and states exact difference\nPASS proposal sent and agreement pending\nPASS approve disabled while awaiting customer\nPASS manual agreement has channel selection and no date input\nPASS actual proposal contains customer button\nPASS corrected prepaid approval\nPASS UI manual refund records transfer independently\nPASS replacement proposal exact new total\nPASS editing agreed version requires renewed consent\nPASS weight updates without correction or consent\nPASS Slovak actual confirmation\nPASS returning to order refreshes persisted customer status\nPASS refreshed agreed order remains actionable\nPASS Slovak admin interface has Slovak controls\n\n25 interface checks passed; HTML previews exported.\n"
+    },
+    {
+      "suite": "WordPress posts and HPOS",
+      "exitCode": 0,
+      "checks": 90,
+      "output": "Fresh isolated WordPress database installed.\nWordPress 6.9.7 / WooCommerce 10.6.2\nPASS plugin loaded on real WordPress\nStorage: posts\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS native order editor view has clean localized numbered title\nPASS editor title projection leaves stored order title untouched\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\nFresh isolated WordPress database installed.\nWordPress 6.9.7 / WooCommerce 10.6.2\nPASS plugin loaded on real WordPress\nStorage: HPOS\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\n"
+    },
+    {
+      "suite": "Production WooCommerce posts and HPOS",
+      "exitCode": 0,
+      "checks": 90,
+      "output": "Fresh isolated WordPress database installed.\nWordPress 6.9.7 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: posts\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS native order editor view has clean localized numbered title\nPASS editor title projection leaves stored order title untouched\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\nFresh isolated WordPress database installed.\nWordPress 6.9.7 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: HPOS\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\n"
+    },
+    {
+      "suite": "Current WordPress 6.9.10 and WooCommerce 10.7.0 posts and HPOS",
+      "exitCode": 0,
+      "checks": 90,
+      "output": "Fresh isolated WordPress database installed.\nWordPress 6.9.10 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: posts\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS native order editor view has clean localized numbered title\nPASS editor title projection leaves stored order title untouched\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\nFresh isolated WordPress database installed.\nWordPress 6.9.10 / WooCommerce 10.7.0\nPASS plugin loaded on real WordPress\nStorage: HPOS\nPASS real order assigned by cutoff\nPASS real Woo shipping snapshot\nPASS automatic Woo stock reduction blocked\nPASS real order approval metadata saved\nPASS one persisted sandbox effect\nPASS real Woo order amount and items unchanged\nPASS real order confirmation captured\nPASS real prepaid removal refund delta\nPASS real prepaid correction approved\nPASS original paid Woo total immutable\nPASS administrator capability on real order\nPASS anonymous permission denied\nPASS duplicate shipping notice metabox removed\nPASS legacy notice sender blocked for managed order\nPASS review metabox registered\nPASS carrier sidebar registrations preserved\nPASS real metabox renders customer and config\nPASS real WordPress outbound HTTP denied\nPASS real REST product search returns catalog products\n\n20 full WordPress/WooCommerce checks passed.\nPASS checkout creates durable availability hold\nPASS hold leaves physical Woo quantity untouched\nPASS Woo reserved-stock SQL includes new ledger\nPASS checkout excludes its own hold\nPASS competing checkout cannot reserve final piece\nPASS cancellation releases held availability\nPASS real database retains uncertain POS result\nPASS uncertain execution retains stock hold\nPASS lost POS response reconciles without duplicate sale\nPASS verified execution settles stock once and releases hold\nPASS real GLS single builder uses approved COD\nPASS real GLS batch uses corrected prepaid value and no COD\nPASS real GLS single blocks unapproved shipment\nPASS real GLS batch blocks mixed approved and unapproved export\nPASS real Packeta entity drops stale manual value and COD\nPASS Packeta manual packaging weight preserved\nPASS Packeta calculated/default weight preserved without manual value\nPASS Packeta low manual payload weight preserved exactly\nPASS missing Packeta weight left to carrier validation\nPASS real Packeta submitter resolves internal ID despite custom public number\nPASS Packeta preserves delivery date and packaging weight\nPASS Packeta unapproved export uses plugin handled exception\nPASS Woo first email renders availability acknowledgement\nPASS plain-text acknowledgement has explicit original total\nExtended full integration checks completed.\n"
+    },
+    {
+      "suite": "Customer public HTTP",
+      "exitCode": 0,
+      "checks": 8,
+      "output": "PASS real WordPress GET renders explicit acceptance and exact shortage\nPASS email-scanner GET does not change order, agreement or stock\nPASS customer page has private cache and referral headers\nPASS forged HTTP link cannot read proposal or modify order\nPASS real anonymous POST records customer agreement\nPASS public POST leaves POS, stock and Woo source unchanged\nPASS repeated real POST is idempotent\nPASS old proposal HTTP POST rejected after administrator edits\n"
+    },
+    {
+      "suite": "Review flow",
+      "exitCode": 0,
+      "checks": 0,
+      "output": "PASS: preview, automatic description, one composition, old/new totals, refund details\nPASS: direct weight input, recalculation without correction/mail, approval\n"
+    },
+    {
+      "suite": "Four email variants",
+      "exitCode": 0,
+      "checks": 0,
+      "output": "PASS: all 4 variants in RU/SK, one composition, consent only for changes, courier date in confirmations, explicit language/default SK. Gallery generated.\n"
+    },
+    {
+      "suite": "Review demo build",
+      "exitCode": 0,
+      "checks": 0,
+      "output": "/Users/alexandertartakovsky/Projects/gastronom-review-20261010/docs/order-review/Gastronom-review-short-email.html (24 MB)\n"
+    },
+    {
+      "suite": "Offline build",
+      "exitCode": 0,
+      "checks": 0,
+      "output": "/Users/alexandertartakovsky/Projects/gastronom-review-20261010/docs/order-review/Gastronom-review-offline.html (24 MB)\n"
+    },
+    {
+      "suite": "Mail formatting: domain regression",
+      "exitCode": 0,
+      "checks": 43,
+      "output": "PASS money uses integer cents\nPASS weight precision\nPASS reject money -1\nPASS reject money 1e4\nPASS reject money NaN\nPASS reject money 1.001\nPASS reject money 99999999999999999\nPASS zero quantity\nPASS IBAN checksum and normalization\nPASS IBAN bad checksum\nPASS courier date required\nPASS invalid calendar date\nPASS past dispatch date\nPASS no confirmation before execution\nPASS execution failure is visible\nPASS retry preserves idempotency key\nPASS confirmation outbox after success\nPASS double approval blocked\nPASS approved composition immutable\nPASS original order preserved\nPASS removal shows refund delta\nPASS unsent proposal cannot approve\nPASS failed delivery cannot be agreed\nPASS consent evidence required\nPASS changed replacement invalidates consent and calculates topup\nPASS prepaid shortfall blocks approval\nPASS manual extra payment balances order\nPASS confirmation includes dispatch date\nPASS email HTML escaped\nPASS refund not recorded before approval\nPASS partial refund leaves exact outstanding balance\nPASS same bank reference cannot be counted twice\nPASS over-refund blocked\nPASS refund does not double subtract order total\nPASS repeated refund blocked after balance zero\nPASS stale admin tab rejected\nPASS shipping deal preserved\nPASS proposed cancellation removes shipping and fees\nPASS empty agreed order cancelled without courier date\nPASS unknown actual weight blocks approval\nPASS pickup does not require courier date\nPASS Slovak template\nPASS unweighed pack count never labeled as kilograms\n\n43 domain checks passed.\n"
+    },
+    {
+      "suite": "Mail formatting: consent/shortage regression",
+      "exitCode": 0,
+      "checks": 26,
+      "output": "PASS actual outbox message has both customer actions\nPASS GET validation has no consent or order side effects\nPASS tampered token rejected\nPASS tampered expires rejected\nPASS expiry boundary rejected\nPASS different order rejected\nPASS different recipient rejected\nPASS unsent message cannot be accepted\nPASS composition is cryptographically bound\nPASS customer uses existing order lock\nPASS customer records agreement only, ignoring supplied approve action\nPASS customer consent actor and UTC time recorded automatically\nPASS customer consent leaves POS, original source and stock effects untouched\nPASS repeated consent is idempotent\nPASS editing invalidates an already sent customer link\nPASS manual telephone consent requires no date input\nPASS admin refresh is read-only\nPASS existing emails remain compatible with manual consent\nPASS partial shortage identifies exact missing quantity with apology\nPASS shortage names escaped\nPASS full removal identifies full missing quantity\nPASS customer request not misrepresented as stock shortage\nPASS Slovak partial shortage\nPASS fractional kg shortage\nPASS actual pack weight not interpreted as missing kilograms\nPASS duplicate original product rows aggregated\n"
+    }
+  ],
+  "postVerification": {
+    "at": "2026-10-10T12:31:58.130001+00:00",
+    "change": "Remove duplicate sentence-ending period after Russian piece abbreviation; no logic changes",
+    "file": "wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php",
+    "previous_sha256": "ecffee2880839a7cea2a18fcbe421aaa8a004a813c9d82bfb30b08b12f853c5d",
+    "new_sha256": "176a9120eb356b43544c7e3b307d58a8a564c46d5cf7008b5c387c987ce4b94c"
+  }
+}

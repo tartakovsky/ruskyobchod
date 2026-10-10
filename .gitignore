@@ -34,3 +34,10 @@ wordpress/*.hstgr
 wordpress/*.json
 wordpress/error_log
 wordpress/hostinger-migrator-import-log.txt
+
+# Isolated order review dependencies and generated runtime
+tools/order-approval-sandbox/node_modules/
+tools/order-approval-sandbox/runtime/
+docs/order-review/Gastronom-review-offline.html
+docs/order-review/gastronom-order-review-sandbox.zip
+docs/order-review/gastronom-order-review-candidate.zip

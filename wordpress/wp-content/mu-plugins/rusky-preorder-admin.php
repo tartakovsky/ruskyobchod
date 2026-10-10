@@ -458,6 +458,10 @@ function rpa_handle_weight_confirmation_ajax(): void {
         wp_send_json_error(['message' => 'Заказ не найден.'], 404);
     }
 
+    if (((function_exists('grg_managed') && grg_managed($order)) || (function_exists('gor_managed') && gor_managed($order)))) {
+        wp_send_json_error(['message' => 'Укажите вес через блок «Изменить» и утвердите заказ.'], 409);
+    }
+
     $actual_weights = isset($_POST['gastronom_actual_weight']) ? wp_unslash($_POST['gastronom_actual_weight']) : [];
     $changed = false;
 

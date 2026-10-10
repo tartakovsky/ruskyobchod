@@ -1,0 +1,51 @@
+{
+  "created": "2026-10-10T11:25:00.502070+00:00",
+  "cutoff": "2026-10-03 08:01:16",
+  "files": [
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/Consent.php",
+      "before": null,
+      "after": "705110c6ee787fe7220ec4c4adabe8d471a0356b57eab11af2003d21b05424eb"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/AdminLanguage.php",
+      "before": null,
+      "after": "2a74df19eff49b52fb20fb7e1b07611ebfec289e3896f2fb2ee9c69bef29228e"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/CustomerApproval.php",
+      "before": null,
+      "after": "c1556dec7fbf7ed40e5a790cc97162734b9dc9c181f2410b9e42fc98154392de"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/Mail.php",
+      "before": "52a6b6026a3275de74cb87907d738f1a6ac0722b9fb9cf4e7f48d0f0c4fa565e",
+      "after": "176a9120eb356b43544c7e3b307d58a8a564c46d5cf7008b5c387c987ce4b94c"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/Review.php",
+      "before": "a10e0732c16fe5e959653fc1b9accf4bacdcd237d113414212990ea10650061d",
+      "after": "0b5a281f9452f0a17fc86fdaccefbca5d91f0a3ac496280ff64087a5ba6f7520"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/src/WordPress.php",
+      "before": "77b08a3879626674f33503813dec0f794438f377c339d6ed087b31724db281d6",
+      "after": "c2b1a6b948a4cd3c2acf299ae5a603719e025326f372b453b45e8b3d46aea8ed"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/gastronom-order-review.php",
+      "before": "48ced8197c799df9c8ce7002393ebc9a9a0fe04032addd381a0462306fee81ff",
+      "after": "b5e10a206de0482d16588755d337acb2aa7579f207bf7bc29b6cc53429b67cb2"
+    },
+    {
+      "path": "wordpress/wp-content/plugins/gastronom-order-review/assets/review.js",
+      "before": "65b5559312d49b94c75d91d02db0780a2340563a0ec582d73bafa8abac057179",
+      "after": "8f00b2eacb26067e61c348bdd3a5eefd76cf232c8bdd020586ae0a5831aa837d"
+    },
+    {
+      "path": "wordpress/wp-content/mu-plugins/rusky-theme-chrome-language.php",
+      "before": "cafe2aacf2436d4021e6168f401fdf72bf1a1ee69741ac07a86bd2eb5d973978",
+      "after": "7e123a254425d8012a8281aca865f94020e52b6f7c9c434ddf497bc0e24be355"
+    }
+  ]
+}
