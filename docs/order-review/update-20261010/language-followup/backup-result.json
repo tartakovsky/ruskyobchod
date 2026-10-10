@@ -1,0 +1,14 @@
+{
+    "at": "2026-10-10T13:05:45+00:00",
+    "backup": "/home/u595644545/backups/order-review-ui-20261010-130544",
+    "files": 32,
+    "database_bytes": 4093616,
+    "snapshot": {
+        "config_sha256": "d06b185653a85bf3aaf30f57cd30c2259e2cd833fd1fe21425aa037e7aa939a9",
+        "active_plugins_sha256": "a45c3609024b128936bed525d04d5cf9b07f580506bf93c68ba1bbe3ce4d9300",
+        "cutoff": "2026-10-03 08:01:16",
+        "test_order_state_sha256": "f46fd8b8132187602effaf4bb45d232c31bd01de94f821dca540ed17ba91a548",
+        "test_order_source_sha256": "19589335a04addba8d7f22bca76ab7d0603eaff88873cf03f6babf3f1733e796",
+        "debug_bytes": 5572
+    }
+}

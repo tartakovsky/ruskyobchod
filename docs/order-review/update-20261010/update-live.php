@@ -10,6 +10,8 @@ $manifest=json_decode(file_get_contents($evidence.'/manifest.json'),true,512,JSO
 $baseline=json_decode(file_get_contents($evidence.'/baseline.json'),true,512,JSON_THROW_ON_ERROR);
 $_SERVER['HTTP_HOST']='gastronom-bratislava.sk';$_SERVER['HTTPS']='on';$_SERVER['REQUEST_METHOD']='GET';$_SERVER['REQUEST_URI']='/';
 define('DISABLE_WP_CRON',true);require $root.'/wp-load.php';
+// This CLI file updater never dispatches WordPress background work on shutdown.
+remove_all_actions('shutdown');
 add_filter('query',static function($sql){if(!preg_match('/^\s*(SELECT|SHOW|DESCRIBE|EXPLAIN)\b/i',$sql))throw new RuntimeException('Updater blocked SQL mutation');return $sql;},PHP_INT_MAX);
 add_filter('pre_http_request',static function(){throw new RuntimeException('Updater blocked external HTTP');},PHP_INT_MAX,3);
 add_filter('pre_wp_mail',static function(){throw new RuntimeException('Updater blocked mail');},PHP_INT_MAX,2);
@@ -46,6 +48,7 @@ if($mode==='deploy'){
  record('deployed.json',['at'=>gmdate('c'),'files'=>count($manifest['files']),'cutoff_unchanged'=>true,'options_orders_config_writes'=>0]);echo "Published 9 files; no options, orders, config or business effects. Run verify in a new process.\n";exit;
 }
 if($mode==='verify'){
+ expected_files(true);
  foreach($manifest['files'] as $f){if(sha(target($f['path']))!==$f['after'])throw new RuntimeException('Installed hash mismatch: '.$f['path']);}
  $r=['at'=>gmdate('c'),'php'=>PHP_VERSION,'wp'=>get_bloginfo('version'),'woo'=>WC_VERSION,'files'=>count($manifest['files']),'snapshot'=>snapshot()];
  $b=json_decode(file_get_contents($beforeFile),true)['snapshot'];

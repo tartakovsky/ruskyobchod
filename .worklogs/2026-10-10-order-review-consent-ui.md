@@ -52,3 +52,17 @@ server/DNS reads. Confirmed correction DMARC fail/quarantine, no DKIM and Hostin
 envelope domain different from From; no SMTP transport. No mail/DNS settings changed.
 Preferred branded mailbox is only proposed and may not exist. MAIL-AUDIT.md records
 the actual evidence and pending authenticated SMTP/OAuth setup.
+
+Installed main UI release a63eec3b and order-language clarification 458cf506.
+Full read-only file/config/original-order verification passed in a fresh process;
+all 32 source baselines confirmed after follow-up. Additional installed tests:
+44 business scenarios and 17 signature/consent/language checks, zero database
+writes, real messages or real sales. Runtime test objects stay unsaved.
+
+User authorized proceeding with the branded SMTP setup. Prepared a separate,
+dormant mail-only owner, 20 isolated checks passed plus PHP 8.2 syntax. No live
+mail, DNS or account settings changed. Websupport page is logged out; no browser
+autofill, no connected Websupport plugin and no account login in scoped Gmail
+registration messages. Existing March invoice only proves domain registration,
+not an active mail subscription. Await authenticated Websupport access before
+creating a mailbox or choosing/enabling a real SMTP credential.

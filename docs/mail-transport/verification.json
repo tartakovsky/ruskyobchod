@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-10T13:14:30.537077+00:00",
+  "production_changed": false,
+  "emails_sent": 0,
+  "checks": [
+    {
+      "suite": "config",
+      "checks": 14,
+      "result": "PASS",
+      "output": "PASS mail transport installation is dormant without private configuration\nPASS authenticated Websupport SMTP uses encrypted port 465\nPASS envelope and visible sender aligned\nPASS mail configuration preserves recipient, customer Reply-To and body\nPASS SMTP debugging disabled and TLS certificate validation not bypassed\nPASS STARTTLS transport supported without plaintext fallback\nPASS private configuration loaded without WordPress options\nPASS invalid sender/TLS configuration rejected\nPASS invalid sender/TLS configuration rejected\nPASS invalid sender/TLS configuration rejected\nPASS invalid sender/TLS configuration rejected\nPASS invalid sender/TLS configuration rejected\nPASS invalid sender/TLS configuration rejected\nPASS world-readable credential file rejected\n"
+    },
+    {
+      "suite": "active",
+      "checks": 3,
+      "result": "PASS",
+      "output": "PASS all WordPress mail uses authenticated sender, including custom Review mail\nPASS all mail uses Gastronom display name\nPASS one SMTP owner registered for valid private configuration\n"
+    },
+    {
+      "suite": "invalid",
+      "checks": 3,
+      "result": "PASS",
+      "output": "PASS missing active SMTP config fails closed without PHP mail fallback\nPASS isolated mail capture remains intact\nPASS invalid settings never create an SMTP connection\n"
+    }
+  ],
+  "hashes": {
+    "wordpress/wp-content/mu-plugins/rusky-mail-transport.php": "0dde533d3b277c5a41bb6e879aeb2926f49976e14354086530543aa6f662b717",
+    "tests/order-review/mail-transport.php": "d2fea3b0532e5492eb937ea61881195cb8a6474988b788b9ecf0b5d07e103957",
+    "tests/order-review/mail-transport-active.php": "6b592add4a255c2b8ad5b0985fedefb10fd347b2f354cb5dbb6ae7f280cde7ff",
+    "tests/order-review/mail-transport-invalid.php": "500938652ab74a7a27a01bef1aaa70d1c9ff0323fa8b983a544cfbb369ee0a42"
+  }
+}
