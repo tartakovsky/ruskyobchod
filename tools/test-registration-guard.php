@@ -39,12 +39,14 @@ form(); $_POST['rrg_signature'] = 'tampered'; check('forged proof rejected', tru
 form(); $_POST['rrg_issued'] = (string) time(); $_POST['rrg_signature'] = wp_hash('rrg:' . $_POST['rrg_issued']); check('instant submission rejected', true);
 form(); $_POST['rrg_issued'] = (string) (time() - 7201); $_POST['rrg_signature'] = wp_hash('rrg:' . $_POST['rrg_issued']); check('expired proof rejected', true);
 form(); $_POST['rrg_issued'] = []; check('array input rejected', true);
-form(); for ($i = 0; $i < 5; $i++) { check('allowed attempt ' . ($i + 1), false); } check('sixth attempt rejected', true);
+form(); for ($i = 0; $i < 2; $i++) { check('allowed attempt ' . ($i + 1), false); } check('third attempt rejected', true);
 $_SERVER['REMOTE_ADDR'] = '192.0.2.2'; check('different IP unaffected', false);
 form(); $_POST = []; check('guest checkout unaffected', false);
 define('RUSKY_TURNSTILE_SITE_KEY', 'test'); define('RUSKY_TURNSTILE_SECRET_KEY', 'test');
 form(); check('Turnstile missing token rejected', true);
 $_POST['cf-turnstile-response'] = 'test'; $response = new WP_Error(); check('Turnstile outage rejected', true);
+form(); $_POST['cf-turnstile-response'] = 'test';
 $response = ['success' => true, 'action' => 'registration', 'hostname' => 'evil.example']; check('wrong hostname rejected', true);
+form(); $_POST['cf-turnstile-response'] = 'test';
 $response['hostname'] = 'gastronom-bratislava.sk'; $response['action'] = 'login'; check('wrong action rejected', true);
 $response['action'] = 'registration'; check('valid Turnstile accepted', false);

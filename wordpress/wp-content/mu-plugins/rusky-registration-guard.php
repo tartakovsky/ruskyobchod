@@ -56,7 +56,7 @@ function rrg_validate($errors, $username = '', $password = '', $email = '') {
     $state['attempts']++;
     set_transient($bucket, $state, max(1, $state['until'] - $now));
     $issued = rrg_post('rrg_issued');
-    $valid = $state['attempts'] <= 5
+    $valid = $state['attempts'] <= 2
         && rrg_post('rrg_website') === ''
         && ctype_digit($issued)
         && hash_equals(wp_hash('rrg:' . $issued), rrg_post('rrg_signature'))
